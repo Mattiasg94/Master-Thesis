@@ -70,7 +70,7 @@ unfeasible=[];
 i=1;
 for k = 2:Nsim+1
     [Z,exitflag,MA_bar,Mb_bar] = optimizer_fmincon(Z0,A, B, N, xf, x(k-1,:)',lb,ub,A_bar,b_bar,[2.8,2.8]);
-    %MA_bar*Z(N*4+1:end)'
+    MA_bar
     Z0=Z;
     u(k-1,:)=Z(N*2+1:N*2+2);
     x(k,:) = A*x(k-1,:)' + B*u(k-1,:)';
