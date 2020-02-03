@@ -15,30 +15,29 @@ sysd=c2d(sys,Ts);
 
 N=5;
 Nsim=20;
-num_states=4;
+num_states=6;
 u = zeros(Nsim , 2);
-x = zeros(Nsim + 1, 2);
-x0=[5;0];
+x = zeros(Nsim + 1, 3);
+x0=[5;0;0];
 x(1,:) = x0;
-lb=[3.5 0 -0.5 -0.5 ];
-ub=[5.5 10 0.5 0.5];
-xf=[5;10];
+lb=[0 0 -pi 0.1 0];
+ub=[10 10 pi 0];
+xf=[5;10;0];
 
 lb1=[];lb2=[];
 ub1=[];ub2=[];
 for i=1:N
-    lb1=[lb1,lb(1:2)];
-    lb2=[lb2,lb(3:4)];
-    ub1=[ub1,ub(1:2)];
-    ub2=[ub2,ub(3:4)];
+    lb1=[lb1,lb(1:3)];
+    lb2=[lb2,lb(4:5)];
+    ub1=[ub1,ub(1:3)];
+    ub2=[ub2,ub(4:5)];
 end
 lb=[lb1,lb2];
 ub=[ub1,ub2];
-
-Z0=0;
+Z0=x0;
 
 %% plot
-obstacles=0;[[5,4],[4,6]];
+obstacles=0;%[[5,4],[4,6]];
 
 xcont = linspace(x0(1)-5,xf(1)+5);
 ycont = linspace(x0(2),xf(2)+5);
@@ -57,7 +56,7 @@ xline(5.5,'--r');
 i=1;
 inc_slope=0.1;
 for k = 2:Nsim+1
-    
+    [A,B] = Linearized_discrete_DD_model(Z0(1:num_states),Z0(N*num_states+1:N*num_states+num_input),dt);
     [Z,exitflag] = optimizer_fmincon(Z0,A, B, N, xf, x(k-1,:)',lb,ub,obstacles);
 %     obstacles(2)=obstacles(2)+0.05;
 %     obstacles(4)=obstacles(4)-0.05;

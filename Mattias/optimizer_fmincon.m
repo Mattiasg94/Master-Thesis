@@ -1,5 +1,6 @@
-function [Z,exitflag,MA_bar,Mb_bar] = optimizer_fmincon(Z0,A, B, N ,xf,xk,lb,ub,A_bar,b_bar,obstacle)
-    Omega = A;
+function [Z,exitflag] = optimizer_fmincon(Z0,A, B, N ,xf,xk,lb,ub,obstacles)
+    
+Omega = A;
     for k = 2:N
         Omega = [Omega;A^k];
     end
@@ -13,48 +14,41 @@ function [Z,exitflag,MA_bar,Mb_bar] = optimizer_fmincon(Z0,A, B, N ,xf,xk,lb,ub,
         Gamma = [Gamma; row];
     end
     if Z0==0
-       Z0=[Omega*xk;zeros(N*2,1);zeros(N*8,1)]'; 
-    else
-        Z0(N*4+1:end)=zeros(N*8,1)'; 
+       Z0=[Omega*xk;zeros(N*2,1)]'; 
     end
-    Z0=[Omega*xk;zeros(N*2,1);zeros(N*8,1)]'; 
-    % Z = [x;u,beta]
-    Mbelt=zeros(N,N*2);
-    for i=1:N
-        Mbelt(i,2*i-1:2*i)=ones(1,2);
-    end
-    Mb_bar=[];
-    MA_bar=[];
-    for i=1:N
-       MA_bar = blkdiag(MA_bar,A_bar);
-       Mb_bar = blkdiag(Mb_bar,b_bar);     
-    end
-    
-    Ain=[   
-        zeros(N,N*2),zeros(N,N*2),Mb_bar'
-    ];
+    % Z = [x;u]
+%     Mbelt=zeros(N,N*2);
+%     for i=1:N
+%         Mbelt(i,2*i-1:2*i)=ones(1,2);
+%     end    
+%     if  true %1<=xk(2) && xk(2)<=6 
+%        activate=1;
+%     else
+%         activate=0;
+%     end
+%     Mx=[];
+%     mx=[activate,0];
+%     for i=1:N
+%         Mx=blkdiag(Mx,mx);
+%     end  
 
+    Ain=[   
+    ];
     bin=[
-        ones(N,1)*(-10^-4)
         ];
 
     Aeq=[
-        zeros(2*N),zeros(2*N),MA_bar'
-        eye(2*N),-Gamma, zeros(N*2,8*N)
+        eye(3*N),-Gamma
         ];
     beq=[
-        zeros(N*2,1)
         Omega*xk
         ];
     
     % f=V*Z
-    
-    fun = @(Z) AnonymousFunc(Z,N,xf,obstacle);
-    %nonl_con = @(Z) nonlcon(Z,N,obstacle);
-%     Z0=[Omega*xk;zeros(N*2,1);zeros(N*8,1)]';
-    options = optimoptions('fmincon','Display','off','TolCon',1e-7); %,'TolCon',1e-6
+    fun = @(Z) objective_func(Z,N,xf,obstacles);
+    %nonl_con = @(Z) nonlcon(Z,N,obstacles);
+    options = optimoptions('fmincon','Display','off'); %,'TolCon',1e-6
     [Z,fval,exitflag] = fmincon(fun,Z0,Ain,bin,Aeq,beq,lb,ub,[],options);
-    
 end
 
 
