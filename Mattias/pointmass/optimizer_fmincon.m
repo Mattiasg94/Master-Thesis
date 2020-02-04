@@ -16,7 +16,6 @@ Omega = A;
     if Z0==0
        Z0=[Omega*xk;zeros(N*2,1)]'; 
     end
-    
     % Z = [x;u]
 %     Mbelt=zeros(N,N*2);
 %     for i=1:N
@@ -39,7 +38,7 @@ Omega = A;
         ];
 
     Aeq=[
-        eye(3*N),-Gamma
+        eye(2*N),-Gamma
         ];
     beq=[
         Omega*xk

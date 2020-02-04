@@ -1,28 +1,18 @@
 clc
 clear all
 close all
-
-A=[1 0
-   0 1];
-B=[1 0
-   0 1];
-C=[1 0
-   0 1];
-sys=ss(A,B,C,0);
-Ts=1;
-sysd=c2d(sys,Ts);
-
+format short
 
 N=1;
-Nsim=100;
-dt=0.1;
+Nsim=40;
+dt=0.5;
 num_states=6;
 u = zeros(Nsim , 2);
 x = zeros(Nsim + 1, 3);
-x0=[5;0;90*pi/180];
+x0=[5;0;pi/2];
 x(1,:) = x0;
-lb=[0 0 -180*pi/180  0 -1];
-ub=[10 10 180*pi/180 0.5 1];
+lb=[0 0 -2*pi 0 -1];
+ub=[10 10 2*pi 0.5 1];
 xf=[5;10;0];
 
 lb1=[];lb2=[];
@@ -54,18 +44,18 @@ xline(3.5,'--r');
 xline(4.5,'--r');
 xline(5.5,'--r');
 
-i=1;
-for k = 2:Nsim+1
-    [A,B] = Linearized_discrete_DD_model(x(k-1,:)',u(k-1,:),dt); %TODO: u(k)??
+uk=u(1,:)';
+for k = 2:Nsim+1 %x(k-1,:)' uk
+    [A,B] = Linearized_discrete_DD_model(x(k-1,:)',uk,dt); %TODO: u(k)??
     [Z,exitflag] = optimizer_fmincon(Z0,A, B, N, xf, x(k-1,:)',lb,ub,obstacles);
 %     obstacles(2)=obstacles(2)+0.05;
 %     obstacles(4)=obstacles(4)-0.05;
     for i=1:length(obstacles)/2
     scatter(obstacles(2*i-1),obstacles(2*i),'k','LineWidth',1.5)
     end
-    Z
     Z0=Z;
-    u(k-1,:)=Z(N*2+1:N*2+2);
+    u(k-1,:)=Z(N*3+1:N*3+2);
+    uk=u(k-1,:)';
     x(k,:) = A*x(k-1,:)' + B*u(k-1,:)';
     i=i+1;
     if exitflag==-2

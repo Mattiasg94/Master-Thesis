@@ -38,7 +38,7 @@ ub=[ub1,ub2];
 Z0=0;
 
 %% plot
-obstacles=0;[[5,4],[4,6]];
+obstacles=[[5,4],[4,6]];
 
 xcont = linspace(x0(1)-5,xf(1)+5);
 ycont = linspace(x0(2),xf(2)+5);
@@ -59,8 +59,8 @@ inc_slope=0.1;
 for k = 2:Nsim+1
     
     [Z,exitflag] = optimizer_fmincon(Z0,A, B, N, xf, x(k-1,:)',lb,ub,obstacles);
-%     obstacles(2)=obstacles(2)+0.05;
-%     obstacles(4)=obstacles(4)-0.05;
+    obstacles(2)=obstacles(2)+0.05;
+    obstacles(4)=obstacles(4)-0.05;
     for i=1:length(obstacles)/2
     scatter(obstacles(2*i-1),obstacles(2*i),'k','LineWidth',1.5)
     end
