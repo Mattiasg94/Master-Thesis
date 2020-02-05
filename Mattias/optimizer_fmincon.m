@@ -1,5 +1,5 @@
-function [Z,exitflag] = optimizer_fmincon(Z0,A, B, N ,xf,xk,lb,ub,obstacles)
-    
+function [Z,fval,exitflag] = optimizer_fmincon(xr,Z0,A, B, N ,x_tilde,u_tilde,lb,ub,obstacles)
+
 Omega = A;
     for k = 2:N
         Omega = [Omega;A^k];
@@ -14,40 +14,30 @@ Omega = A;
         Gamma = [Gamma; row];
     end
     if Z0==0
-       Z0=[Omega*xk;zeros(N*2,1)]'; 
+       Z0=[Omega*x_tilde;zeros(N*3,1);zeros(N*2,1)]'; 
     end
-    
-    % Z = [x;u]
-%     Mbelt=zeros(N,N*2);
-%     for i=1:N
-%         Mbelt(i,2*i-1:2*i)=ones(1,2);
-%     end    
-%     if  true %1<=xk(2) && xk(2)<=6 
-%        activate=1;
-%     else
-%         activate=0;
-%     end
-%     Mx=[];
-%     mx=[activate,0];
-%     for i=1:N
-%         Mx=blkdiag(Mx,mx);
-%     end  
-
-    Ain=[   
+    % Z = [x_tilde,x;u]
+    Mxr=[];
+    for i=1:N
+        Mxr=[Mxr;eye(3)];
+    end
+    Ain=[
     ];
     bin=[
         ];
 
     Aeq=[
-        eye(3*N),-Gamma
+         eye(3*N),zeros(3*N),-Gamma
+         -eye(3*N),eye(3*N),zeros(N*3,2*N)        
         ];
     beq=[
-        Omega*xk
+         Omega*x_tilde
+         Mxr*xr         
         ];
     
     % f=V*Z
-    fun = @(Z) objective_func(Z,N,xf,obstacles);
-    %nonl_con = @(Z) nonlcon(Z,N,obstacles);
+    fun = @(Z) objective_func(Z,N,obstacles);
+    %nonl_con = @(Z) nonlcon(Z,N,uk,obstacles);
     options = optimoptions('fmincon','Display','off'); %,'TolCon',1e-6
     [Z,fval,exitflag] = fmincon(fun,Z0,Ain,bin,Aeq,beq,lb,ub,[],options);
 end
