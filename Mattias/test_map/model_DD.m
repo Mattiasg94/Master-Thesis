@@ -2,15 +2,19 @@ clc
 clear all, close all
 
 N=10;
-Nsim=30;
-dt=0.5;
+Nsim=40;
+dt=0.1;
 ur=[0.1;0]; 
 xr=[10;5;0];
 x0=[0;4;0];
-u0=[0;1];
-lb=[-10  -10 -2*pi -10 -10 -2*pi -1 -1];
-ub=[10 10 2*pi 10 10 2*pi 1 1];
-[u,x,u_tilde,x_tilde,lb,ub,Z0,MQ,MR]=setup(x0,ub,lb,Nsim,N);
+u0=[0;0];
+lb_x=[0 0 -2*pi];
+ub_x=[10 10 2*pi];
+lb_u=[0 -1];
+ub_u=[10 1];
+lb=[-inf -inf -inf lb_x -inf -inf lb_u];
+ub=[ inf  inf  inf ub_x  inf  inf ub_u];
+[u,x,u_tilde,x_tilde,lb,ub,Z0,MQ,MR,Mxr,Mur,Mu_delta]=setup(x0,xr,ur,ub,lb,Nsim,N);
 %% plot
 obstacles=0;%[[5,4],[4,6]];
 xcont = linspace(x0(1),xr(1)+5);
@@ -32,7 +36,7 @@ for k = 2:Nsim+1
     u_tilde(k-1,:)=(uk-ur);
     x_tilde(k-1,:)=(x(k-1,:)'-xr);
     [A,B] = Linearized_discrete_DD_model(xr,ur,dt); 
-    [Z,fval,exitflag] = optimizer_fmincon(xr,Z0,A, B,MQ,MR, N,x_tilde(k-1,:)',u_tilde(k-1,:)',lb,ub,obstacles);
+    [Z,fval,exitflag] = optimizer_fmincon(xr,Z0,A, B,MQ,MR,Mxr,Mur,N,x_tilde(k-1,:)',u_tilde(k-1,:)',x(k-1,:)',lb,ub,obstacles);
 %     obstacles(2)=obstacles(2)+0.05;
 %     obstacles(4)=obstacles(4)-0.05;
     for i=1:length(obstacles)/2
@@ -40,27 +44,31 @@ for k = 2:Nsim+1
     end
     Z0=Z;
     u(k-1,:)=Z(N*3*2+1:N*3*2+2)'+ur;
-    uk=u(k-1,:)';
+    uk=u(k-1,:)';    
+    [A,B] = Linearized_discrete_DD_model(x(k-1,:)',uk,dt);
     x(k,:) =A*x(k-1,:)' + B*u(k-1,:)';
+     
     if exitflag==-2
        disp("----Unfeasible!----")
        break
-    elseif exitflag==0
-      disp("----Converged!----")
-      break
     end
     plot(x(:,1),x(:,2),'ok')
     pause(0.01)
+    for i=1:N-1
+    test(k)=fval;
+    end
 end
+
 figure(2)
-subplot(2,1,1)
-plot(x_tilde)
-legend('x','y','theta')
-title("x_bar")
-subplot(2,1,2)
-plot(u_tilde)
-legend('u1','u2')
-title("u_bar")
+plot(test)
+% subplot(2,1,1)
+% plot(x_tilde)
+% legend('x','y','theta')
+% title("x_bar")
+% subplot(2,1,2)
+% plot(u_tilde)
+% legend('u1','u2')
+% title("u_bar")
 
 
 
