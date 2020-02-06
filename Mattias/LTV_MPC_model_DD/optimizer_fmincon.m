@@ -1,4 +1,4 @@
-function [Z,fval,exitflag] = optimizer_fmincon(xk,uk,xr,Z0,A,B,MQ,MR,Mxr,Mur,N,x_tilde,u_tilde,lb,ub,obstacles)
+function [Z,fval,exitflag] = optimizer_fmincon(xk,uk,dt,xr,Z0,A,B,MQ,MR,Mxr,Mur,N,x_tilde,u_tilde,lb,ub,obstacles)
 %     Omega = A;
 %     for k = 2:N
 %         Omega = [Omega;A^k];
@@ -54,9 +54,10 @@ function [Z,fval,exitflag] = optimizer_fmincon(xk,uk,xr,Z0,A,B,MQ,MR,Mxr,Mur,N,x
     
     % f=V*Z
     obj_fun = @(Z) objective_func(Z,MQ,MR,N,obstacles);
-    nonl_con = @(Z) nonlcon(Z,N,xk,uk);
-    options = optimoptions('fmincon','Display','off'); %,'TolCon',1e-6
+    nonl_con = @(Z) nonlcon(Z,N,xk,uk,dt);
+    options = optimoptions('fmincon','Display','off','Algorithm','SQP'); %,'TolCon',1e-6
     [Z,fval,exitflag] = fmincon(obj_fun,Z0,Ain,bin,Aeq,beq,lb,ub,nonl_con,options);
+    exitflag
 end
 
 
