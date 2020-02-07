@@ -2,7 +2,7 @@ clc
 clear all, close all
 
 N=10;
-Nsim=20;
+Nsim=35;
 dt=0.5;
 ur=[0;0]; 
 xr=[10;5;0];
@@ -18,7 +18,7 @@ lb=[-inf -inf -inf lb_x -inf -inf lb_u];
 ub=[ inf  inf  inf ub_x  inf  inf ub_u];
 [u,x,u_tilde,x_tilde,lb,ub,Z0,MQ,MR,Mxr,Mur,Mu1_delta,Mu2_delta]=setup(x0,u0,xr,ur,ub,lb,Nsim,N);
 %% plot
-obstacles={[5;4;0],[4;4;0]};
+obstacles={[0;2.5;0],[1;2.5;0]};
 obstacles_u={[1;0],[1;0]};
 plot_obstacles = plot(1); textbox=plot(1);
 
@@ -30,7 +30,8 @@ contour(X,Y,fun,100)
 hold on 
 %grid on,set(gca,'ytick',min(xcont):max(xcont)),set(gca,'xtick',min(ycont):max(ycont))
 
-
+Vfval=zeros(Nsim,1);
+Vfval(1)=inf;
 feasible=1;
 for k = 1:Nsim+1 
     if feasible
@@ -64,22 +65,31 @@ for k = 1:Nsim+1
         [A_obstacles,B_obstacles] = Linearized_discrete_DD_model(obstacles{i},obstacles_u{i},dt);
         obstacles{i}=A_obstacles*obstacles{i}+B_obstacles*obstacles_u{i};
     end
-    pause(1)    
+    pause(0.1)    
     delete(track)
     
-    if exitflag==-2
-       disp("----Unfeasible!----")
-       feasible=0;
+    Vfval(k+1)=fval;
+    test(k)=Vfval(k)-fval;
+    last_dist_xr=abs(Z(6*N-2)-xr(1));
+    last_dist_yr=abs(Z(6*N-1)-xr(2));
+    if abs(x(k+1,1)-xr(1))<0.1 && abs(x(k+1,2)-xr(2))<0.1
+        break
+    end
+    if exitflag==-2 || Vfval(k-1)-fval<=225
+       if last_dist_xr>0.1 && last_dist_yr>0.1
+           disp("----Unfeasible!----")
+           feasible=0;
+       end
        continue
     else
         feasible=1;
     end
-    for i=1:N-1
-    test(k)=fval;
-    end
+    
 end
 
 figure(2)
+plot(Vfval)
+figure(3)
 plot(test)
 % subplot(2,1,1)
 % plot(x_tilde)
