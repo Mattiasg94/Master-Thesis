@@ -18,7 +18,7 @@ lb=[-inf -inf -inf lb_x -inf -inf lb_u];
 ub=[ inf  inf  inf ub_x  inf  inf ub_u];
 [u,x,u_tilde,x_tilde,lb,ub,Z0,MQ,MR,Mxr,Mur,Mu1_delta,Mu2_delta]=setup(x0,u0,xr,ur,ub,lb,Nsim,N);
 %% plot
-obstacles={[4;4;0],[5;4;0]};
+obstacles={[5;4;0],[4;4;0]};
 obstacles_u={[1;0],[1;0]};
 plot_obstacles = plot(1); textbox=plot(1);
 
