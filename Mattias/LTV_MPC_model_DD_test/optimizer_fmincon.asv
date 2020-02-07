@@ -1,0 +1,47 @@
+function [Z,fval,exitflag] = optimizer_fmincon(xk,uk,dt,Z0,MQ,MR,Mxr,Mur,Mu1_delta,Mu2_delta,N,lb,ub,obstacles)
+
+    if Z0==0
+       Z0=[zeros(N*3,1);zeros(N*3,1);zeros(N*2,1);zeros(N*2,1)]';
+    end
+    % Z = [x_tilde,x;u_tilde,u,s]
+
+    Ain=[
+        %Delta v
+        zeros(1,N*3),zeros(1,N*3),zeros(1,N*2),[1,zeros(1,N*2-1)]
+        zeros(N-1,N*3),zeros(N-1,N*3),zeros(N-1,N*2),Mu1_delta
+        zeros(N-1,N*3),zeros(N-1,N*3),zeros(N-1,N*2),-Mu1_delta    
+        %Delta
+        zeros(1,N*3),zeros(1,N*3),zeros(1,N*2),[0,1,zeros(1,N*2-2)]
+        zeros(N-1,N*3),zeros(N-1,N*3),zeros(N-1,N*2),Mu2_delta
+        zeros(N-1,N*3),zeros(N-1,N*3),zeros(N-1,N*2),-Mu2_delta
+    ];
+    bin=[
+        %Delta v
+        0.5+uk(1)
+        ones(2*(N-1),1)*0.5
+        %Delta w
+        0.1+uk(2)
+        ones(2*(N-1),1)*0.1
+        ];
+    Aeq=[
+         -eye(3*N),eye(3*N),zeros(N*3,2*N),zeros(N*3,2*N)
+         zeros(2*N,3*N),zeros(2*N,3*N),-eye(2*N),eye(2*N)
+        ];
+    beq=[
+         Mxr
+         Mur 
+        ];
+    
+    % f=V*Z
+    obj_fun = @(Z) objective_func(Z,MQ,MR,N,obstacles);
+    nonl_con = @(Z) nonlcon(Z,N,xk,uk,dt);
+    options = optimoptions('fmincon','Display','off','Algorithm','SQP'); %,'TolCon',1e-6
+    [Z,fval,exitflag] = fmincon(obj_fun,Z0,Ain,bin,Aeq,beq,lb,ub,nonl_con,options);
+end
+
+
+
+
+
+
+
