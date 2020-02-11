@@ -1,0 +1,28 @@
+clc
+clear all
+close all
+
+R1 = [1 1];
+R2 = [2.5 2.5];
+radius = 0.5;
+xlim([0 4]);
+ylim([0 4]);
+
+
+R1R2 = R2-R1;
+l = sqrt(norm(R1R2)^2 - radius^2);
+gamma = atan2(R1R2(2),R1R2(1));
+alpha = atan2(radius,l);
+beta = gamma - alpha;
+lambda12 = [cos(beta)*l+R1(1);
+            sin(beta)*l+R1(2)]; 
+
+circle(R2(1),R2(2), radius);
+function h = circle(x,y,r)
+hold on
+th = 0:pi/50:2*pi;
+xunit = r * cos(th) + x;
+yunit = r * sin(th) + y;
+h = plot(xunit, yunit);
+hold off
+end

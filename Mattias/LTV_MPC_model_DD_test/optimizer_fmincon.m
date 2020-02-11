@@ -1,9 +1,9 @@
-function [Z,fval,exitflag] = optimizer_fmincon(xk,uk,dt,dv,dw,Z0,MQ,MR,Mxr,Mur,Mu1_delta,Mu2_delta,N,lb,ub,obstacles)
+function [Z,fval,exitflag] = optimizer_fmincon(xk,uk,dt,dv,dw,Z0,MQ,MR,Mxr,Mur,Mu1_delta,Mu2_delta,N,lb,ub,obstacles,obstacles_u)
 
     if Z0==0
        Z0=[zeros(N*3,1);zeros(N*3,1);zeros(N*2,1);zeros(N*2,1)]';
     end
-    % Z = [x_tilde,x;u_tilde,u,s]
+    % Z = [x_tilde,x;u_tilde,u]
 
     Ain=[
         %Delta v
@@ -34,7 +34,7 @@ function [Z,fval,exitflag] = optimizer_fmincon(xk,uk,dt,dv,dw,Z0,MQ,MR,Mxr,Mur,M
     
     % f=V*Z
     obj_fun = @(Z) objective_func(Z,MQ,MR,N,obstacles);
-    nonl_con = @(Z) nonlcon(Z,N,xk,uk,dt,obstacles);
+    nonl_con = @(Z) nonlcon(Z,N,xk,uk,dt,obstacles,obstacles_u);
     options = optimoptions('fmincon','Display','off','Algorithm','SQP'); %,'TolCon',1e-6
     [Z,fval,exitflag] = fmincon(obj_fun,Z0,Ain,bin,Aeq,beq,lb,ub,nonl_con,options);
 end
