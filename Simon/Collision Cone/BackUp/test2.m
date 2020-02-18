@@ -14,11 +14,11 @@ vab=[va(1)-vb(1);va(2)-vb(2)];
 % b2=(va(2)-vb(2))/norm(va(2)-vb(2));
 % vab=[a2;b2];
 d=sqrt(norm(r)^2-(dot(r,vab))^2/norm(vab)^2)
-% rterm=(pa(1)-pb(1))^2+(pa(2)-pb(2))^2;
-% uterm=((va(1)-vb(1))*(pa(1)-pb(1))+(va(2)-vb(2))*(pa(2)-pb(2)))^2;
-% lterm=(va(1)-vb(1))^2+(va(2)-vb(2))^2;
-% 
-% d=sqrt(rterm-uterm/lterm)
+rterm=(pa(1)-pb(1))^2+(pa(2)-pb(2))^2;
+uterm=((va(1)-vb(1))*(pa(1)-pb(1))+(va(2)-vb(2))*(pa(2)-pb(2)))^2;
+lterm=(va(1)-vb(1))^2+(va(2)-vb(2))^2;
+
+d=sqrt(rterm-uterm/lterm)
 
 plot([0,va(1)],[0,va(2)])
 hold on
