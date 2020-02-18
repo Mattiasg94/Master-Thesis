@@ -53,3 +53,4 @@ for i=1:N-1
    Mu1_delta(i,2*(i-1)+1:2*(i-1)+4)=u1_delta;
    Mu2_delta(i,2*(i-1)+1:2*(i-1)+4)=u2_delta;
 end
+1

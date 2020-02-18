@@ -1,4 +1,4 @@
-function [u,x,u_tilde,x_tilde,lb,ub,Z0,MQ,MR,Mxr,Mur,Mu1_delta,Mu2_delta]=setup(x0,u0,xr,ur,ub,lb,Nsim,N)
+function [u,x,u_tilde,x_tilde,lb,ub,Z0,MQ,MR,Mxr,Mur,Mu2_delta]=setup(x0,u0,xr,ur,ub,lb,Nsim,N)
 
 
 u = zeros(Nsim , 2);
@@ -25,8 +25,8 @@ for i=1:N
     ub4=[ub4,ub(9:10)];
 
 end
-lb=[lb1,lb2,lb3,lb4];
-ub=[ub1,ub2,ub3,ub4];
+lb=[lb1,lb2,lb3,lb4,lb5];
+ub=[ub1,ub2,ub3,ub4,ub5];
 Z0=0;
 Q=[10 0 0
     0 10 0
@@ -47,7 +47,7 @@ for i=1:N
 end
 u1_delta=[1,0,-1,0];
 u2_delta=[0,1,0,-1];
-Mu1_delta=zeros(N-1,2*N);
+Mu2_delta=zeros(N-1,2*N);
 Mu2_delta=zeros(N-1,2*N);
 for i=1:N-1
    Mu1_delta(i,2*(i-1)+1:2*(i-1)+4)=u1_delta;
