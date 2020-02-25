@@ -2,11 +2,11 @@ _comment: auto-generated file; do not modify
 build:
   build_dir: python_test_build
   build_mode: debug
-  cost_function_name: phi_ayGCDFAbygVjcGIqzRtU
-  grad_function_name: grad_phi_ayGCDFAbygVjcGIqzRtU
-  id: ayGCDFAbygVjcGIqzRtU
-  mapping_f1: mapping_f1_ayGCDFAbygVjcGIqzRtU
-  mapping_f2: mapping_f2_ayGCDFAbygVjcGIqzRtU
+  cost_function_name: phi_zrDhuxhgyKqvpJMdMnFg
+  grad_function_name: grad_phi_zrDhuxhgyKqvpJMdMnFg
+  id: zrDhuxhgyKqvpJMdMnFg
+  mapping_f1: mapping_f1_zrDhuxhgyKqvpJMdMnFg
+  mapping_f2: mapping_f2_zrDhuxhgyKqvpJMdMnFg
   open_version: null
   target_system: null
 meta:
@@ -21,7 +21,7 @@ solver:
   max_duration_micros: 5000000
   max_inner_iterations: 500
   max_outer_iterations: 5
-  penalty_weight_update_factor: 5.0
+  penalty_weight_update_factor: 10.0
   tolerance: 1.0e-05
 tcp:
   ip: 127.0.0.1

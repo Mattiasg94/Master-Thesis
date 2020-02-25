@@ -2,7 +2,7 @@
 // Auto-generated file by OptimizationEngine
 // See https://alphaville.github.io/optimization-engine/
 //
-// Generated at: 2020-02-25 15:23:16.130452
+// Generated at: 2020-02-25 15:55:39.260856
 //
 
 use icasadi;
@@ -36,7 +36,7 @@ const MAX_OUTER_ITERATIONS: usize = 5;
 const MAX_DURATION_MICROS: u64 = 5000000;
 
 /// Penalty update factor
-const PENALTY_UPDATE_FACTOR: f64 = 5.0;
+const PENALTY_UPDATE_FACTOR: f64 = 10.0;
 
 /// Initial penalty
 const INITIAL_PENALTY_PARAMETER: f64 = 10.0;

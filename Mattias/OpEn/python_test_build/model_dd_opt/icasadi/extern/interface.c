@@ -22,7 +22,7 @@
  *   + n1: 0
  *   + n2: 4
  *
- * Generated at: 2020-02-25 15:23:15.901297
+ * Generated at: 2020-02-25 15:55:39.072379
  *
  */
 #include <stdlib.h>
@@ -57,7 +57,7 @@
 /*
  * CasADi interface for the cost function
  */
-extern int phi_ayGCDFAbygVjcGIqzRtU(
+extern int phi_zrDhuxhgyKqvpJMdMnFg(
     const casadi_real** arg, 
     casadi_real** res, 
     casadi_int* iw, 
@@ -67,7 +67,7 @@ extern int phi_ayGCDFAbygVjcGIqzRtU(
 /*
  * CasADi interface for the gradient of the cost
  */
-extern int grad_phi_ayGCDFAbygVjcGIqzRtU(
+extern int grad_phi_zrDhuxhgyKqvpJMdMnFg(
     const casadi_real** arg, 
     casadi_real** res, 
     casadi_int* iw, 
@@ -77,7 +77,7 @@ extern int grad_phi_ayGCDFAbygVjcGIqzRtU(
 /*
  * CasADi interface for the gradient of mapping F1
  */
-extern int mapping_f1_ayGCDFAbygVjcGIqzRtU(
+extern int mapping_f1_zrDhuxhgyKqvpJMdMnFg(
     const casadi_real** arg, 
     casadi_real** res, 
     casadi_int* iw, 
@@ -87,7 +87,7 @@ extern int mapping_f1_ayGCDFAbygVjcGIqzRtU(
 /*
  * CasADi interface for the gradient of mapping F2
  */
-extern int mapping_f2_ayGCDFAbygVjcGIqzRtU(
+extern int mapping_f2_zrDhuxhgyKqvpJMdMnFg(
     const casadi_real** arg, 
     casadi_real** res, 
     casadi_int* iw, 
@@ -231,7 +231,7 @@ int cost_function_model_dd_opt(const casadi_real** arg, casadi_real** res) {
     copy_args_into_uxip_space(arg);
 
     result_space_cost[0] = res[0];
-    return phi_ayGCDFAbygVjcGIqzRtU(
+    return phi_zrDhuxhgyKqvpJMdMnFg(
         args__,
         result_space_cost,
         allocated_i_workspace_cost,
@@ -249,7 +249,7 @@ int grad_cost_function_model_dd_opt(const casadi_real** arg, casadi_real** res) 
               uxip_space + NU_MODEL_DD_OPT + NXI_MODEL_DD_OPT};  /* :p   */
     copy_args_into_uxip_space(arg);
     result_space_grad[0] = res[0];
-    return grad_phi_ayGCDFAbygVjcGIqzRtU(
+    return grad_phi_zrDhuxhgyKqvpJMdMnFg(
         args__,
         result_space_grad,
         allocated_i_workspace_grad,
@@ -273,10 +273,10 @@ int mapping_f1_function_model_dd_opt(const casadi_real** arg, casadi_real** res)
      */
     result_space_f1[0] = res[0];
     /*
-     * Call auto-generated function mapping_f1_ayGCDFAbygVjcGIqzRtU
+     * Call auto-generated function mapping_f1_zrDhuxhgyKqvpJMdMnFg
      * Implemented in: icasadi/extern/auto_casadi_mapping_f1.c
      */
-    return mapping_f1_ayGCDFAbygVjcGIqzRtU(
+    return mapping_f1_zrDhuxhgyKqvpJMdMnFg(
         args__,
         result_space_f1,
         allocated_i_workspace_f1,
@@ -300,10 +300,10 @@ int mapping_f2_function_model_dd_opt(const casadi_real** arg, casadi_real** res)
      */
     result_space_f2[0] = res[0];
     /*
-     * Call auto-generated function mapping_f2_ayGCDFAbygVjcGIqzRtU
+     * Call auto-generated function mapping_f2_zrDhuxhgyKqvpJMdMnFg
      * Implemented in: icasadi/extern/auto_casadi_mapping_f2.c
      */
-    return mapping_f2_ayGCDFAbygVjcGIqzRtU(
+    return mapping_f2_zrDhuxhgyKqvpJMdMnFg(
         args__,
         result_space_f2,
         allocated_i_workspace_f2,

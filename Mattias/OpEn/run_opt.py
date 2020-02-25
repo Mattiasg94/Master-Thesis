@@ -1,4 +1,4 @@
-from opt_build import ts, N, nu, nx,model_dd
+from opt_build import ts, N, nu, nx, model_dd
 import opengen as og
 import numpy as np
 import matplotlib.pyplot as plt
@@ -6,24 +6,26 @@ from mpl_toolkits.axes_grid1 import host_subplot
 import matplotlib.animation as animation
 
 
-
 mng = og.tcp.OptimizerTcpManager('python_test_build/model_dd_opt')
 mng.start()
 mng.ping()
-# Init ego
+# -------Init ego
 (x_init, y_init, theta_init) = (0, 0, np.pi/4)
 (xref, yref, thetaref) = (10, 10, 0)
+# -------Init Obstacles
+(x_obs, y_obs, theta_obs, r_obs) = (3, 4.5, 0, 1)
+(v_obs, w_obs) = (0.3, 0.00001)
+# -------Init plot
 plot_x = []
 plot_y = []
 plot_theta = []
-plot_init_x=x_init
-plot_init_y=y_init
-# Init Obstacles
-(x_obs, y_obs, theta_obs, r_obs) = (4.5, 4.5, 0, 1)
-(v_obs, w_obs) = (0.1, 0.00001)
-
+plot_init_x = x_init
+plot_init_y = y_init
+total_sec = 0
 fig = plt.figure()
 ax = fig.add_subplot(1, 1, 1)
+
+
 def animate(i):
     ax.cla()
     ax.set_xlim((plot_init_x-0.5, xref+0.5))
@@ -43,16 +45,22 @@ for i in range(N):
     p_lst.extend(obs_1)
     solution = mng.call(p_lst, initial_guess=[1.0] * (nu*N))
 
-    # Plot solution
-    # ------------------------------------
-    time = np.arange(0, ts*N, ts)
     u_star = solution['solution']
-    print('solve_time_ms', solution['solve_time_ms'],
-          'sek', solution['solve_time_ms']/1000)
+    if not solution['exit_status'] == 'Converged':
+        print('---------------------')
+        print('exit_status', solution['exit_status'])
+        print('num_outer_iterations', solution['num_outer_iterations'])
+        print('num_inner_iterations', solution['num_inner_iterations'])
+        print('last_problem_norm_fpr', solution['last_problem_norm_fpr'])
+        print('penalty', solution['penalty'])
+
+    print('solve_time_ms', round(solution['solve_time_ms'], 2), 'sek', round(
+        solution['solve_time_ms']/1000, 2))
+    total_sec += solution['solve_time_ms']/1000
+
+    # -------Plot trajectory
     uv = u_star[0:nu*N:2]
     uw = u_star[1:nu*N:2]
-    # Plot trajectory
-    # ------------------------------------
     X = [0.0]*(N+1)
     X[0] = x_init
     Y = [0.0]*(N+1)
@@ -69,15 +77,13 @@ for i in range(N):
         Y[t+1] = y + ts*np.sin(theta)*u_t[0]
         THETA[t+1] = theta + ts*u_t[1]
 
-    # ----------------- Plot -----------------
     ani = animation.FuncAnimation(fig, animate, interval=100000)
     plt.pause(0.001)
-    # ----------------------------------------
 
     # Update init:
     (x_init, y_init, theta_init) = (X[1], Y[1], THETA[1])
-    (x_obs, y_obs, theta_obs) = model_dd(x_obs, y_obs, theta_obs,v_obs,w_obs)
+    (x_obs, y_obs, theta_obs) = model_dd(x_obs, y_obs, theta_obs, v_obs, w_obs)
 
+print('total_sec', total_sec)
 plt.show()
 mng.kill()
-

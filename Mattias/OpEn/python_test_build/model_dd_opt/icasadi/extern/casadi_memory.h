@@ -13,7 +13,7 @@
  *   + version: 0.0.0
  *   + licence: MIT
  *
- * Generated at: 2020-02-25 15:23:15.834833
+ * Generated at: 2020-02-25 15:55:38.983587
  *
  */
 
@@ -24,7 +24,7 @@
  */
 #define COST_SZ_ARG_MODEL_DD_OPT 3
 #define COST_SZ_IW_MODEL_DD_OPT 0
-#define COST_SZ_W_MODEL_DD_OPT 122
+#define COST_SZ_W_MODEL_DD_OPT 125
 #define COST_SZ_RES_MODEL_DD_OPT 1
 
 /*
@@ -32,7 +32,7 @@
  */
 #define GRAD_SZ_ARG_MODEL_DD_OPT 3
 #define GRAD_SZ_IW_MODEL_DD_OPT 0
-#define GRAD_SZ_W_MODEL_DD_OPT 557
+#define GRAD_SZ_W_MODEL_DD_OPT 690
 #define GRAD_SZ_RES_MODEL_DD_OPT 1
 
 /*
@@ -48,5 +48,5 @@
  */
 #define F2_SZ_ARG_MODEL_DD_OPT 2
 #define F2_SZ_IW_MODEL_DD_OPT 0
-#define F2_SZ_W_MODEL_DD_OPT 59
+#define F2_SZ_W_MODEL_DD_OPT 62
 #define F2_SZ_RES_MODEL_DD_OPT 1
