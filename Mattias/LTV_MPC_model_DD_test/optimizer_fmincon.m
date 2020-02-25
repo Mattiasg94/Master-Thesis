@@ -35,7 +35,7 @@ function [Z,fval,exitflag] = optimizer_fmincon(xk,uk,dt,dv,dw,Z0,MQ,MR,Mxr,Mur,M
     % f=V*Z
     obj_fun = @(Z) objective_func(Z,MQ,MR,N,obstacles);
     nonl_con = @(Z) nonlcon(Z,N,xk,uk,dt,obstacles,obstacles_u,r_obs);
-    options = optimoptions('fmincon','Display','off','Algorithm','SQP'); %,'TolCon',1e-6
+    options = optimoptions('fmincon','Display','off','Algorithm','sqp','MaxFunEvals',10000); %,'TolCon',1e-6
     [Z,fval,exitflag] = fmincon(obj_fun,Z0,Ain,bin,Aeq,beq,lb,ub,nonl_con,options);
 end
 
