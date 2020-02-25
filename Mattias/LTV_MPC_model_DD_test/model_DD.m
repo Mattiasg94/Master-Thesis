@@ -1,19 +1,19 @@
 clc
 clear all, close all
 tic
-N=7;
+N=30;
 Nsim=20;
 dt=0.5;
 ur=[0;0];
-xr=[10;5;0];
-x0=[0;5;0.2];   %%% X0
+xr=[10;10;0];
+x0=[0;0;pi/4];   %%% X0
 u0=[0;0];
 lb_x=[0 0 -2*pi];
 ub_x=[inf inf 2*pi];
 lb_u=[0 -0.5];
 ub_u=[1 0.5];
-dv=0.5;
-dw=0.1;
+dv=5;
+dw=1;
 lb=[-inf -inf -inf lb_x -inf -inf lb_u];
 ub=[ inf  inf  inf ub_x  inf  inf ub_u];
 [u,x,u_tilde,x_tilde,lb,ub,Z0,MQ,MR,Mxr,Mur,Mu1_delta,Mu2_delta]=setup(x0,u0,xr,ur,ub,lb,Nsim,N);
@@ -22,7 +22,7 @@ obstacles={[5;5;0]};%,[5;5;pi/2]}; %,[5;4.5;0]};
 obstacles_u={[0;0]};%,[.1;0.3]}; %,[0.25;0]};
 % [A_obstacles,B_obstacles] = Linearized_discrete_DD_model(obstacles{1},obstacles_u{1},dt)
 plot_obstacles = plot(1); textbox=plot(1); plot_obstacles_radius=plot(1);
-r_obs=0.5;
+r_obs=1;
 % xcont = linspace(x0(1),xr(1)+5);
 % ycont = linspace(x0(2)-5,xr(2)+5);
 % [X,Y] = meshgrid(xcont,ycont);
@@ -93,7 +93,7 @@ for k = 1:Nsim+1
         plot_obstacles_radius(i)=viscircles([obstacles{i}(1),obstacles{i}(2)],r_obs,'LineStyle','--','Color','r','Linewidth',0.8);
         [A_obstacles,B_obstacles] = Linearized_discrete_DD_model(obstacles{i},obstacles_u{i},dt);
         obstacles{i}=A_obstacles*obstacles{i}+B_obstacles*obstacles_u{i};
-        if abs(x(k+1,1)-obstacles{i}(1))+abs(x(k+1,2)-obstacles{i}(2))<10
+        if abs(x(k+1,1)-obstacles{i}(1))+abs(x(k+1,2)-obstacles{i}(2))<20
            close_obstacles{j}=obstacles{i};
            close_obstacles_u{j}=obstacles_u{i};
             j=j+1;
