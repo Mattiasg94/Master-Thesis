@@ -17,28 +17,28 @@
  *   + version: 0.0.0
  *   + licence: MIT
  * + Problem
- *   + vars: 120
- *   + parameters: 3
+ *   + vars: 44
+ *   + parameters: 12
  *   + n1: 0
- *   + n2: 1
+ *   + n2: 4
  *
- * Generated at: 2020-02-25 09:15:14.668938
+ * Generated at: 2020-02-25 13:56:26.862304
  *
  */
 #include <stdlib.h>
 #include "casadi_memory.h"
 
 /* Number of input variables */
-#define NU_MODEL_DD_OPT 120
+#define NU_MODEL_DD_OPT 44
 
 /* Number of static parameters */
-#define NP_MODEL_DD_OPT 4
+#define NP_MODEL_DD_OPT 16
 
 /* Dimension of F1 (number of ALM constraints) */
 #define N1_MODEL_DD_OPT 0
 
 /* Dimension of F2 (number of PM constraints) */
-#define N2_MODEL_DD_OPT 1
+#define N2_MODEL_DD_OPT 4
 
 /* Dimension of xi = (c, y) */
 #define NXI_MODEL_DD_OPT 1
@@ -57,7 +57,7 @@
 /*
  * CasADi interface for the cost function
  */
-extern int phi_VDsxYtTjefVtxAVDyfbk(
+extern int phi_pndWZWOSPhPWfzPrHbpA(
     const casadi_real** arg, 
     casadi_real** res, 
     casadi_int* iw, 
@@ -67,7 +67,7 @@ extern int phi_VDsxYtTjefVtxAVDyfbk(
 /*
  * CasADi interface for the gradient of the cost
  */
-extern int grad_phi_VDsxYtTjefVtxAVDyfbk(
+extern int grad_phi_pndWZWOSPhPWfzPrHbpA(
     const casadi_real** arg, 
     casadi_real** res, 
     casadi_int* iw, 
@@ -77,7 +77,7 @@ extern int grad_phi_VDsxYtTjefVtxAVDyfbk(
 /*
  * CasADi interface for the gradient of mapping F1
  */
-extern int mapping_f1_VDsxYtTjefVtxAVDyfbk(
+extern int mapping_f1_pndWZWOSPhPWfzPrHbpA(
     const casadi_real** arg, 
     casadi_real** res, 
     casadi_int* iw, 
@@ -87,7 +87,7 @@ extern int mapping_f1_VDsxYtTjefVtxAVDyfbk(
 /*
  * CasADi interface for the gradient of mapping F2
  */
-extern int mapping_f2_VDsxYtTjefVtxAVDyfbk(
+extern int mapping_f2_pndWZWOSPhPWfzPrHbpA(
     const casadi_real** arg, 
     casadi_real** res, 
     casadi_int* iw, 
@@ -231,7 +231,7 @@ int cost_function_model_dd_opt(const casadi_real** arg, casadi_real** res) {
     copy_args_into_uxip_space(arg);
 
     result_space_cost[0] = res[0];
-    return phi_VDsxYtTjefVtxAVDyfbk(
+    return phi_pndWZWOSPhPWfzPrHbpA(
         args__,
         result_space_cost,
         allocated_i_workspace_cost,
@@ -249,7 +249,7 @@ int grad_cost_function_model_dd_opt(const casadi_real** arg, casadi_real** res) 
               uxip_space + NU_MODEL_DD_OPT + NXI_MODEL_DD_OPT};  /* :p   */
     copy_args_into_uxip_space(arg);
     result_space_grad[0] = res[0];
-    return grad_phi_VDsxYtTjefVtxAVDyfbk(
+    return grad_phi_pndWZWOSPhPWfzPrHbpA(
         args__,
         result_space_grad,
         allocated_i_workspace_grad,
@@ -273,10 +273,10 @@ int mapping_f1_function_model_dd_opt(const casadi_real** arg, casadi_real** res)
      */
     result_space_f1[0] = res[0];
     /*
-     * Call auto-generated function mapping_f1_VDsxYtTjefVtxAVDyfbk
+     * Call auto-generated function mapping_f1_pndWZWOSPhPWfzPrHbpA
      * Implemented in: icasadi/extern/auto_casadi_mapping_f1.c
      */
-    return mapping_f1_VDsxYtTjefVtxAVDyfbk(
+    return mapping_f1_pndWZWOSPhPWfzPrHbpA(
         args__,
         result_space_f1,
         allocated_i_workspace_f1,
@@ -300,10 +300,10 @@ int mapping_f2_function_model_dd_opt(const casadi_real** arg, casadi_real** res)
      */
     result_space_f2[0] = res[0];
     /*
-     * Call auto-generated function mapping_f2_VDsxYtTjefVtxAVDyfbk
+     * Call auto-generated function mapping_f2_pndWZWOSPhPWfzPrHbpA
      * Implemented in: icasadi/extern/auto_casadi_mapping_f2.c
      */
-    return mapping_f2_VDsxYtTjefVtxAVDyfbk(
+    return mapping_f2_pndWZWOSPhPWfzPrHbpA(
         args__,
         result_space_f2,
         allocated_i_workspace_f2,

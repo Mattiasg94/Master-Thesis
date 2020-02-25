@@ -2,7 +2,7 @@
 // Auto-generated file by OptimizationEngine
 // See https://alphaville.github.io/optimization-engine/
 //
-// Generated at: 2020-02-25 09:15:14.768634
+// Generated at: 2020-02-25 13:56:26.934224
 //
 
 use icasadi;
@@ -12,16 +12,16 @@ use optimization_engine::{constraints::*, panoc::*, alm::*, *};
 // ---Private Constants----------------------------------------------------------------------------------
 
 /// Tolerance of inner solver
-const EPSILON_TOLERANCE: f64 = 0.0001;
+const EPSILON_TOLERANCE: f64 = 1e-05;
 
 /// Initial tolerance
-const INITIAL_EPSILON_TOLERANCE: f64 = 0.0001;
+const INITIAL_EPSILON_TOLERANCE: f64 = 1e-05;
 
 /// Update factor for inner tolerance
 const EPSILON_TOLERANCE_UPDATE_FACTOR: f64 = 0.1;
 
 /// Delta tolerance
-const DELTA_TOLERANCE: f64 = 0.01;
+const DELTA_TOLERANCE: f64 = 0.0001;
 
 /// LBFGS memory
 const LBFGS_MEMORY: usize = 10;
@@ -39,7 +39,7 @@ const MAX_DURATION_MICROS: u64 = 5000000;
 const PENALTY_UPDATE_FACTOR: f64 = 10.0;
 
 /// Initial penalty
-const INITIAL_PENALTY_PARAMETER: f64 = 100.0;
+const INITIAL_PENALTY_PARAMETER: f64 = 10.0;
 
 /// Sufficient decrease coefficient
 const SUFFICIENT_INFEASIBILITY_DECREASE_COEFFICIENT: f64 = 0.1;
@@ -48,23 +48,23 @@ const SUFFICIENT_INFEASIBILITY_DECREASE_COEFFICIENT: f64 = 0.1;
 // ---Public Constants-----------------------------------------------------------------------------------
 
 /// Number of decision variables
-pub const MODEL_DD_OPT_NUM_DECISION_VARIABLES: usize = 120;
+pub const MODEL_DD_OPT_NUM_DECISION_VARIABLES: usize = 44;
 
 /// Number of parameters
-pub const MODEL_DD_OPT_NUM_PARAMETERS: usize = 3;
+pub const MODEL_DD_OPT_NUM_PARAMETERS: usize = 12;
 
 /// Number of parameters associated with augmented Lagrangian
 pub const MODEL_DD_OPT_N1: usize = 0;
 
 /// Number of penalty constraints
-pub const MODEL_DD_OPT_N2: usize = 1;
+pub const MODEL_DD_OPT_N2: usize = 4;
 
 
 
 // ---Parameters of the constraints----------------------------------------------------------------------
 
-const CONSTRAINTS_XMIN :Option<&[f64]> = Some(&[-1.0,-1.0,-1.0,-1.0,-1.0,-1.0,-1.0,-1.0,-1.0,-1.0,-1.0,-1.0,-1.0,-1.0,-1.0,-1.0,-1.0,-1.0,-1.0,-1.0,-1.0,-1.0,-1.0,-1.0,-1.0,-1.0,-1.0,-1.0,-1.0,-1.0,-1.0,-1.0,-1.0,-1.0,-1.0,-1.0,-1.0,-1.0,-1.0,-1.0,-1.0,-1.0,-1.0,-1.0,-1.0,-1.0,-1.0,-1.0,-1.0,-1.0,-1.0,-1.0,-1.0,-1.0,-1.0,-1.0,-1.0,-1.0,-1.0,-1.0,-1.0,-1.0,-1.0,-1.0,-1.0,-1.0,-1.0,-1.0,-1.0,-1.0,-1.0,-1.0,-1.0,-1.0,-1.0,-1.0,-1.0,-1.0,-1.0,-1.0,-1.0,-1.0,-1.0,-1.0,-1.0,-1.0,-1.0,-1.0,-1.0,-1.0,-1.0,-1.0,-1.0,-1.0,-1.0,-1.0,-1.0,-1.0,-1.0,-1.0,-1.0,-1.0,-1.0,-1.0,-1.0,-1.0,-1.0,-1.0,-1.0,-1.0,-1.0,-1.0,-1.0,-1.0,-1.0,-1.0,-1.0,-1.0,-1.0,-1.0,]);
-const CONSTRAINTS_XMAX :Option<&[f64]> = Some(&[1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,]);
+const CONSTRAINTS_XMIN :Option<&[f64]> = Some(&[0.0,-1.0,0.0,-1.0,0.0,-1.0,0.0,-1.0,0.0,-1.0,0.0,-1.0,0.0,-1.0,0.0,-1.0,0.0,-1.0,0.0,-1.0,0.0,-1.0,0.0,-1.0,0.0,-1.0,0.0,-1.0,0.0,-1.0,0.0,-1.0,0.0,-1.0,0.0,-1.0,0.0,-1.0,0.0,-1.0,0.0,-1.0,0.0,-1.0,]);
+const CONSTRAINTS_XMAX :Option<&[f64]> = Some(&[1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,]);
 
 
 

@@ -28,7 +28,7 @@ for j=1:length(obstacles)
     y_iter = 3*N+2;
     th_iter = 3*N+3;
     for i = 1:N
-        if sqrt((Z(x_iter)-obstacles{j}(1))^2+(Z(y_iter)-obstacles{j}(2))^2) < 10
+        if sqrt((Z(x_iter)-obstacles{j}(1))^2+(Z(y_iter)-obstacles{j}(2))^2) < 20
             obstacles{j} = A_obstacles*obstacles{j}+B_obstacles*obstacles_u{j};
             r = [Z(x_iter);Z(y_iter)]-obstacles{j}(1:2);
             vab = Z(8*N+1+(2*(i-1)))*[cos(Z(th_iter)); sin(Z(th_iter))] - [obstacles_u{j}(1);obstacles_u{j}(2)];
