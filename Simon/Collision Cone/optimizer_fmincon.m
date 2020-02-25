@@ -1,4 +1,4 @@
-function [Z,fval,exitflag] = optimizer_fmincon(xk,uk,dt,dv,dw,Z0,MQ,MR,Mxr,Mur,Mu1_delta,Mu2_delta,N,lb,ub,obstacles,obstacles_u,r_obs)
+function [Z,fval,exitflag] = optimizer_fmincon(xk,uk,dt,dv,dw,Z0,MQ,MR,Mxr,Mur,Mu1_delta,Mu2_delta,N,lb,ub,obstacles,obstacles_u,r_obs,xr)
 
     if Z0==0
        Z0=[zeros(N*3,1);zeros(N*3,1);zeros(N*2,1);zeros(N*2,1)]';
@@ -31,19 +31,20 @@ function [Z,fval,exitflag] = optimizer_fmincon(xk,uk,dt,dv,dw,Z0,MQ,MR,Mxr,Mur,M
          Mxr
          Mur 
         ];
+
+    obj_fun = @(Z) objective_func(Z,MQ,MR,N,obstacles,r_obs);
     
-    % Aeq = [eye(2*N)         -Gamma];
-    % beq = [Omega*x0'];
-    
-    % f=V*Z
-    obj_fun = @(Z) objective_func(Z,MQ,MR,N,obstacles);
     %% FMINCON - Interior, sqp, active-set
-    nonl_con = @(Z) nonlcon(Z,N,xk,uk,dt,obstacles,obstacles_u,r_obs);
+    nonl_con = @(Z) nonlcon(Z,N,xk,uk,dt,obstacles,obstacles_u,r_obs,xr);
     
-    options = optimoptions('fmincon','Display','off','Algorithm','interior-point'); % ,'MaxIterations',10000000,'MaxFunctionEvaluations',1000000); %,'TolCon',1e-6
-tic
+    options = optimoptions('fmincon','Algorithm','interior-point','ConstraintTolerance',10e-4);%,'MaxFunctionEvaluations',10000); % ,'MaxIterations',10000000,'MaxFunctionEvaluations',1000000); %,'TolCon',1e-6
+% tic
     [Z,fval,exitflag] = fmincon(obj_fun,Z0,Ain,bin,Aeq,beq,lb,ub,nonl_con,options);
-toc   
+% toc   
+
+
+
+
     %% YALMIP - IPOPT
 %     opts = optiset('solver','ipopt', 'maxiter',1000,'maxfeval',1500,'maxtime',0.5);
 %     nonl_con = @(Z) nonl_con_ipopt(Z,N,xk,uk,dt,obstacles,obstacles_u,r_obs);
