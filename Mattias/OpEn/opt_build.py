@@ -22,7 +22,6 @@ def model_dd(x, y, theta, v, w):
 
 def build_opt():
     u = cs.SX.sym('u', nu*N)
-    s = cs.SX.sym('s', 1)
     p = cs.SX.sym('p', nx+nref+nObs)
     (x, y, theta) = (p[0], p[1], p[2])
     (xref, yref, thetaref) = (p[3], p[4], p[5])
@@ -47,8 +46,8 @@ def build_opt():
         cone = -(rterm*lterm-uterm**2)+r_obs**2*lterm
         ego_dist = cs.sqrt((x-xref)**2+(y-yref)**2)
         obs_dist = cs.sqrt((x_obs-xref)**2+(y_obs-yref)**2)
-        c += cs.fmax(0.0, -(obs_dist-ego_dist)) *(cs.fmax(0.0,cone))
-        # c += cs.fmax(0.0, -(rterm*lterm-uterm**2)+r_obs**2*lterm)
+        #c += cs.fmax(0.0, -(obs_dist-ego_dist)) *(cs.fmax(0.0,cone))
+        c += cs.fmax(0.0, -(rterm*lterm-uterm**2)+r_obs**2*lterm)
     cost += Qtx*(x-xref)**2 + Qty*(y-yref)**2 + Qttheta*(theta-thetaref)**2
     (dv_c, dw_c)=(0, 0)
     u_tm1=[0, 0]
@@ -83,7 +82,7 @@ def build_opt():
         .with_initial_tolerance(1e-5)\
         .with_max_outer_iterations(5)\
         .with_delta_tolerance(1e-4)\
-        .with_penalty_weight_update_factor(10.0).with_initial_penalty(10)
+        .with_penalty_weight_update_factor(5.0).with_initial_penalty(10)
 
     builder=og.builder.OpEnOptimizerBuilder(problem,
                                               meta,
