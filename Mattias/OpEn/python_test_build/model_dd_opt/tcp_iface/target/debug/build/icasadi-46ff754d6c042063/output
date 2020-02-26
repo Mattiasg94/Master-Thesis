@@ -55,13 +55,13 @@ CARGO_CFG_TARGET_FEATURE = Some("fxsr,sse,sse2")
 running: "C:\\Program Files (x86)\\Microsoft Visual Studio\\2017\\BuildTools\\VC\\Tools\\MSVC\\14.16.27023\\bin\\HostX64\\x64\\cl.exe" "-nologo" "-MD" "-Z7" "-Brepro" "-I" "src" "-W4" "-Wall" "-Foc:\\Skola\\MasterThesis\\Master-Thesis\\Mattias\\OpEn\\python_test_build\\model_dd_opt\\tcp_iface\\target\\debug\\build\\icasadi-46ff754d6c042063\\out\\extern/auto_casadi_cost.o" "-c" "extern/auto_casadi_cost.c"
 auto_casadi_cost.c
 C:\Program Files (x86)\Windows Kits\10\include\10.0.17763.0\ucrt\corecrt.h(212): warning C4668: '__cplusplus' is not defined as a preprocessor macro, replacing with '0' for '#if/#elif'
-extern/auto_casadi_cost.c(53): warning C4668: '__STDC_VERSION__' is not defined as a preprocessor macro, replacing with '0' for '#if/#elif'
-extern/auto_casadi_cost.c(65): warning C4100: 'mem': unreferenced formal parameter
-extern/auto_casadi_cost.c(65): warning C4100: 'w': unreferenced formal parameter
-extern/auto_casadi_cost.c(65): warning C4100: 'iw': unreferenced formal parameter
-extern/auto_casadi_cost.c(2197): warning C4100: 'mem': unreferenced formal parameter
-extern/auto_casadi_cost.c(2201): warning C4100: 'mem': unreferenced formal parameter
-extern/auto_casadi_cost.c(2208): warning C4100: 'mem': unreferenced formal parameter
+extern/auto_casadi_cost.c(54): warning C4668: '__STDC_VERSION__' is not defined as a preprocessor macro, replacing with '0' for '#if/#elif'
+extern/auto_casadi_cost.c(67): warning C4100: 'mem': unreferenced formal parameter
+extern/auto_casadi_cost.c(67): warning C4100: 'w': unreferenced formal parameter
+extern/auto_casadi_cost.c(67): warning C4100: 'iw': unreferenced formal parameter
+extern/auto_casadi_cost.c(1479): warning C4100: 'mem': unreferenced formal parameter
+extern/auto_casadi_cost.c(1483): warning C4100: 'mem': unreferenced formal parameter
+extern/auto_casadi_cost.c(1490): warning C4100: 'mem': unreferenced formal parameter
 exit code: 0
 running: "C:\\Program Files (x86)\\Microsoft Visual Studio\\2017\\BuildTools\\VC\\Tools\\MSVC\\14.16.27023\\bin\\HostX64\\x64\\cl.exe" "-nologo" "-MD" "-Z7" "-Brepro" "-I" "src" "-W4" "-Wall" "-Foc:\\Skola\\MasterThesis\\Master-Thesis\\Mattias\\OpEn\\python_test_build\\model_dd_opt\\tcp_iface\\target\\debug\\build\\icasadi-46ff754d6c042063\\out\\extern/auto_casadi_grad.o" "-c" "extern/auto_casadi_grad.c"
 auto_casadi_grad.c
@@ -70,31 +70,31 @@ extern/auto_casadi_grad.c(51): warning C4668: '__STDC_VERSION__' is not defined 
 extern/auto_casadi_grad.c(65): warning C4100: 'mem': unreferenced formal parameter
 extern/auto_casadi_grad.c(65): warning C4100: 'w': unreferenced formal parameter
 extern/auto_casadi_grad.c(65): warning C4100: 'iw': unreferenced formal parameter
-extern/auto_casadi_grad.c(4217): warning C4100: 'mem': unreferenced formal parameter
-extern/auto_casadi_grad.c(4221): warning C4100: 'mem': unreferenced formal parameter
-extern/auto_casadi_grad.c(4228): warning C4100: 'mem': unreferenced formal parameter
+extern/auto_casadi_grad.c(2845): warning C4100: 'mem': unreferenced formal parameter
+extern/auto_casadi_grad.c(2849): warning C4100: 'mem': unreferenced formal parameter
+extern/auto_casadi_grad.c(2856): warning C4100: 'mem': unreferenced formal parameter
 exit code: 0
 running: "C:\\Program Files (x86)\\Microsoft Visual Studio\\2017\\BuildTools\\VC\\Tools\\MSVC\\14.16.27023\\bin\\HostX64\\x64\\cl.exe" "-nologo" "-MD" "-Z7" "-Brepro" "-I" "src" "-W4" "-Wall" "-Foc:\\Skola\\MasterThesis\\Master-Thesis\\Mattias\\OpEn\\python_test_build\\model_dd_opt\\tcp_iface\\target\\debug\\build\\icasadi-46ff754d6c042063\\out\\extern/auto_casadi_mapping_f2.o" "-c" "extern/auto_casadi_mapping_f2.c"
 auto_casadi_mapping_f2.c
 C:\Program Files (x86)\Windows Kits\10\include\10.0.17763.0\ucrt\corecrt.h(212): warning C4668: '__cplusplus' is not defined as a preprocessor macro, replacing with '0' for '#if/#elif'
-extern/auto_casadi_mapping_f2.c(53): warning C4668: '__STDC_VERSION__' is not defined as a preprocessor macro, replacing with '0' for '#if/#elif'
-extern/auto_casadi_mapping_f2.c(65): warning C4100: 'mem': unreferenced formal parameter
-extern/auto_casadi_mapping_f2.c(65): warning C4100: 'w': unreferenced formal parameter
-extern/auto_casadi_mapping_f2.c(65): warning C4100: 'iw': unreferenced formal parameter
-extern/auto_casadi_mapping_f2.c(1915): warning C4100: 'mem': unreferenced formal parameter
-extern/auto_casadi_mapping_f2.c(1919): warning C4100: 'mem': unreferenced formal parameter
-extern/auto_casadi_mapping_f2.c(1926): warning C4100: 'mem': unreferenced formal parameter
+extern/auto_casadi_mapping_f2.c(50): warning C4668: '__STDC_VERSION__' is not defined as a preprocessor macro, replacing with '0' for '#if/#elif'
+extern/auto_casadi_mapping_f2.c(62): warning C4100: 'mem': unreferenced formal parameter
+extern/auto_casadi_mapping_f2.c(62): warning C4100: 'w': unreferenced formal parameter
+extern/auto_casadi_mapping_f2.c(62): warning C4100: 'iw': unreferenced formal parameter
+extern/auto_casadi_mapping_f2.c(286): warning C4100: 'mem': unreferenced formal parameter
+extern/auto_casadi_mapping_f2.c(290): warning C4100: 'mem': unreferenced formal parameter
+extern/auto_casadi_mapping_f2.c(297): warning C4100: 'mem': unreferenced formal parameter
 exit code: 0
 running: "C:\\Program Files (x86)\\Microsoft Visual Studio\\2017\\BuildTools\\VC\\Tools\\MSVC\\14.16.27023\\bin\\HostX64\\x64\\cl.exe" "-nologo" "-MD" "-Z7" "-Brepro" "-I" "src" "-W4" "-Wall" "-Foc:\\Skola\\MasterThesis\\Master-Thesis\\Mattias\\OpEn\\python_test_build\\model_dd_opt\\tcp_iface\\target\\debug\\build\\icasadi-46ff754d6c042063\\out\\extern/auto_casadi_mapping_f1.o" "-c" "extern/auto_casadi_mapping_f1.c"
 auto_casadi_mapping_f1.c
 C:\Program Files (x86)\Windows Kits\10\include\10.0.17763.0\ucrt\corecrt.h(212): warning C4668: '__cplusplus' is not defined as a preprocessor macro, replacing with '0' for '#if/#elif'
-extern/auto_casadi_mapping_f1.c(52): warning C4100: 'mem': unreferenced formal parameter
-extern/auto_casadi_mapping_f1.c(52): warning C4100: 'w': unreferenced formal parameter
-extern/auto_casadi_mapping_f1.c(52): warning C4100: 'iw': unreferenced formal parameter
-extern/auto_casadi_mapping_f1.c(52): warning C4100: 'arg': unreferenced formal parameter
-extern/auto_casadi_mapping_f1.c(67): warning C4100: 'mem': unreferenced formal parameter
-extern/auto_casadi_mapping_f1.c(71): warning C4100: 'mem': unreferenced formal parameter
-extern/auto_casadi_mapping_f1.c(78): warning C4100: 'mem': unreferenced formal parameter
+extern/auto_casadi_mapping_f1.c(53): warning C4668: '__STDC_VERSION__' is not defined as a preprocessor macro, replacing with '0' for '#if/#elif'
+extern/auto_casadi_mapping_f1.c(65): warning C4100: 'mem': unreferenced formal parameter
+extern/auto_casadi_mapping_f1.c(65): warning C4100: 'w': unreferenced formal parameter
+extern/auto_casadi_mapping_f1.c(65): warning C4100: 'iw': unreferenced formal parameter
+extern/auto_casadi_mapping_f1.c(1154): warning C4100: 'mem': unreferenced formal parameter
+extern/auto_casadi_mapping_f1.c(1158): warning C4100: 'mem': unreferenced formal parameter
+extern/auto_casadi_mapping_f1.c(1165): warning C4100: 'mem': unreferenced formal parameter
 exit code: 0
 running: "C:\\Program Files (x86)\\Microsoft Visual Studio\\2017\\BuildTools\\VC\\Tools\\MSVC\\14.16.27023\\bin\\HostX64\\x64\\cl.exe" "-nologo" "-MD" "-Z7" "-Brepro" "-I" "src" "-W4" "-Wall" "-Foc:\\Skola\\MasterThesis\\Master-Thesis\\Mattias\\OpEn\\python_test_build\\model_dd_opt\\tcp_iface\\target\\debug\\build\\icasadi-46ff754d6c042063\\out\\extern/interface.o" "-c" "extern/interface.c"
 interface.c

@@ -2,7 +2,7 @@
 // Auto-generated file by OptimizationEngine
 // See https://alphaville.github.io/optimization-engine/
 //
-// Generated at: 2020-02-25 15:55:39.260856
+// Generated at: 2020-02-26 12:40:58.259038
 //
 
 use icasadi;
@@ -30,47 +30,57 @@ const LBFGS_MEMORY: usize = 10;
 const MAX_INNER_ITERATIONS: usize = 500;
 
 /// Maximum number of outer iterations
-const MAX_OUTER_ITERATIONS: usize = 5;
+const MAX_OUTER_ITERATIONS: usize = 7;
 
 /// Maximum execution duration in microseconds
 const MAX_DURATION_MICROS: u64 = 5000000;
 
 /// Penalty update factor
-const PENALTY_UPDATE_FACTOR: f64 = 10.0;
+const PENALTY_UPDATE_FACTOR: f64 = 5.0;
 
 /// Initial penalty
 const INITIAL_PENALTY_PARAMETER: f64 = 10.0;
 
 /// Sufficient decrease coefficient
-const SUFFICIENT_INFEASIBILITY_DECREASE_COEFFICIENT: f64 = 0.1;
+const SUFFICIENT_INFEASIBILITY_DECREASE_COEFFICIENT: f64 = 0.7;
 
 
 // ---Public Constants-----------------------------------------------------------------------------------
 
 /// Number of decision variables
-pub const MODEL_DD_OPT_NUM_DECISION_VARIABLES: usize = 44;
+pub const MODEL_DD_OPT_NUM_DECISION_VARIABLES: usize = 30;
 
 /// Number of parameters
 pub const MODEL_DD_OPT_NUM_PARAMETERS: usize = 12;
 
 /// Number of parameters associated with augmented Lagrangian
-pub const MODEL_DD_OPT_N1: usize = 0;
+pub const MODEL_DD_OPT_N1: usize = 1;
 
 /// Number of penalty constraints
-pub const MODEL_DD_OPT_N2: usize = 4;
+pub const MODEL_DD_OPT_N2: usize = 3;
 
 
 
 // ---Parameters of the constraints----------------------------------------------------------------------
 
-const CONSTRAINTS_XMIN :Option<&[f64]> = Some(&[0.0,-1.0,0.0,-1.0,0.0,-1.0,0.0,-1.0,0.0,-1.0,0.0,-1.0,0.0,-1.0,0.0,-1.0,0.0,-1.0,0.0,-1.0,0.0,-1.0,0.0,-1.0,0.0,-1.0,0.0,-1.0,0.0,-1.0,0.0,-1.0,0.0,-1.0,0.0,-1.0,0.0,-1.0,0.0,-1.0,0.0,-1.0,0.0,-1.0,]);
-const CONSTRAINTS_XMAX :Option<&[f64]> = Some(&[1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,]);
+const CONSTRAINTS_XMIN :Option<&[f64]> = Some(&[0.0,-1.0,0.0,-1.0,0.0,-1.0,0.0,-1.0,0.0,-1.0,0.0,-1.0,0.0,-1.0,0.0,-1.0,0.0,-1.0,0.0,-1.0,0.0,-1.0,0.0,-1.0,0.0,-1.0,0.0,-1.0,0.0,-1.0,]);
+const CONSTRAINTS_XMAX :Option<&[f64]> = Some(&[1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,]);
 
 
 
 
 
+// ---Parameters of ALM-type constraints (Set C)---------------------------------------------------------
 
+
+
+
+// ---Parameters of ALM-type constraints (Set Y)---------------------------------------------------------
+/// Constraints: Centre of Euclidean Ball
+const SET_Y_BALL_XC: Option<&[f64]> = None;
+
+/// Constraints: Radius of Euclidean Ball
+const SET_Y_BALL_RADIUS : f64 = 1000000000000.0;
 
 
 
@@ -84,8 +94,18 @@ fn make_constraints() -> impl Constraint {
     bounds
 }
 
+/// Make set C
+fn make_set_c() -> impl Constraint {
+    let set_c = Zero::new();
+    set_c
+}
 
 
+/// Make set Y
+fn make_set_y() -> impl Constraint {
+    let set_y = BallInf::new(SET_Y_BALL_XC, SET_Y_BALL_RADIUS);
+    set_y
+}
 
 
 // ---Main public API functions--------------------------------------------------------------------------
@@ -121,18 +141,24 @@ pub fn solve(
         Ok(())
     };
     
+    let f1 = |u: &[f64], res: &mut [f64]| -> Result<(), SolverError> {
+        icasadi::mapping_f1(&u, &p, res);
+        Ok(())
+    };
     let f2 = |u: &[f64], res: &mut [f64]| -> Result<(), SolverError> {
         icasadi::mapping_f2(&u, &p, res);
         Ok(())
     };let bounds = make_constraints();
 
+    let set_y = make_set_y();
+    let set_c = make_set_c();
     let alm_problem = AlmProblem::new(
         bounds,
-        NO_SET,
-        NO_SET,
+        Some(set_c),
+        Some(set_y),
         psi,
         grad_psi,
-        NO_MAPPING,
+        Some(f1),
         Some(f2),
         MODEL_DD_OPT_N1,
         MODEL_DD_OPT_N2,

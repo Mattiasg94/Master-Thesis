@@ -13,7 +13,7 @@ mng.ping()
 (x_init, y_init, theta_init) = (0, 0, np.pi/4)
 (xref, yref, thetaref) = (10, 10, 0)
 # -------Init Obstacles
-(x_obs, y_obs, theta_obs, r_obs) = (3, 4.5, 0, 1)
+(x_obs, y_obs, theta_obs, r_obs) = (2, 5, 0, 1.9)
 (v_obs, w_obs) = (0.3, 0.00001)
 # -------Init plot
 plot_x = []
@@ -35,24 +35,25 @@ def animate(i):
     circle1 = plt.Circle((x_obs, y_obs), r_obs, color='r')
     ax.add_patch(circle1)
 
-
-for i in range(N):
+u_star=[0.0] * (nu*N)
+for i in range(60):
     plot_x.append(x_init)
     plot_y.append(y_init)
     plot_theta.append(theta_init)
     p_lst = [x_init, y_init, theta_init, xref, yref, thetaref]
     obs_1 = [x_obs, y_obs, theta_obs, v_obs, w_obs, r_obs]
     p_lst.extend(obs_1)
-    solution = mng.call(p_lst, initial_guess=[1.0] * (nu*N))
+    u_star=[0.0] * (nu*N)
+    solution = mng.call(p_lst, initial_guess=u_star)
 
     u_star = solution['solution']
     if not solution['exit_status'] == 'Converged':
         print('---------------------')
         print('exit_status', solution['exit_status'])
-        print('num_outer_iterations', solution['num_outer_iterations'])
-        print('num_inner_iterations', solution['num_inner_iterations'])
-        print('last_problem_norm_fpr', solution['last_problem_norm_fpr'])
-        print('penalty', solution['penalty'])
+        # print('num_outer_iterations', solution['num_outer_iterations'])
+        print('f1_infeasibility', solution['f1_infeasibility'])
+        # print('last_problem_norm_fpr', solution['last_problem_norm_fpr'])
+        # print('penalty', solution['penalty'])
 
     print('solve_time_ms', round(solution['solve_time_ms'], 2), 'sek', round(
         solution['solve_time_ms']/1000, 2))
@@ -78,12 +79,12 @@ for i in range(N):
         THETA[t+1] = theta + ts*u_t[1]
 
     ani = animation.FuncAnimation(fig, animate, interval=100000)
-    plt.pause(0.001)
+    
 
     # Update init:
     (x_init, y_init, theta_init) = (X[1], Y[1], THETA[1])
     (x_obs, y_obs, theta_obs) = model_dd(x_obs, y_obs, theta_obs, v_obs, w_obs)
-
+    plt.pause(0.0001)
 print('total_sec', total_sec)
 plt.show()
 mng.kill()

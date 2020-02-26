@@ -3,10 +3,10 @@ import casadi.casadi as cs
 import numpy as np
 
 ts = 0.5
-(nu, nx, nref, N) = (2, 3, 3, 22)
+(nu, nx, nref, N) = (2, 3, 3, 15)
 nObs = (6)
 (Qx, Qy, Qtheta) = (10, 10, 0)
-(Rv, Rw) = (1, 1)
+(Rv, Rw) = (0, 0)
 (Qtx, Qty, Qttheta) = (100, 100, 0)
 (vmin, vmax) = (0, 1)
 (wmin, wmax) = (-1, 1)
@@ -30,15 +30,17 @@ def build_opt():
     cost = 0
     c = 0
     # -------Collission constrint
-    for t in range(0, nu*N, nu): 
-        u_t = u[t:t+2]
+    for t in range(0, nu*N, nu):
+        uk = u[t:t+2]
         cost += Qx*(x-xref)**2 + Qy*(y-yref)**2 + Qtheta*(theta-thetaref)**2
-        cost += Rv*u_t[0]**2+Rw*u_t[1]**2
-        (x, y, theta) = model_dd(x, y, theta, u_t[0], u_t[1])
-        (x_obs, y_obs, theta_obs) = model_dd(x_obs, y_obs, theta_obs, v_obs, w_obs)
+        cost += Rv*uk[0]**2+Rw*uk[1]**2
+        (x, y, theta) = model_dd(x, y, theta, uk[0], uk[1])
+        (x_obs, y_obs, theta_obs) = model_dd(
+            x_obs, y_obs, theta_obs, v_obs, w_obs)
         rterm = (x-x_obs)**2+(y-y_obs)**2
-        uterm = (cs.cos(theta)*u_t[0]-v_obs)*(x-x_obs)+(cs.sin(theta)*u_t[0]-v_obs)*(y-y_obs)
-        lterm = (cs.cos(theta)*u_t[0]-v_obs)**2+(cs.sin(theta)*u_t[0]-v_obs)**2        
+        uterm = (cs.cos(theta)*uk[0]-v_obs)*(x-x_obs) + \
+            (cs.sin(theta)*uk[0]-v_obs)*(y-y_obs)
+        lterm = (cs.cos(theta)*uk[0]-v_obs)**2+(cs.sin(theta)*uk[0]-v_obs)**2
         # -------distance const
         #c += cs.fmax(0.0, r_obs - (x_obs-x)**2 - (y_obs-y)**2)
         # -------regular cone
@@ -52,13 +54,13 @@ def build_opt():
     cost += Qtx*(x-xref)**2 + Qty*(y-yref)**2 + Qttheta*(theta-thetaref)**2
     # -------Acceleration constraint
     (dv_c, dw_c) = (0, 0)
-    u_tm1 = [0, 0]
+    ukm1 = [0, 0]
     for t in range(0, nu*N, nu):
-        u_t = u[t:t+2]
-        dv_c += cs.fmax(0.0, u_t[0]-u_tm1[0]-0.2)
-        dw_c += cs.vertcat(cs.fmax(0.0, u_t[1]-u_tm1[1]-0.05),
-                           cs.fmax(0.0, u_tm1[1]-u_t[1]-0.05))
-        u_tm1 = u_t
+        uk = u[t:t+2]
+        dv_c += cs.fmax(0.0, uk[0]-ukm1[0]-0.2)
+        dw_c += cs.vertcat(cs.fmax(0.0, uk[1]-ukm1[1]-0.05),
+                           cs.fmax(0.0, ukm1[1]-uk[1]-0.05))
+        ukm1 = uk
     # -------Boundery constrint
     umin = []
     umax = []
@@ -66,10 +68,12 @@ def build_opt():
         umin.extend([vmin, wmin])
         umax.extend([vmax, wmax])
 
+    set_c = og.constraints.Zero()
+    set_y = og.constraints.BallInf(None, 1e12)
     bounds = og.constraints.Rectangle(umin, umax)
-    C = cs.vertcat(c, dv_c, dw_c)
+    C = cs.vertcat(dv_c, dw_c)
     problem = og.builder.Problem(u, p, cost).with_penalty_constraints(
-        C).with_constraints(bounds)
+        C).with_constraints(bounds).with_aug_lagrangian_constraints(c,set_c,set_y)
 
     build_config = og.config.BuildConfiguration()\
         .with_build_directory("python_test_build")\
@@ -82,9 +86,9 @@ def build_opt():
     solver_config = og.config.SolverConfiguration()\
         .with_tolerance(1e-5)\
         .with_initial_tolerance(1e-5)\
-        .with_max_outer_iterations(5)\
+        .with_max_outer_iterations(7)\
         .with_delta_tolerance(1e-4)\
-        .with_penalty_weight_update_factor(10.0).with_initial_penalty(10)
+        .with_penalty_weight_update_factor(5).with_initial_penalty(10).with_sufficient_decrease_coefficient(0.7)
 
     builder = og.builder.OpEnOptimizerBuilder(problem,
                                               meta,
