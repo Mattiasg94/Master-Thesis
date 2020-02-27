@@ -2,11 +2,11 @@ _comment: auto-generated file; do not modify
 build:
   build_dir: python_test_build
   build_mode: debug
-  cost_function_name: phi_mVnUdMpFCOEqLCsYCCQs
-  grad_function_name: grad_phi_mVnUdMpFCOEqLCsYCCQs
-  id: mVnUdMpFCOEqLCsYCCQs
-  mapping_f1: mapping_f1_mVnUdMpFCOEqLCsYCCQs
-  mapping_f2: mapping_f2_mVnUdMpFCOEqLCsYCCQs
+  cost_function_name: phi_qoiTOoYgUHrQCtKrBZeT
+  grad_function_name: grad_phi_qoiTOoYgUHrQCtKrBZeT
+  id: qoiTOoYgUHrQCtKrBZeT
+  mapping_f1: mapping_f1_qoiTOoYgUHrQCtKrBZeT
+  mapping_f2: mapping_f2_qoiTOoYgUHrQCtKrBZeT
   open_version: null
   target_system: null
 meta:
@@ -16,13 +16,13 @@ meta:
   optimizer_name: model_dd_opt
   version: 0.0.0
 solver:
-  constraints_tolerance: 0.01
+  constraints_tolerance: 0.0001
   lbfgs_memory: 10
-  max_duration_micros: 5000000
+  max_duration_micros: 200000
   max_inner_iterations: 500
-  max_outer_iterations: 5
-  penalty_weight_update_factor: 10.0
-  tolerance: 0.0001
+  max_outer_iterations: 7
+  penalty_weight_update_factor: 5.0
+  tolerance: 1.0e-05
 tcp:
   ip: 127.0.0.1
   port: 8333

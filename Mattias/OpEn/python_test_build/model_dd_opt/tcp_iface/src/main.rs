@@ -1,6 +1,6 @@
 ///
 /// Auto-generated TCP server for optimizer: model_dd_opt
-/// Generated at: 2020-02-26 12:41:01.481056
+/// Generated at: 2020-02-26 13:01:04.830335
 ///
 use optimization_engine::alm::*;
 use serde::{Deserialize, Serialize};
