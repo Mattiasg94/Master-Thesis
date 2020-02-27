@@ -11,7 +11,11 @@
 //! This file is part of OptimizationEngine
 //! (see https://alphaville.github.io/optimization-engine/)
 //!
+<<<<<<< HEAD
 //! Generated at: 2020-02-27 08:58:39.748573
+=======
+//! Generated at: 2020-02-26 13:01:01.078994
+>>>>>>> 8cd4c29023393d6a38df5edc00a7ba69f746a8b1
 //!
 
 // #![no_std]
@@ -20,7 +24,11 @@
 const NUM_STATIC_PARAMETERS: usize = 20;
 
 /// Number of decision variables
+<<<<<<< HEAD
 const NUM_DECISION_VARIABLES: usize = 18;
+=======
+const NUM_DECISION_VARIABLES: usize = 20;
+>>>>>>> 8cd4c29023393d6a38df5edc00a7ba69f746a8b1
 
 /// Number of ALM-type constraints (dimension of F1, i.e., n1)
 const NUM_CONSTRAINTS_TYPE_ALM: usize = 1;

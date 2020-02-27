@@ -17,19 +17,32 @@
  *   + version: 0.0.0
  *   + licence: MIT
  * + Problem
+<<<<<<< HEAD
  *   + vars: 18
  *   + parameters: 20
  *   + n1: 1
  *   + n2: 3
  *
  * Generated at: 2020-02-27 08:58:39.806187
+=======
+ *   + vars: 20
+ *   + parameters: 12
+ *   + n1: 1
+ *   + n2: 3
+ *
+ * Generated at: 2020-02-26 13:01:01.212918
+>>>>>>> 8cd4c29023393d6a38df5edc00a7ba69f746a8b1
  *
  */
 #include <stdlib.h>
 #include "casadi_memory.h"
 
 /* Number of input variables */
+<<<<<<< HEAD
 #define NU_MODEL_DD_OPT 18
+=======
+#define NU_MODEL_DD_OPT 20
+>>>>>>> 8cd4c29023393d6a38df5edc00a7ba69f746a8b1
 
 /* Number of static parameters */
 #define NP_MODEL_DD_OPT 23
@@ -57,7 +70,11 @@
 /*
  * CasADi interface for the cost function
  */
+<<<<<<< HEAD
 extern int phi_rpzXbcplGNMnSMuFiJlS(
+=======
+extern int phi_xUeAfMVrQyTAbpmrICuc(
+>>>>>>> 8cd4c29023393d6a38df5edc00a7ba69f746a8b1
     const casadi_real** arg, 
     casadi_real** res, 
     casadi_int* iw, 
@@ -67,7 +84,11 @@ extern int phi_rpzXbcplGNMnSMuFiJlS(
 /*
  * CasADi interface for the gradient of the cost
  */
+<<<<<<< HEAD
 extern int grad_phi_rpzXbcplGNMnSMuFiJlS(
+=======
+extern int grad_phi_xUeAfMVrQyTAbpmrICuc(
+>>>>>>> 8cd4c29023393d6a38df5edc00a7ba69f746a8b1
     const casadi_real** arg, 
     casadi_real** res, 
     casadi_int* iw, 
@@ -77,7 +98,11 @@ extern int grad_phi_rpzXbcplGNMnSMuFiJlS(
 /*
  * CasADi interface for the gradient of mapping F1
  */
+<<<<<<< HEAD
 extern int mapping_f1_rpzXbcplGNMnSMuFiJlS(
+=======
+extern int mapping_f1_xUeAfMVrQyTAbpmrICuc(
+>>>>>>> 8cd4c29023393d6a38df5edc00a7ba69f746a8b1
     const casadi_real** arg, 
     casadi_real** res, 
     casadi_int* iw, 
@@ -87,7 +112,11 @@ extern int mapping_f1_rpzXbcplGNMnSMuFiJlS(
 /*
  * CasADi interface for the gradient of mapping F2
  */
+<<<<<<< HEAD
 extern int mapping_f2_rpzXbcplGNMnSMuFiJlS(
+=======
+extern int mapping_f2_xUeAfMVrQyTAbpmrICuc(
+>>>>>>> 8cd4c29023393d6a38df5edc00a7ba69f746a8b1
     const casadi_real** arg, 
     casadi_real** res, 
     casadi_int* iw, 
@@ -231,7 +260,11 @@ int cost_function_model_dd_opt(const casadi_real** arg, casadi_real** res) {
     copy_args_into_uxip_space(arg);
 
     result_space_cost[0] = res[0];
+<<<<<<< HEAD
     return phi_rpzXbcplGNMnSMuFiJlS(
+=======
+    return phi_xUeAfMVrQyTAbpmrICuc(
+>>>>>>> 8cd4c29023393d6a38df5edc00a7ba69f746a8b1
         args__,
         result_space_cost,
         allocated_i_workspace_cost,
@@ -249,7 +282,11 @@ int grad_cost_function_model_dd_opt(const casadi_real** arg, casadi_real** res) 
               uxip_space + NU_MODEL_DD_OPT + NXI_MODEL_DD_OPT};  /* :p   */
     copy_args_into_uxip_space(arg);
     result_space_grad[0] = res[0];
+<<<<<<< HEAD
     return grad_phi_rpzXbcplGNMnSMuFiJlS(
+=======
+    return grad_phi_xUeAfMVrQyTAbpmrICuc(
+>>>>>>> 8cd4c29023393d6a38df5edc00a7ba69f746a8b1
         args__,
         result_space_grad,
         allocated_i_workspace_grad,
@@ -273,10 +310,17 @@ int mapping_f1_function_model_dd_opt(const casadi_real** arg, casadi_real** res)
      */
     result_space_f1[0] = res[0];
     /*
+<<<<<<< HEAD
      * Call auto-generated function mapping_f1_rpzXbcplGNMnSMuFiJlS
      * Implemented in: icasadi/extern/auto_casadi_mapping_f1.c
      */
     return mapping_f1_rpzXbcplGNMnSMuFiJlS(
+=======
+     * Call auto-generated function mapping_f1_xUeAfMVrQyTAbpmrICuc
+     * Implemented in: icasadi/extern/auto_casadi_mapping_f1.c
+     */
+    return mapping_f1_xUeAfMVrQyTAbpmrICuc(
+>>>>>>> 8cd4c29023393d6a38df5edc00a7ba69f746a8b1
         args__,
         result_space_f1,
         allocated_i_workspace_f1,
@@ -300,10 +344,17 @@ int mapping_f2_function_model_dd_opt(const casadi_real** arg, casadi_real** res)
      */
     result_space_f2[0] = res[0];
     /*
+<<<<<<< HEAD
      * Call auto-generated function mapping_f2_rpzXbcplGNMnSMuFiJlS
      * Implemented in: icasadi/extern/auto_casadi_mapping_f2.c
      */
     return mapping_f2_rpzXbcplGNMnSMuFiJlS(
+=======
+     * Call auto-generated function mapping_f2_xUeAfMVrQyTAbpmrICuc
+     * Implemented in: icasadi/extern/auto_casadi_mapping_f2.c
+     */
+    return mapping_f2_xUeAfMVrQyTAbpmrICuc(
+>>>>>>> 8cd4c29023393d6a38df5edc00a7ba69f746a8b1
         args__,
         result_space_f2,
         allocated_i_workspace_f2,

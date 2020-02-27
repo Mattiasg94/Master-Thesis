@@ -52,62 +52,91 @@ HOST_CFLAGS = None
 CFLAGS = None
 CRATE_CC_NO_DEFAULTS = None
 CARGO_CFG_TARGET_FEATURE = Some("fxsr,sse,sse2")
-running: "C:\\Program Files (x86)\\Microsoft Visual Studio\\2017\\BuildTools\\VC\\Tools\\MSVC\\14.16.27023\\bin\\HostX64\\x64\\cl.exe" "-nologo" "-MD" "-Z7" "-Brepro" "-I" "src" "-W4" "-Wall" "-Foc:\\Skola\\MasterThesis\\Master-Thesis\\Mattias\\OpEn\\python_test_build\\model_dd_opt\\target\\debug\\build\\icasadi-584a6b84aa27bec4\\out\\extern/auto_casadi_cost.o" "-c" "extern/auto_casadi_cost.c"
+running: "D:\\Visual_Studio\\VC\\Tools\\MSVC\\14.24.28314\\bin\\HostX64\\x64\\cl.exe" "-nologo" "-MD" "-Z7" "-Brepro" "-I" "src" "-W4" "-Wall" "-Foc:\\Users\\Simon\\Desktop\\MasterThesis\\Master-Thesis\\Mattias\\OpEn\\python_test_build\\model_dd_opt\\target\\debug\\build\\icasadi-584a6b84aa27bec4\\out\\extern/auto_casadi_cost.o" "-c" "extern/auto_casadi_cost.c"
 auto_casadi_cost.c
-C:\Program Files (x86)\Windows Kits\10\include\10.0.17763.0\ucrt\corecrt.h(212): warning C4668: '__cplusplus' is not defined as a preprocessor macro, replacing with '0' for '#if/#elif'
+D:\Visual_Studio\VC\Tools\MSVC\14.24.28314\include\vcruntime.h(265): warning C4668: '__cplusplus' is not defined as a preprocessor macro, replacing with '0' for '#if/#elif'
+D:\Visual_Studio\VC\Tools\MSVC\14.24.28314\include\vcruntime.h(268): warning C4668: '__cplusplus' is not defined as a preprocessor macro, replacing with '0' for '#if/#elif'
 extern/auto_casadi_cost.c(54): warning C4668: '__STDC_VERSION__' is not defined as a preprocessor macro, replacing with '0' for '#if/#elif'
 extern/auto_casadi_cost.c(67): warning C4100: 'mem': unreferenced formal parameter
 extern/auto_casadi_cost.c(67): warning C4100: 'w': unreferenced formal parameter
 extern/auto_casadi_cost.c(67): warning C4100: 'iw': unreferenced formal parameter
+<<<<<<< HEAD
 extern/auto_casadi_cost.c(943): warning C4100: 'mem': unreferenced formal parameter
 extern/auto_casadi_cost.c(947): warning C4100: 'mem': unreferenced formal parameter
 extern/auto_casadi_cost.c(954): warning C4100: 'mem': unreferenced formal parameter
+=======
+extern/auto_casadi_cost.c(1024): warning C4100: 'mem': unreferenced formal parameter
+extern/auto_casadi_cost.c(1028): warning C4100: 'mem': unreferenced formal parameter
+extern/auto_casadi_cost.c(1035): warning C4100: 'mem': unreferenced formal parameter
+>>>>>>> 8cd4c29023393d6a38df5edc00a7ba69f746a8b1
 exit code: 0
-running: "C:\\Program Files (x86)\\Microsoft Visual Studio\\2017\\BuildTools\\VC\\Tools\\MSVC\\14.16.27023\\bin\\HostX64\\x64\\cl.exe" "-nologo" "-MD" "-Z7" "-Brepro" "-I" "src" "-W4" "-Wall" "-Foc:\\Skola\\MasterThesis\\Master-Thesis\\Mattias\\OpEn\\python_test_build\\model_dd_opt\\target\\debug\\build\\icasadi-584a6b84aa27bec4\\out\\extern/auto_casadi_grad.o" "-c" "extern/auto_casadi_grad.c"
+running: "D:\\Visual_Studio\\VC\\Tools\\MSVC\\14.24.28314\\bin\\HostX64\\x64\\cl.exe" "-nologo" "-MD" "-Z7" "-Brepro" "-I" "src" "-W4" "-Wall" "-Foc:\\Users\\Simon\\Desktop\\MasterThesis\\Master-Thesis\\Mattias\\OpEn\\python_test_build\\model_dd_opt\\target\\debug\\build\\icasadi-584a6b84aa27bec4\\out\\extern/auto_casadi_grad.o" "-c" "extern/auto_casadi_grad.c"
 auto_casadi_grad.c
-C:\Program Files (x86)\Windows Kits\10\include\10.0.17763.0\ucrt\corecrt.h(212): warning C4668: '__cplusplus' is not defined as a preprocessor macro, replacing with '0' for '#if/#elif'
+D:\Visual_Studio\VC\Tools\MSVC\14.24.28314\include\vcruntime.h(265): warning C4668: '__cplusplus' is not defined as a preprocessor macro, replacing with '0' for '#if/#elif'
+D:\Visual_Studio\VC\Tools\MSVC\14.24.28314\include\vcruntime.h(268): warning C4668: '__cplusplus' is not defined as a preprocessor macro, replacing with '0' for '#if/#elif'
 extern/auto_casadi_grad.c(51): warning C4668: '__STDC_VERSION__' is not defined as a preprocessor macro, replacing with '0' for '#if/#elif'
 extern/auto_casadi_grad.c(65): warning C4100: 'mem': unreferenced formal parameter
 extern/auto_casadi_grad.c(65): warning C4100: 'w': unreferenced formal parameter
 extern/auto_casadi_grad.c(65): warning C4100: 'iw': unreferenced formal parameter
+<<<<<<< HEAD
 extern/auto_casadi_grad.c(1751): warning C4100: 'mem': unreferenced formal parameter
 extern/auto_casadi_grad.c(1755): warning C4100: 'mem': unreferenced formal parameter
 extern/auto_casadi_grad.c(1762): warning C4100: 'mem': unreferenced formal parameter
+=======
+extern/auto_casadi_grad.c(1925): warning C4100: 'mem': unreferenced formal parameter
+extern/auto_casadi_grad.c(1929): warning C4100: 'mem': unreferenced formal parameter
+extern/auto_casadi_grad.c(1936): warning C4100: 'mem': unreferenced formal parameter
+>>>>>>> 8cd4c29023393d6a38df5edc00a7ba69f746a8b1
 exit code: 0
-running: "C:\\Program Files (x86)\\Microsoft Visual Studio\\2017\\BuildTools\\VC\\Tools\\MSVC\\14.16.27023\\bin\\HostX64\\x64\\cl.exe" "-nologo" "-MD" "-Z7" "-Brepro" "-I" "src" "-W4" "-Wall" "-Foc:\\Skola\\MasterThesis\\Master-Thesis\\Mattias\\OpEn\\python_test_build\\model_dd_opt\\target\\debug\\build\\icasadi-584a6b84aa27bec4\\out\\extern/auto_casadi_mapping_f2.o" "-c" "extern/auto_casadi_mapping_f2.c"
+running: "D:\\Visual_Studio\\VC\\Tools\\MSVC\\14.24.28314\\bin\\HostX64\\x64\\cl.exe" "-nologo" "-MD" "-Z7" "-Brepro" "-I" "src" "-W4" "-Wall" "-Foc:\\Users\\Simon\\Desktop\\MasterThesis\\Master-Thesis\\Mattias\\OpEn\\python_test_build\\model_dd_opt\\target\\debug\\build\\icasadi-584a6b84aa27bec4\\out\\extern/auto_casadi_mapping_f2.o" "-c" "extern/auto_casadi_mapping_f2.c"
 auto_casadi_mapping_f2.c
-C:\Program Files (x86)\Windows Kits\10\include\10.0.17763.0\ucrt\corecrt.h(212): warning C4668: '__cplusplus' is not defined as a preprocessor macro, replacing with '0' for '#if/#elif'
+D:\Visual_Studio\VC\Tools\MSVC\14.24.28314\include\vcruntime.h(265): warning C4668: '__cplusplus' is not defined as a preprocessor macro, replacing with '0' for '#if/#elif'
+D:\Visual_Studio\VC\Tools\MSVC\14.24.28314\include\vcruntime.h(268): warning C4668: '__cplusplus' is not defined as a preprocessor macro, replacing with '0' for '#if/#elif'
 extern/auto_casadi_mapping_f2.c(50): warning C4668: '__STDC_VERSION__' is not defined as a preprocessor macro, replacing with '0' for '#if/#elif'
 extern/auto_casadi_mapping_f2.c(62): warning C4100: 'mem': unreferenced formal parameter
 extern/auto_casadi_mapping_f2.c(62): warning C4100: 'w': unreferenced formal parameter
 extern/auto_casadi_mapping_f2.c(62): warning C4100: 'iw': unreferenced formal parameter
+<<<<<<< HEAD
 extern/auto_casadi_mapping_f2.c(206): warning C4100: 'mem': unreferenced formal parameter
 extern/auto_casadi_mapping_f2.c(210): warning C4100: 'mem': unreferenced formal parameter
 extern/auto_casadi_mapping_f2.c(217): warning C4100: 'mem': unreferenced formal parameter
+=======
+extern/auto_casadi_mapping_f2.c(216): warning C4100: 'mem': unreferenced formal parameter
+extern/auto_casadi_mapping_f2.c(220): warning C4100: 'mem': unreferenced formal parameter
+extern/auto_casadi_mapping_f2.c(227): warning C4100: 'mem': unreferenced formal parameter
+>>>>>>> 8cd4c29023393d6a38df5edc00a7ba69f746a8b1
 exit code: 0
-running: "C:\\Program Files (x86)\\Microsoft Visual Studio\\2017\\BuildTools\\VC\\Tools\\MSVC\\14.16.27023\\bin\\HostX64\\x64\\cl.exe" "-nologo" "-MD" "-Z7" "-Brepro" "-I" "src" "-W4" "-Wall" "-Foc:\\Skola\\MasterThesis\\Master-Thesis\\Mattias\\OpEn\\python_test_build\\model_dd_opt\\target\\debug\\build\\icasadi-584a6b84aa27bec4\\out\\extern/auto_casadi_mapping_f1.o" "-c" "extern/auto_casadi_mapping_f1.c"
+running: "D:\\Visual_Studio\\VC\\Tools\\MSVC\\14.24.28314\\bin\\HostX64\\x64\\cl.exe" "-nologo" "-MD" "-Z7" "-Brepro" "-I" "src" "-W4" "-Wall" "-Foc:\\Users\\Simon\\Desktop\\MasterThesis\\Master-Thesis\\Mattias\\OpEn\\python_test_build\\model_dd_opt\\target\\debug\\build\\icasadi-584a6b84aa27bec4\\out\\extern/auto_casadi_mapping_f1.o" "-c" "extern/auto_casadi_mapping_f1.c"
 auto_casadi_mapping_f1.c
-C:\Program Files (x86)\Windows Kits\10\include\10.0.17763.0\ucrt\corecrt.h(212): warning C4668: '__cplusplus' is not defined as a preprocessor macro, replacing with '0' for '#if/#elif'
+D:\Visual_Studio\VC\Tools\MSVC\14.24.28314\include\vcruntime.h(265): warning C4668: '__cplusplus' is not defined as a preprocessor macro, replacing with '0' for '#if/#elif'
+D:\Visual_Studio\VC\Tools\MSVC\14.24.28314\include\vcruntime.h(268): warning C4668: '__cplusplus' is not defined as a preprocessor macro, replacing with '0' for '#if/#elif'
 extern/auto_casadi_mapping_f1.c(53): warning C4668: '__STDC_VERSION__' is not defined as a preprocessor macro, replacing with '0' for '#if/#elif'
 extern/auto_casadi_mapping_f1.c(65): warning C4100: 'mem': unreferenced formal parameter
 extern/auto_casadi_mapping_f1.c(65): warning C4100: 'w': unreferenced formal parameter
 extern/auto_casadi_mapping_f1.c(65): warning C4100: 'iw': unreferenced formal parameter
+<<<<<<< HEAD
 extern/auto_casadi_mapping_f1.c(728): warning C4100: 'mem': unreferenced formal parameter
 extern/auto_casadi_mapping_f1.c(732): warning C4100: 'mem': unreferenced formal parameter
 extern/auto_casadi_mapping_f1.c(739): warning C4100: 'mem': unreferenced formal parameter
+=======
+extern/auto_casadi_mapping_f1.c(799): warning C4100: 'mem': unreferenced formal parameter
+extern/auto_casadi_mapping_f1.c(803): warning C4100: 'mem': unreferenced formal parameter
+extern/auto_casadi_mapping_f1.c(810): warning C4100: 'mem': unreferenced formal parameter
+>>>>>>> 8cd4c29023393d6a38df5edc00a7ba69f746a8b1
 exit code: 0
-running: "C:\\Program Files (x86)\\Microsoft Visual Studio\\2017\\BuildTools\\VC\\Tools\\MSVC\\14.16.27023\\bin\\HostX64\\x64\\cl.exe" "-nologo" "-MD" "-Z7" "-Brepro" "-I" "src" "-W4" "-Wall" "-Foc:\\Skola\\MasterThesis\\Master-Thesis\\Mattias\\OpEn\\python_test_build\\model_dd_opt\\target\\debug\\build\\icasadi-584a6b84aa27bec4\\out\\extern/interface.o" "-c" "extern/interface.c"
+running: "D:\\Visual_Studio\\VC\\Tools\\MSVC\\14.24.28314\\bin\\HostX64\\x64\\cl.exe" "-nologo" "-MD" "-Z7" "-Brepro" "-I" "src" "-W4" "-Wall" "-Foc:\\Users\\Simon\\Desktop\\MasterThesis\\Master-Thesis\\Mattias\\OpEn\\python_test_build\\model_dd_opt\\target\\debug\\build\\icasadi-584a6b84aa27bec4\\out\\extern/interface.o" "-c" "extern/interface.c"
 interface.c
-C:\Program Files (x86)\Windows Kits\10\include\10.0.17763.0\ucrt\corecrt.h(212): warning C4668: '__cplusplus' is not defined as a preprocessor macro, replacing with '0' for '#if/#elif'
+D:\Visual_Studio\VC\Tools\MSVC\14.24.28314\include\vcruntime.h(265): warning C4668: '__cplusplus' is not defined as a preprocessor macro, replacing with '0' for '#if/#elif'
+D:\Visual_Studio\VC\Tools\MSVC\14.24.28314\include\vcruntime.h(268): warning C4668: '__cplusplus' is not defined as a preprocessor macro, replacing with '0' for '#if/#elif'
 exit code: 0
 AR_x86_64-pc-windows-msvc = None
 AR_x86_64_pc_windows_msvc = None
 HOST_AR = None
 AR = None
-running: "C:\\Program Files (x86)\\Microsoft Visual Studio\\2017\\BuildTools\\VC\\Tools\\MSVC\\14.16.27023\\bin\\HostX64\\x64\\lib.exe" "-out:c:\\Skola\\MasterThesis\\Master-Thesis\\Mattias\\OpEn\\python_test_build\\model_dd_opt\\target\\debug\\build\\icasadi-584a6b84aa27bec4\\out\\libicasadi.a" "-nologo" "c:\\Skola\\MasterThesis\\Master-Thesis\\Mattias\\OpEn\\python_test_build\\model_dd_opt\\target\\debug\\build\\icasadi-584a6b84aa27bec4\\out\\extern/auto_casadi_cost.o" "c:\\Skola\\MasterThesis\\Master-Thesis\\Mattias\\OpEn\\python_test_build\\model_dd_opt\\target\\debug\\build\\icasadi-584a6b84aa27bec4\\out\\extern/auto_casadi_grad.o" "c:\\Skola\\MasterThesis\\Master-Thesis\\Mattias\\OpEn\\python_test_build\\model_dd_opt\\target\\debug\\build\\icasadi-584a6b84aa27bec4\\out\\extern/auto_casadi_mapping_f2.o" "c:\\Skola\\MasterThesis\\Master-Thesis\\Mattias\\OpEn\\python_test_build\\model_dd_opt\\target\\debug\\build\\icasadi-584a6b84aa27bec4\\out\\extern/auto_casadi_mapping_f1.o" "c:\\Skola\\MasterThesis\\Master-Thesis\\Mattias\\OpEn\\python_test_build\\model_dd_opt\\target\\debug\\build\\icasadi-584a6b84aa27bec4\\out\\extern/interface.o"
+running: "D:\\Visual_Studio\\VC\\Tools\\MSVC\\14.24.28314\\bin\\HostX64\\x64\\lib.exe" "-out:c:\\Users\\Simon\\Desktop\\MasterThesis\\Master-Thesis\\Mattias\\OpEn\\python_test_build\\model_dd_opt\\target\\debug\\build\\icasadi-584a6b84aa27bec4\\out\\libicasadi.a" "-nologo" "c:\\Users\\Simon\\Desktop\\MasterThesis\\Master-Thesis\\Mattias\\OpEn\\python_test_build\\model_dd_opt\\target\\debug\\build\\icasadi-584a6b84aa27bec4\\out\\extern/auto_casadi_cost.o" "c:\\Users\\Simon\\Desktop\\MasterThesis\\Master-Thesis\\Mattias\\OpEn\\python_test_build\\model_dd_opt\\target\\debug\\build\\icasadi-584a6b84aa27bec4\\out\\extern/auto_casadi_grad.o" "c:\\Users\\Simon\\Desktop\\MasterThesis\\Master-Thesis\\Mattias\\OpEn\\python_test_build\\model_dd_opt\\target\\debug\\build\\icasadi-584a6b84aa27bec4\\out\\extern/auto_casadi_mapping_f2.o" "c:\\Users\\Simon\\Desktop\\MasterThesis\\Master-Thesis\\Mattias\\OpEn\\python_test_build\\model_dd_opt\\target\\debug\\build\\icasadi-584a6b84aa27bec4\\out\\extern/auto_casadi_mapping_f1.o" "c:\\Users\\Simon\\Desktop\\MasterThesis\\Master-Thesis\\Mattias\\OpEn\\python_test_build\\model_dd_opt\\target\\debug\\build\\icasadi-584a6b84aa27bec4\\out\\extern/interface.o"
 exit code: 0
 cargo:rustc-link-lib=static=icasadi
-cargo:rustc-link-search=native=c:\Skola\MasterThesis\Master-Thesis\Mattias\OpEn\python_test_build\model_dd_opt\target\debug\build\icasadi-584a6b84aa27bec4\out
+cargo:rustc-link-search=native=c:\Users\Simon\Desktop\MasterThesis\Master-Thesis\Mattias\OpEn\python_test_build\model_dd_opt\target\debug\build\icasadi-584a6b84aa27bec4\out
 cargo:rerun-if-changed=extern/auto_casadi_cost.c
 cargo:rerun-if-changed=extern/auto_casadi_grad.c
 cargo:rerun-if-changed=extern/auto_casadi_mapping_f2.c

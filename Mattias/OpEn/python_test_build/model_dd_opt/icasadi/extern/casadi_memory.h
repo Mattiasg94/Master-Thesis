@@ -13,7 +13,11 @@
  *   + version: 0.0.0
  *   + licence: MIT
  *
+<<<<<<< HEAD
  * Generated at: 2020-02-27 08:58:39.783788
+=======
+ * Generated at: 2020-02-26 13:01:01.162945
+>>>>>>> 8cd4c29023393d6a38df5edc00a7ba69f746a8b1
  *
  */
 
@@ -24,7 +28,11 @@
  */
 #define COST_SZ_ARG_MODEL_DD_OPT 3
 #define COST_SZ_IW_MODEL_DD_OPT 0
+<<<<<<< HEAD
 #define COST_SZ_W_MODEL_DD_OPT 59
+=======
+#define COST_SZ_W_MODEL_DD_OPT 64
+>>>>>>> 8cd4c29023393d6a38df5edc00a7ba69f746a8b1
 #define COST_SZ_RES_MODEL_DD_OPT 1
 
 /*
@@ -32,7 +40,11 @@
  */
 #define GRAD_SZ_ARG_MODEL_DD_OPT 3
 #define GRAD_SZ_IW_MODEL_DD_OPT 0
+<<<<<<< HEAD
 #define GRAD_SZ_W_MODEL_DD_OPT 286
+=======
+#define GRAD_SZ_W_MODEL_DD_OPT 319
+>>>>>>> 8cd4c29023393d6a38df5edc00a7ba69f746a8b1
 #define GRAD_SZ_RES_MODEL_DD_OPT 1
 
 /*

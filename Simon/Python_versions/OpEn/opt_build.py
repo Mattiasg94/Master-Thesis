@@ -2,43 +2,91 @@ import opengen as og
 import casadi.casadi as cs
 import numpy as np
 
-# Build parametric optimizer
-# ------------------------------------
-ts = 0.1
-(nu, nx, N) = (2, 3, 10)
-(xref, yref, thetaref) = (2, 2, 0)
-(Qx, Qy, Qtheta) = (10, 10, 1)
-(Rv, Rw) = (1, 1)
-(Qtx, Qty, Qttheta) = (100, 100, 1)
+ts = 0.5
+(nu, nx, nref, N) = (2, 3, 3, 15)
+nObs = (6)
+num_obst = 2 # Probably have to be adapted to multiple different scenarios
+(Qx, Qy, Qtheta) = (10, 10, 0)
+(Rv, Rw) = (0, 0)
+(Qtx, Qty, Qttheta) = (100, 100, 0)
+(vmin, vmax) = (0, 1)
+(wmin, wmax) = (-1, 1)
+
+def model_dd(x, y, theta, v, w):
+    x += ts*cs.cos(theta)*v
+    y += ts*cs.sin(theta)*v
+    theta += ts*w
+    return x, y, theta
 
 def build_opt():
-
     u = cs.SX.sym('u', nu*N)
-    z0 = cs.SX.sym('z0', nx)
-    obst1X = cs.SX.sym('obst1X', nx)
+    p = cs.SX.sym('p', nx+nref+nObs*num_obst)   # rows = num_obst+1
+    (x, y, theta) = (p[0], p[1], p[2])
+    (xref, yref, thetaref) = (p[3], p[4], p[5])
+    k = 0
+    (dv_c, dw_c) = (0, 0)
+    x_obs = []
+    y_obs = []
+    theta_obs = []
+    v_obs = []
+    w_obs = []
+    r_obs = []
 
-    (x, y, theta) = (z0[0], z0[1], z0[2])
+    for k in range(6,nx+nref+nObs*num_obst,6):
+        x_obs.append(p[k])      
+        y_obs.append(p[k+1])   
+        theta_obs.append(p[k+2])
+        r_obs.append(p[k+3])
+        v_obs.append(p[k+4])      
+        w_obs.append(p[k+5])      
+              
+
     cost = 0
     c = 0
-
+    # -------Collission constrint
     for t in range(0, nu*N, nu):
-        u_t = u[t:t+2]
+        uk = u[t:t+2]
         cost += Qx*(x-xref)**2 + Qy*(y-yref)**2 + Qtheta*(theta-thetaref)**2
-        cost += Rv*u_t[0]**2+Rw*u_t[1]**2
-        x += ts*cs.cos(theta)*u_t[0]
-        y += ts*cs.sin(theta)*u_t[0]
-        theta += ts*u_t[1]
-        c += cs.fmax(0, 0.5 - x**2 - y**2)
+        cost += Rv*uk[0]**2+Rw*uk[1]**2
+        (x, y, theta) = model_dd(x, y, theta, uk[0], uk[1])
+
+        for k in range(num_obst):
+            rterm = (x-x_obs[k])**2+(y-y_obs[k])**2
+            uterm = (cs.cos(theta)*uk[0]-v_obs[k])*(x-x_obs[k]) + \
+                (cs.sin(theta)*uk[0]-v_obs[k])*(y-y_obs[k])
+            lterm = (cs.cos(theta)*uk[0]-v_obs[k])**2+(cs.sin(theta)*uk[0]-v_obs[k])**2
+            # -------distance const
+            # c += cs.fmax(0.0, r_obs[k] - (x_obs[k]-x)**2 - (y_obs[k]-y)**2)
+            # -------regular cone
+            c += cs.fmax(0.0, r_obs[k]**2*lterm-(rterm*lterm-uterm**2))
+            # -------cone only when dist ego > dist obs
+            # cone = r_obs[k]**2*lterm-(rterm*lterm-uterm**2)
+            # ego_dist = cs.sqrt((x-xref)**2+(y-yref)**2)
+            # obs_dist = cs.sqrt((x_obs[k]-xref)**2+(y_obs[k]-yref)**2)
+            # c += cs.fmax(0.0, -(obs_dist-ego_dist)) * (cs.fmax(0.0, cone))
 
     cost += Qtx*(x-xref)**2 + Qty*(y-yref)**2 + Qttheta*(theta-thetaref)**2
+    # -------Acceleration constraint
+    ukm1 = [0, 0]
+    for t in range(0, nu*N, nu):
+        uk = u[t:t+2]
+        dv_c += cs.fmax(0.0, uk[0]-ukm1[0]-0.2)
+        dw_c += cs.vertcat(cs.fmax(0.0, uk[1]-ukm1[1]-0.05),
+                           cs.fmax(0.0, ukm1[1]-uk[1]-0.05))
+        ukm1 = uk
+    # -------Boundery constrint
+    umin = []
+    umax = []
+    for i in range(N):
+        umin.extend([vmin, wmin])
+        umax.extend([vmax, wmax])
 
-    umin = [-1.0] * (nu*N)
-    umax = [1.0] * (nu*N)
-    bounds = og.constraints.Rectangle(umin, umax)
     set_c = og.constraints.Zero()
     set_y = og.constraints.BallInf(None, 1e12)
-
-    problem = og.builder.Problem(u, z0, cost).with_penalty_constraints(c).with_constraints(bounds)
+    bounds = og.constraints.Rectangle(umin, umax)
+    C = cs.vertcat(dv_c, dw_c)
+    problem = og.builder.Problem(u, p, cost).with_penalty_constraints(
+        C).with_constraints(bounds).with_aug_lagrangian_constraints(c,set_c,set_y)
 
     build_config = og.config.BuildConfiguration()\
         .with_build_directory("python_test_build")\
@@ -49,11 +97,12 @@ def build_opt():
         .with_optimizer_name("model_dd_opt")
 
     solver_config = og.config.SolverConfiguration()\
-        .with_tolerance(1e-4)\
-        .with_initial_tolerance(1e-4)\
-        .with_max_outer_iterations(5)\
-        .with_delta_tolerance(1e-2)\
-        .with_penalty_weight_update_factor(10.0).with_initial_penalty(100)
+        .with_tolerance(1e-5)\
+        .with_initial_tolerance(1e-5)\
+        .with_max_outer_iterations(7)\
+        .with_max_duration_micros(200000)\
+        .with_delta_tolerance(1e-4)\
+        .with_penalty_weight_update_factor(5).with_initial_penalty(10).with_sufficient_decrease_coefficient(0.7)
 
     builder = og.builder.OpEnOptimizerBuilder(problem,
                                               meta,
@@ -66,4 +115,4 @@ def build_opt():
 
 if __name__ == '__main__':
     build_opt()
-    import test2
+    import run_opt
