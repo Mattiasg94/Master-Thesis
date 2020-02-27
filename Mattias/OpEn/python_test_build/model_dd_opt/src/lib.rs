@@ -2,7 +2,7 @@
 // Auto-generated file by OptimizationEngine
 // See https://alphaville.github.io/optimization-engine/
 //
-// Generated at: 2020-02-26 12:40:58.259038
+// Generated at: 2020-02-27 08:58:39.881073
 //
 
 use icasadi;
@@ -21,7 +21,7 @@ const INITIAL_EPSILON_TOLERANCE: f64 = 1e-05;
 const EPSILON_TOLERANCE_UPDATE_FACTOR: f64 = 0.1;
 
 /// Delta tolerance
-const DELTA_TOLERANCE: f64 = 0.0001;
+const DELTA_TOLERANCE: f64 = 0.01;
 
 /// LBFGS memory
 const LBFGS_MEMORY: usize = 10;
@@ -48,10 +48,10 @@ const SUFFICIENT_INFEASIBILITY_DECREASE_COEFFICIENT: f64 = 0.7;
 // ---Public Constants-----------------------------------------------------------------------------------
 
 /// Number of decision variables
-pub const MODEL_DD_OPT_NUM_DECISION_VARIABLES: usize = 30;
+pub const MODEL_DD_OPT_NUM_DECISION_VARIABLES: usize = 18;
 
 /// Number of parameters
-pub const MODEL_DD_OPT_NUM_PARAMETERS: usize = 12;
+pub const MODEL_DD_OPT_NUM_PARAMETERS: usize = 20;
 
 /// Number of parameters associated with augmented Lagrangian
 pub const MODEL_DD_OPT_N1: usize = 1;
@@ -63,8 +63,8 @@ pub const MODEL_DD_OPT_N2: usize = 3;
 
 // ---Parameters of the constraints----------------------------------------------------------------------
 
-const CONSTRAINTS_XMIN :Option<&[f64]> = Some(&[0.0,-1.0,0.0,-1.0,0.0,-1.0,0.0,-1.0,0.0,-1.0,0.0,-1.0,0.0,-1.0,0.0,-1.0,0.0,-1.0,0.0,-1.0,0.0,-1.0,0.0,-1.0,0.0,-1.0,0.0,-1.0,0.0,-1.0,]);
-const CONSTRAINTS_XMAX :Option<&[f64]> = Some(&[1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,]);
+const CONSTRAINTS_XMIN :Option<&[f64]> = Some(&[0.0,-1.0,0.0,-1.0,0.0,-1.0,0.0,-1.0,0.0,-1.0,0.0,-1.0,0.0,-1.0,0.0,-1.0,0.0,-1.0,]);
+const CONSTRAINTS_XMAX :Option<&[f64]> = Some(&[1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,]);
 
 
 

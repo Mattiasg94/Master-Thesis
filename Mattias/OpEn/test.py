@@ -1,40 +1,15 @@
-import casadi.casadi as cs
-import opengen as og
-
-u = cs.SX.sym("u", 5)                 # decision variable (nu = 5)
-p = cs.SX.sym("p", 2)                 # parameter (np = 2)
-phi = og.functions.rosenbrock(u, p)   # cost function
-ball = og.constraints.Ball2(None, 1.5)  # ball centered at origin
-rect = og.constraints.Rectangle(xmin=[-1,-2,-3], xmax=[0, 10, -1])
-
-# Segments: [0, 1], [2, 3, 4]
-segment_ids = [1, 4]
-dim = 5
-bounds = og.constraints.CartesianProduct(dim, segment_ids, [ball, rect])
-
-problem = og.builder.Problem(u, p, phi)  \
-        .with_constraints(bounds)
 
 
-meta = og.config.OptimizerMeta()                \
-    .with_version("0.0.0")                      \
-    .with_authors(["M. Gerle"]) \
-    .with_licence("CC4.0-By")                   \
-    .with_optimizer_name("the_optimizer")
+X_REF=[0, 0.19617069298299494, 0.4093031413459107, 0.6115739507877682, 0.8076816298557435, 1.0081691887053548, 1.209365470114032, 1.4129479465771495, 1.6231076880661226, 1.8449181978215, 2.0830780661399095, 2.344067987911872, 2.624771811955369, 2.917017604649528, 3.2352255133632886, 3.5829774191664945, 3.9445881208016655, 4.324720830285854, 4.710708367078649, 5.101246880082934, 5.497664070286103, 5.91158448833001, 6.3372752027838395, 6.755462129960244, 7.157681307888164, 7.544799291462824, 7.915104621214515, 8.077109962290603, 8.306123025797646, 8.61665489712398, 8.926362527402535, 9.20934648593134, 9.46793252720816, 9.704257345742992, 9.920291868430217, 10.117858090748944]
+Y_REF=[0, 0.19617069298299494, 0.5336722040477624, 0.989329729307905, 1.4471058002541268, 1.904993438049544, 2.359866979098774, 2.812586279499864, 3.2661353742612387, 3.7141173078669714, 4.152725686813772, 4.57916304001115, 4.9927077679250464, 5.369613043980283, 5.736607074415971, 6.094386382755946, 6.429585227143444, 6.7543910744604245, 7.069733603510366, 7.372260401691175, 7.660373310755456, 7.930725672100707, 8.190974217085152, 8.434889020818439, 8.662295338736621, 8.876647042794664, 9.077869103230663, 9.164384621936865, 9.285979980447879, 9.449915151519384, 9.612429805273349, 9.760071193232914, 9.89431915337715, 10.016546579649916, 10.12800396839378, 10.229814041198795]
+x=[]
+y=[]
+for i in range(0,len(X_REF),5):
+    x.append(round(X_REF[i],1))
+    y.append(round(Y_REF[i],1))
 
-build_config = og.config.BuildConfiguration()  \
-    .with_build_directory("python_build")      \
-    .with_build_mode("debug")                  \
-    .with_tcp_interface_config()
+print(y)
+print(x)
 
-solver_config = og.config.SolverConfiguration()   \
-            .with_lfbgs_memory(15)                \
-            .with_tolerance(1e-5)                 \
-            .with_max_inner_iterations(155)
-
-
-builder = og.builder.OpEnOptimizerBuilder(problem,
-                                          metadata=meta,
-                                          build_configuration=build_config,
-                                          solver_configuration=solver_config)
-builder.build()
+a=min(x, key=lambda x:abs(x-4))
+print(a)

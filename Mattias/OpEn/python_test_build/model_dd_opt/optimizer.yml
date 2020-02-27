@@ -2,11 +2,11 @@ _comment: auto-generated file; do not modify
 build:
   build_dir: python_test_build
   build_mode: debug
-  cost_function_name: phi_tuUyytWNtiuimDqYgGfc
-  grad_function_name: grad_phi_tuUyytWNtiuimDqYgGfc
-  id: tuUyytWNtiuimDqYgGfc
-  mapping_f1: mapping_f1_tuUyytWNtiuimDqYgGfc
-  mapping_f2: mapping_f2_tuUyytWNtiuimDqYgGfc
+  cost_function_name: phi_rpzXbcplGNMnSMuFiJlS
+  grad_function_name: grad_phi_rpzXbcplGNMnSMuFiJlS
+  id: rpzXbcplGNMnSMuFiJlS
+  mapping_f1: mapping_f1_rpzXbcplGNMnSMuFiJlS
+  mapping_f2: mapping_f2_rpzXbcplGNMnSMuFiJlS
   open_version: null
   target_system: null
 meta:
@@ -16,7 +16,7 @@ meta:
   optimizer_name: model_dd_opt
   version: 0.0.0
 solver:
-  constraints_tolerance: 0.0001
+  constraints_tolerance: 0.01
   lbfgs_memory: 10
   max_duration_micros: 5000000
   max_inner_iterations: 500
