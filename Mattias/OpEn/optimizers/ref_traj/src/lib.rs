@@ -2,7 +2,7 @@
 // Auto-generated file by OptimizationEngine
 // See https://alphaville.github.io/optimization-engine/
 //
-// Generated at: 2020-02-27 15:35:39.026879
+// Generated at: 2020-03-05 11:55:08.005777
 //
 
 use icasadi;
@@ -42,19 +42,19 @@ const PENALTY_UPDATE_FACTOR: f64 = 10.0;
 const INITIAL_PENALTY_PARAMETER: f64 = 100.0;
 
 /// Sufficient decrease coefficient
-const SUFFICIENT_INFEASIBILITY_DECREASE_COEFFICIENT: f64 = 0.9;
+const SUFFICIENT_INFEASIBILITY_DECREASE_COEFFICIENT: f64 = 0.7;
 
 
 // ---Public Constants-----------------------------------------------------------------------------------
 
 /// Number of decision variables
-pub const REF_TRAJ_NUM_DECISION_VARIABLES: usize = 18;
+pub const REF_TRAJ_NUM_DECISION_VARIABLES: usize = 4;
 
 /// Number of parameters
-pub const REF_TRAJ_NUM_PARAMETERS: usize = 24;
+pub const REF_TRAJ_NUM_PARAMETERS: usize = 20;
 
 /// Number of parameters associated with augmented Lagrangian
-pub const REF_TRAJ_N1: usize = 1;
+pub const REF_TRAJ_N1: usize = 0;
 
 /// Number of penalty constraints
 pub const REF_TRAJ_N2: usize = 3;
@@ -63,24 +63,14 @@ pub const REF_TRAJ_N2: usize = 3;
 
 // ---Parameters of the constraints----------------------------------------------------------------------
 
-const CONSTRAINTS_XMIN :Option<&[f64]> = Some(&[0.0,-1.0,0.0,-1.0,0.0,-1.0,0.0,-1.0,0.0,-1.0,0.0,-1.0,0.0,-1.0,0.0,-1.0,0.0,-1.0,]);
-const CONSTRAINTS_XMAX :Option<&[f64]> = Some(&[0.5,1.0,0.5,1.0,0.5,1.0,0.5,1.0,0.5,1.0,0.5,1.0,0.5,1.0,0.5,1.0,0.5,1.0,]);
+const CONSTRAINTS_XMIN :Option<&[f64]> = Some(&[0.0,-1.0,0.0,-1.0,]);
+const CONSTRAINTS_XMAX :Option<&[f64]> = Some(&[0.5,1.0,0.5,1.0,]);
 
 
 
 
 
-// ---Parameters of ALM-type constraints (Set C)---------------------------------------------------------
 
-
-
-
-// ---Parameters of ALM-type constraints (Set Y)---------------------------------------------------------
-/// Constraints: Centre of Euclidean Ball
-const SET_Y_BALL_XC: Option<&[f64]> = None;
-
-/// Constraints: Radius of Euclidean Ball
-const SET_Y_BALL_RADIUS : f64 = 1000000000000.0;
 
 
 
@@ -94,18 +84,8 @@ fn make_constraints() -> impl Constraint {
     bounds
 }
 
-/// Make set C
-fn make_set_c() -> impl Constraint {
-    let set_c = Zero::new();
-    set_c
-}
 
 
-/// Make set Y
-fn make_set_y() -> impl Constraint {
-    let set_y = BallInf::new(SET_Y_BALL_XC, SET_Y_BALL_RADIUS);
-    set_y
-}
 
 
 // ---Main public API functions--------------------------------------------------------------------------
@@ -141,24 +121,18 @@ pub fn solve(
         Ok(())
     };
     
-    let f1 = |u: &[f64], res: &mut [f64]| -> Result<(), SolverError> {
-        icasadi::mapping_f1(&u, &p, res);
-        Ok(())
-    };
     let f2 = |u: &[f64], res: &mut [f64]| -> Result<(), SolverError> {
         icasadi::mapping_f2(&u, &p, res);
         Ok(())
     };let bounds = make_constraints();
 
-    let set_y = make_set_y();
-    let set_c = make_set_c();
     let alm_problem = AlmProblem::new(
         bounds,
-        Some(set_c),
-        Some(set_y),
+        NO_SET,
+        NO_SET,
         psi,
         grad_psi,
-        Some(f1),
+        NO_MAPPING,
         Some(f2),
         REF_TRAJ_N1,
         REF_TRAJ_N2,

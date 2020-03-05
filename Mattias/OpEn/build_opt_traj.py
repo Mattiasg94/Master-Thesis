@@ -1,25 +1,10 @@
+from setup import *
 import opengen as og
 import casadi.casadi as cs
 import numpy as np
 
-ts = 0.5
-len_traj=5
-(nu, nx, nref, nu_init,ntraj,N) = (2, 3, 3,2,2*len_traj, 9)
-nObs = (6)
-(Qx, Qy, Qtheta) = (10, 10, 0)
-(Rv, Rw) = (0, 0)
-(Qtx, Qty, Qttheta) = (100, 100, 0)
-(vmin, vmax) = (0, 0.5)
-(wmin, wmax) = (-1, 1)
-(dv,dw)=(0.1,0.05)
-xtraj=[]
-ytraj=[]
-def model_dd(x, y, theta, v, w):
-    x += ts*cs.cos(theta)*v
-    y += ts*cs.sin(theta)*v
-    theta += ts*w
-    return x, y, theta
 
+ntraj=3*len_traj
 
 def build_opt():
     u = cs.SX.sym('u', nu*N)
@@ -33,6 +18,7 @@ def build_opt():
     for i in range(14,14+len_traj):
         xtraj.append(p[i])
         ytraj.append(p[i+len_traj])
+        thetatraj.append(p[i+2*len_traj])
     cost = 0
     c = 0
     # -------Collission constrint
@@ -40,26 +26,24 @@ def build_opt():
     for j,t in enumerate(range(0, nu*N, nu)):
         uk = u[t:t+2]
         # -------Reference trajectory
-        cost += Qx*(x-xtraj[k])**2 + Qy*(y-ytraj[k])**2 + Qtheta*(theta-thetaref)**2
-        if j%len_traj==0 and not t==0:
+        cost += Qx*(x-xtraj[k])**2 + Qy*(y-ytraj[k])**2 + 100*(theta-thetatraj[k])**2
+        if j%NperTraj==0 and not t==0:
             k+=1
         # -------Reference Point
         # cost += Qx*(x-xref)**2 + Qy*(y-yref)**2 + Qtheta*(theta-thetaref)**2
         # -------
         cost += Rv*uk[0]**2+Rw*uk[1]**2
         (x, y, theta) = model_dd(x, y, theta, uk[0], uk[1])
-        (x_obs, y_obs, theta_obs) = model_dd(
-            x_obs, y_obs, theta_obs, v_obs, w_obs)
+        (x_obs, y_obs, theta_obs) = model_dd(x_obs, y_obs, theta_obs, v_obs, w_obs)
         rterm = (x-x_obs)**2+(y-y_obs)**2
-        uterm = (cs.cos(theta)*uk[0]-v_obs)*(x-x_obs) + \
-            (cs.sin(theta)*uk[0]-v_obs)*(y-y_obs)
+        uterm = ((cs.cos(theta)*uk[0]-v_obs)*(x-x_obs) +  (cs.sin(theta)*uk[0]-v_obs)*(y-y_obs))**2
         lterm = (cs.cos(theta)*uk[0]-v_obs)**2+(cs.sin(theta)*uk[0]-v_obs)**2
         # -------distance const
-        #c += cs.fmax(0.0, r_obs - (x_obs-x)**2 - (y_obs-y)**2)
+        # c += cs.fmax(0.0, r_obs - (x_obs-x)**2 - (y_obs-y)**2)
         # -------regular cone
         #c += cs.fmax(0.0, r_obs**2*lterm-(rterm*lterm-uterm**2))
         # -------cone only when dist ego > dist obs
-        cone = r_obs**2*lterm-(rterm*lterm-uterm**2)
+        cone = r_obs**2*lterm-(rterm*lterm-uterm)
         ego_dist = cs.sqrt((x-xref)**2+(y-yref)**2)
         obs_dist = cs.sqrt((x_obs-xref)**2+(y_obs-yref)**2)
         c += cs.fmax(0.0, -(obs_dist-ego_dist)) * (cs.fmax(0.0, cone))
@@ -85,7 +69,7 @@ def build_opt():
     bounds = og.constraints.Rectangle(umin, umax)
     C = cs.vertcat(dv_c, dw_c)
     problem = og.builder.Problem(u, p, cost).with_penalty_constraints(
-        C).with_constraints(bounds).with_aug_lagrangian_constraints(c,set_c,set_y)
+        C).with_constraints(bounds)#.with_aug_lagrangian_constraints(c,set_c,set_y)
 
     build_config = og.config.BuildConfiguration()\
         .with_build_directory("optimizers")\

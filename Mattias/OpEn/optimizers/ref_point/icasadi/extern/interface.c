@@ -17,19 +17,19 @@
  *   + version: 0.0.0
  *   + licence: MIT
  * + Problem
- *   + vars: 18
+ *   + vars: 10
  *   + parameters: 14
  *   + n1: 1
  *   + n2: 3
  *
- * Generated at: 2020-02-27 12:27:25.041458
+ * Generated at: 2020-03-05 11:00:02.928060
  *
  */
 #include <stdlib.h>
 #include "casadi_memory.h"
 
 /* Number of input variables */
-#define NU_REF_POINT 18
+#define NU_REF_POINT 10
 
 /* Number of static parameters */
 #define NP_REF_POINT 17
@@ -57,7 +57,7 @@
 /*
  * CasADi interface for the cost function
  */
-extern int phi_UdpohSHDQXRzJJXvABmI(
+extern int phi_InkASXGEZkQWNKKgVChq(
     const casadi_real** arg, 
     casadi_real** res, 
     casadi_int* iw, 
@@ -67,7 +67,7 @@ extern int phi_UdpohSHDQXRzJJXvABmI(
 /*
  * CasADi interface for the gradient of the cost
  */
-extern int grad_phi_UdpohSHDQXRzJJXvABmI(
+extern int grad_phi_InkASXGEZkQWNKKgVChq(
     const casadi_real** arg, 
     casadi_real** res, 
     casadi_int* iw, 
@@ -77,7 +77,7 @@ extern int grad_phi_UdpohSHDQXRzJJXvABmI(
 /*
  * CasADi interface for the gradient of mapping F1
  */
-extern int mapping_f1_UdpohSHDQXRzJJXvABmI(
+extern int mapping_f1_InkASXGEZkQWNKKgVChq(
     const casadi_real** arg, 
     casadi_real** res, 
     casadi_int* iw, 
@@ -87,7 +87,7 @@ extern int mapping_f1_UdpohSHDQXRzJJXvABmI(
 /*
  * CasADi interface for the gradient of mapping F2
  */
-extern int mapping_f2_UdpohSHDQXRzJJXvABmI(
+extern int mapping_f2_InkASXGEZkQWNKKgVChq(
     const casadi_real** arg, 
     casadi_real** res, 
     casadi_int* iw, 
@@ -231,7 +231,7 @@ int cost_function_ref_point(const casadi_real** arg, casadi_real** res) {
     copy_args_into_uxip_space(arg);
 
     result_space_cost[0] = res[0];
-    return phi_UdpohSHDQXRzJJXvABmI(
+    return phi_InkASXGEZkQWNKKgVChq(
         args__,
         result_space_cost,
         allocated_i_workspace_cost,
@@ -249,7 +249,7 @@ int grad_cost_function_ref_point(const casadi_real** arg, casadi_real** res) {
               uxip_space + NU_REF_POINT + NXI_REF_POINT};  /* :p   */
     copy_args_into_uxip_space(arg);
     result_space_grad[0] = res[0];
-    return grad_phi_UdpohSHDQXRzJJXvABmI(
+    return grad_phi_InkASXGEZkQWNKKgVChq(
         args__,
         result_space_grad,
         allocated_i_workspace_grad,
@@ -273,10 +273,10 @@ int mapping_f1_function_ref_point(const casadi_real** arg, casadi_real** res) {
      */
     result_space_f1[0] = res[0];
     /*
-     * Call auto-generated function mapping_f1_UdpohSHDQXRzJJXvABmI
+     * Call auto-generated function mapping_f1_InkASXGEZkQWNKKgVChq
      * Implemented in: icasadi/extern/auto_casadi_mapping_f1.c
      */
-    return mapping_f1_UdpohSHDQXRzJJXvABmI(
+    return mapping_f1_InkASXGEZkQWNKKgVChq(
         args__,
         result_space_f1,
         allocated_i_workspace_f1,
@@ -300,10 +300,10 @@ int mapping_f2_function_ref_point(const casadi_real** arg, casadi_real** res) {
      */
     result_space_f2[0] = res[0];
     /*
-     * Call auto-generated function mapping_f2_UdpohSHDQXRzJJXvABmI
+     * Call auto-generated function mapping_f2_InkASXGEZkQWNKKgVChq
      * Implemented in: icasadi/extern/auto_casadi_mapping_f2.c
      */
-    return mapping_f2_UdpohSHDQXRzJJXvABmI(
+    return mapping_f2_InkASXGEZkQWNKKgVChq(
         args__,
         result_space_f2,
         allocated_i_workspace_f2,

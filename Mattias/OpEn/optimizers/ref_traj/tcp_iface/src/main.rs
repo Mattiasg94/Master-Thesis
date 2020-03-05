@@ -1,6 +1,6 @@
 ///
 /// Auto-generated TCP server for optimizer: ref_traj
-/// Generated at: 2020-02-27 15:35:40.654255
+/// Generated at: 2020-03-05 11:55:09.309217
 ///
 use optimization_engine::alm::*;
 use serde::{Deserialize, Serialize};

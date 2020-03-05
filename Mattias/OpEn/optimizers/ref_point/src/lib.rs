@@ -2,7 +2,7 @@
 // Auto-generated file by OptimizationEngine
 // See https://alphaville.github.io/optimization-engine/
 //
-// Generated at: 2020-02-27 12:27:25.106011
+// Generated at: 2020-03-05 11:00:03.006997
 //
 
 use icasadi;
@@ -48,7 +48,7 @@ const SUFFICIENT_INFEASIBILITY_DECREASE_COEFFICIENT: f64 = 0.7;
 // ---Public Constants-----------------------------------------------------------------------------------
 
 /// Number of decision variables
-pub const REF_POINT_NUM_DECISION_VARIABLES: usize = 18;
+pub const REF_POINT_NUM_DECISION_VARIABLES: usize = 10;
 
 /// Number of parameters
 pub const REF_POINT_NUM_PARAMETERS: usize = 14;
@@ -63,8 +63,8 @@ pub const REF_POINT_N2: usize = 3;
 
 // ---Parameters of the constraints----------------------------------------------------------------------
 
-const CONSTRAINTS_XMIN :Option<&[f64]> = Some(&[0.0,-1.0,0.0,-1.0,0.0,-1.0,0.0,-1.0,0.0,-1.0,0.0,-1.0,0.0,-1.0,0.0,-1.0,0.0,-1.0,]);
-const CONSTRAINTS_XMAX :Option<&[f64]> = Some(&[0.5,1.0,0.5,1.0,0.5,1.0,0.5,1.0,0.5,1.0,0.5,1.0,0.5,1.0,0.5,1.0,0.5,1.0,]);
+const CONSTRAINTS_XMIN :Option<&[f64]> = Some(&[0.0,-1.0,0.0,-1.0,0.0,-1.0,0.0,-1.0,0.0,-1.0,]);
+const CONSTRAINTS_XMAX :Option<&[f64]> = Some(&[0.5,1.0,0.5,1.0,0.5,1.0,0.5,1.0,0.5,1.0,]);
 
 
 
