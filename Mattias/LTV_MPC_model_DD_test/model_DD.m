@@ -1,7 +1,7 @@
 clc
 clear all, close all
 tic
-N=30;
+N=10;
 Nsim=20;
 dt=0.5;
 ur=[0;0];
@@ -18,7 +18,7 @@ lb=[-inf -inf -inf lb_x -inf -inf lb_u];
 ub=[ inf  inf  inf ub_x  inf  inf ub_u];
 [u,x,u_tilde,x_tilde,lb,ub,Z0,MQ,MR,Mxr,Mur,Mu1_delta,Mu2_delta]=setup(x0,u0,xr,ur,ub,lb,Nsim,N);
 %% plot
-obstacles={[5;5;0]};%,[5;5;pi/2]}; %,[5;4.5;0]};
+obstacles={[4;4.5;0]};%,[5;5;pi/2]}; %,[5;4.5;0]};
 obstacles_u={[0;0]};%,[.1;0.3]}; %,[0.25;0]};
 % [A_obstacles,B_obstacles] = Linearized_discrete_DD_model(obstacles{1},obstacles_u{1},dt)
 plot_obstacles = plot(1); textbox=plot(1); plot_obstacles_radius=plot(1);
