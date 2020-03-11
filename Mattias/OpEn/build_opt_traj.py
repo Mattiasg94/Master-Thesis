@@ -26,9 +26,9 @@ def build_opt():
     for j,t in enumerate(range(0, nu*N, nu)):
         uk = u[t:t+2]
         # -------Reference trajectory
-        cost += Qx*(x-xtraj[k])**2 + Qy*(y-ytraj[k])**2 + 100*(theta-thetatraj[k])**2
-        if j%NperTraj==0 and not t==0:
-            k+=1
+        cost += Qx*(x-xtraj[j])**2 + Qy*(y-ytraj[j])**2 + Qtheta*(theta-thetatraj[j])**2
+        # if j%NperTraj==0 and not t==0:
+        #     k+=1
         # -------Reference Point
         # cost += Qx*(x-xref)**2 + Qy*(y-yref)**2 + Qtheta*(theta-thetaref)**2
         # -------
@@ -69,7 +69,7 @@ def build_opt():
     bounds = og.constraints.Rectangle(umin, umax)
     C = cs.vertcat(dv_c, dw_c)
     problem = og.builder.Problem(u, p, cost).with_penalty_constraints(
-        C).with_constraints(bounds)#.with_aug_lagrangian_constraints(c,set_c,set_y)
+        C).with_constraints(bounds).with_aug_lagrangian_constraints(c,set_c,set_y)
 
     build_config = og.config.BuildConfiguration()\
         .with_build_directory("optimizers")\
@@ -83,9 +83,9 @@ def build_opt():
     solver_config = og.config.SolverConfiguration()\
         .with_tolerance(1e-5)\
         .with_initial_tolerance(1e-5)\
-        .with_max_outer_iterations(6)\
+        .with_max_outer_iterations(10)\
         .with_delta_tolerance(1e-2)\
-        .with_penalty_weight_update_factor(10).with_initial_penalty(100).with_sufficient_decrease_coefficient(0.7)
+        .with_penalty_weight_update_factor(5).with_initial_penalty(100).with_sufficient_decrease_coefficient(0.7)
 
     builder = og.builder.OpEnOptimizerBuilder(problem,
                                               meta,

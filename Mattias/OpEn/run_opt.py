@@ -1,5 +1,6 @@
 from setup import *
-from build_opt_traj import len_traj, model_dd
+from build_opt_traj import len_traj
+from build_opt_traj_tilde import len_traj, model_dd_tilde,v_ref
 import opengen as og
 import numpy as np
 import matplotlib.pyplot as plt
@@ -9,25 +10,24 @@ import math
 import time
 
 # -------Init ego
-(x_init, y_init, theta_init,r) = (0, 11, np.pi/1000,0.5)
+(x_init, y_init, theta_init,r) = (0, 11, 0,0.5)
 (xref, yref, thetaref) = (10, 10, 0)
 (v_init, w_init) = (0, 0)
 Y_REF = [11, 10.99, 10.96, 10.91, 10.84, 10.76, 10.65, 10.53, 10.39, 10.24, 10.08, 9.91, 9.72, 9.53, 9.34, 9.14, 8.94, 8.74, 8.55, 8.35, 8.17, 7.99, 7.82, 7.67, 7.53, 7.4, 7.29, 7.19, 7.12, 7.06, 7.02, 7.0, 7.0, 7.03, 7.07, 7.13, 7.21, 7.3, 7.42, 7.55, 7.69, 7.85, 8.02, 8.2, 8.39, 8.58, 8.78, 8.98, 9.17, 9.37, 9.57, 9.76, 9.94, 10.11, 10.27, 10.42, 10.55, 10.67, 10.77, 10.85, 10.92, 10.97, 10.99]
 X_REF = [0.0, 0.16, 0.32, 0.48, 0.65, 0.81, 0.97, 1.13, 1.29, 1.45, 1.61, 1.77, 1.94, 2.1, 2.26, 2.42, 2.58, 2.74, 2.9, 3.06, 3.23, 3.39, 3.55, 3.71, 3.87, 4.03, 4.19, 4.35, 4.52, 4.68, 4.84, 5.0, 5.16, 5.32, 5.48, 5.65, 5.81, 5.97, 6.13, 6.29, 6.45, 6.61, 6.77, 6.94, 7.1, 7.26, 7.42, 7.58, 7.74, 7.9, 8.06, 8.23, 8.39, 8.55, 8.71, 8.87, 9.03, 9.19, 9.35, 9.52, 9.68, 9.84, 10.0]
-THETA_REF=[0, -0.1996668, -0.3973387, -0.5910404, -0.7788367, -0.9588511, -1.1292849, -1.2884354, -1.4347122, -1.5666538, -1.682942, -1.7824147, -1.8640782, -1.9271164, -1.9708995, -1.99499, -1.9991472, -1.9833296, -1.9476953, -1.8926002, -1.8185949, -1.7264187, -1.6169928, -1.4914104, -1.3509264, -1.1969443, -1.0310027, -0.8547598, -0.6699763, -0.4784987, -0.28224, -0.0831613, 0.1167483, 0.3154914, 0.5110822, 0.7015665, 0.8850409, 1.0596723, 1.2237158, 1.3755323, 1.513605, 1.6365542, 1.7431515, 1.8323319, 1.9032041, 1.9550602, 1.987382, 1.9998465, 1.9923292, 1.9649052, 1.9178485, 1.8516294, 1.7669093, 1.6645349, 1.545529, 1.4110807, 1.2625333, 1.1013711, 0.9292044, 0.7477533, 0.558831, 0.364325, 0.1661788]
-test=[]
-Y_REF=[11]*100
-X_REF=[0]*100
+THETA_REF=[0.0, -0.07841, -0.156035, -0.2321, -0.3058475, -0.37654, -0.44347, -0.5059675, -0.56341, -0.6152225, -0.66089, -0.6999525, -0.7320225, -0.7567775, -0.77397, -0.78343, -0.7850625, -0.7788525, -0.7648575, -0.7432225, -0.71416, -0.6779625, -0.6349925, -0.585675, -0.5305075, -0.47004, -0.404875, -0.3356625, -0.2631, -0.187905, -0.110835, -0.0326575, 0.0458475, 0.1238925, 0.2007025, 0.275505, 0.347555, 0.4161325, 0.4805525, 0.54017, 0.5943925, 0.6426725, 0.684535, 0.719555, 0.7473875, 0.76775, 0.7804425, 0.7853375, 0.782385, 0.7716175, 0.7531375, 0.7271325, 0.6938625, 0.6536625, 0.6069275, 0.55413, 0.495795, 0.4325075, 0.3648975, 0.2936425, 0.2194525, 0.14307, 0.0652575]
+
 Y_REF.extend([Y_REF[-1]]*len_traj*2)
 X_REF.extend([X_REF[-1]]*len_traj*2)
-THETA_REF.insert(0,0)
+# THETA_REF.insert(0,0)
 THETA_REF.extend([THETA_REF[-1]]*len_traj*2)
 modes=['traj','point','point']
 mode=modes[0]
+run_with_tilde=False
 # -------Init Obstacles
 penalty_margin=0.3
-(x_obs, y_obs, theta_obs, r_obs) = (-6, 8, math.pi/2, 0.5)
-(v_obs, w_obs) = (0.1, 0.00001)
+(x_obs, y_obs, theta_obs, r_obs) = (-6, 6, math.pi/2, 0.5)
+(v_obs, w_obs) = (0.06, 0.00001)
 # -------Init static stuff
 r_cone=r_obs+r+penalty_margin
 now_obs_pos=(x_obs,y_obs)
@@ -36,13 +36,16 @@ plot_init_x = x_init
 plot_init_y = y_init
 fig = plt.figure()
 ax = fig.add_subplot(1, 1, 1)
-warm_start=False
+warm_start=True
 u_star = [0.0] * (nu*N)
 if mode=='point':
     mng = og.tcp.OptimizerTcpManager('optimizers/ref_point')
     mng.start()
 else:
-    mng2 = og.tcp.OptimizerTcpManager('optimizers/ref_traj')
+    if run_with_tilde:
+        mng2 = og.tcp.OptimizerTcpManager('optimizers/ref_traj_tilde')
+    else:
+        mng2 = og.tcp.OptimizerTcpManager('optimizers/ref_traj')
     mng2.start()
 
 def get_cone_const(x,y,theta,x_obs,y_obs,uk):
@@ -100,18 +103,19 @@ def animate(i):
     if mode=='point':
         ax.add_patch(plt.Circle((end_xref, end_yref), 0.3, color='y'))
     else:
-        ax.plot(xtraj, ytraj, '--', color='y',)
-        #ax.plot(X_REF, Y_REF, '--', color = 'y',markersize=1)
+        #ax.plot(xtraj, ytraj, '--', color='y',)
+        ax.plot(X_REF, Y_REF, '--', color = 'y',markersize=1)
     ax.add_patch(plt.Circle((x_obs, y_obs), r_obs, color='r'))
     ax.add_patch(plt.Circle((x_obs, y_obs), r_obs+r,edgecolor='r',fill=None,linestyle='dashed'))
     ax.add_patch(plt.Circle((x_obs, y_obs), r_cone, edgecolor='r',fill=None,linestyle='dotted'))
-    for i in range(len(X_C)):
-        ax.add_patch(plt.Circle((X_C[i], Y_C[i]), 0.1, color='b'))
+    # for i in range(len(X_C)):
+    #     ax.add_patch(plt.Circle((X_C[i], Y_C[i]), 0.1, color='b'))
     ax.plot(xs, ys, '-', color='r')
-
+test1=[]
+test2=[]
 i=-1
 idx_mode=0
-while i<100:
+while i<60:
     i+=1
     if close_to_target:
         break
@@ -155,12 +159,16 @@ while i<100:
     else:
         if justChanged and last_mode!=mode:
             mng.kill()
-            mng2 = og.tcp.OptimizerTcpManager('optimizers/ref_traj')
+            if run_with_tilde:
+                mng2 = og.tcp.OptimizerTcpManager('optimizers/ref_traj_tilde')            
+            else:
+                mng2 = og.tcp.OptimizerTcpManager('optimizers/ref_traj')
             mng2.start()
         idx = dist_to_ref(x_init, y_init)
         xtraj = X_REF[idx:idx+len_traj]
         ytraj = Y_REF[idx:idx+len_traj]
         thetatraj = THETA_REF[idx:idx+len_traj]
+        thetatraj = THETA_REF[i:i+len_traj]
         end_xref = xtraj[-1]
         end_yref = ytraj[-1]
         p_lst.extend(xtraj)
@@ -174,19 +182,10 @@ while i<100:
     now_obs_pos=(x_obs,y_obs)
     try:
         u_star = solution['solution']
+        # print(solution['exit_status'])
     except:
         print('No Solution')
         continue
-    if not solution['exit_status'] == 'Converged':
-        pass
-        # print('---------------------')
-        # print('exit_status', solution['exit_status'])
-        # print('num_outer_iterations', solution['num_outer_iterations'])
-        # # print('f1_infeasibility', solution['f1_infeasibility'])
-        # # print('last_problem_norm_fpr', solution['last_problem_norm_fpr'])
-        # print('penalty', solution['penalty'])
-        # # print('solve_time_ms', round(solution['solve_time_ms'], 2), 'sek', round(
-        # #     solution['solve_time_ms']/1000, 2))
     total_sec += solution['solve_time_ms']/1000
     uv = u_star[0:nu*N:2]
     uw = u_star[1:nu*N:2]
@@ -213,27 +212,29 @@ while i<100:
         get_cone_const(X[t+1],Y[t+1],THETA[t+1],x_obs_future,y_obs_future,u_t[0])
         if np.sqrt(np.power(X[t+1]-x_obs_future,2)+np.power(Y[t+1]-y_obs_future,2)) <= (r_obs+r):
             collision = True
+        x, y, theta,x_tild, y_tild, theta_tild = model_dd_tilde(X[t+1], Y[t+1], THETA[t+1], u_t[0]-v_ref, u_t[1],xtraj[t],ytraj[t],thetatraj[t],u_t[0])
     curr_dist2ref = math.sqrt((X[0]-end_xref)**2+(Y[0]-end_yref)**2)
     avg_progress = math.sqrt((sum(X[1:])/len(X[1:])-end_xref)**2+(sum(Y[1:])/len(X[1:])-end_yref)**2) < (curr_dist2ref+just_changed_ref)
     progress = math.sqrt((X[-1]-end_xref)**2+ (Y[-1]-end_yref)**2) < (curr_dist2ref+just_changed_ref)
     close_to_target = math.sqrt((X[0]-end_xref)**2+(Y[0]-end_yref)**2) < 0.2
-    close_to_target=False
     if not collision and progress and avg_progress and not close_to_target:
         (x_init, y_init, theta_init) = (X[1], Y[1], THETA[1])
         (v_init, w_init) = (uv[0], uw[0])
-    # else:
-    #     print('--------')
-    #     print('progress:', progress, 'avg_progress:', avg_progress)
-    #     print('close_to_target:', close_to_target, 'collision:',collision)
-    if not close_to_target and not progress and not collision and False:
+    if not close_to_target and not progress and not collision:
         theta_init += calculate_turn_dir(theta_init)    
     ani = animation.FuncAnimation(fig, animate, interval=100000)
-    print('thetatraj',thetatraj)
-    print(round(THETA[1],5),round(THETA[2],5),round(THETA[0],3))
     a=0.1 if i<16 else 0.1
-    plt.pause(2)
-    test.append(THETA[0])
-print(test)
+    plt.pause(0.00002)
+    # print('---------')
+    # print(thetatraj)
+    # tlf=[]
+    # for num in THETA:
+    #     tlf.append(round(num,5))
+    # print(tlf)
+    test1.append(u_star[0])
+    test2.append(u_star[1])
+print(test1)
+print(test2)
 print('total_sec', total_sec)
 print('avrage time_ms',total_sec*1000/i)
 plt.show()

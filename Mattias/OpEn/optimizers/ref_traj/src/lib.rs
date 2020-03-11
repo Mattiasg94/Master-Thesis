@@ -2,7 +2,7 @@
 // Auto-generated file by OptimizationEngine
 // See https://alphaville.github.io/optimization-engine/
 //
-// Generated at: 2020-03-05 11:55:08.005777
+// Generated at: 2020-03-05 16:01:03.365221
 //
 
 use icasadi;
@@ -30,13 +30,13 @@ const LBFGS_MEMORY: usize = 10;
 const MAX_INNER_ITERATIONS: usize = 500;
 
 /// Maximum number of outer iterations
-const MAX_OUTER_ITERATIONS: usize = 6;
+const MAX_OUTER_ITERATIONS: usize = 10;
 
 /// Maximum execution duration in microseconds
 const MAX_DURATION_MICROS: u64 = 5000000;
 
 /// Penalty update factor
-const PENALTY_UPDATE_FACTOR: f64 = 10.0;
+const PENALTY_UPDATE_FACTOR: f64 = 5.0;
 
 /// Initial penalty
 const INITIAL_PENALTY_PARAMETER: f64 = 100.0;
@@ -48,13 +48,13 @@ const SUFFICIENT_INFEASIBILITY_DECREASE_COEFFICIENT: f64 = 0.7;
 // ---Public Constants-----------------------------------------------------------------------------------
 
 /// Number of decision variables
-pub const REF_TRAJ_NUM_DECISION_VARIABLES: usize = 4;
+pub const REF_TRAJ_NUM_DECISION_VARIABLES: usize = 20;
 
 /// Number of parameters
-pub const REF_TRAJ_NUM_PARAMETERS: usize = 20;
+pub const REF_TRAJ_NUM_PARAMETERS: usize = 44;
 
 /// Number of parameters associated with augmented Lagrangian
-pub const REF_TRAJ_N1: usize = 0;
+pub const REF_TRAJ_N1: usize = 1;
 
 /// Number of penalty constraints
 pub const REF_TRAJ_N2: usize = 3;
@@ -63,14 +63,24 @@ pub const REF_TRAJ_N2: usize = 3;
 
 // ---Parameters of the constraints----------------------------------------------------------------------
 
-const CONSTRAINTS_XMIN :Option<&[f64]> = Some(&[0.0,-1.0,0.0,-1.0,]);
-const CONSTRAINTS_XMAX :Option<&[f64]> = Some(&[0.5,1.0,0.5,1.0,]);
+const CONSTRAINTS_XMIN :Option<&[f64]> = Some(&[-0.5,-1.0,-0.5,-1.0,-0.5,-1.0,-0.5,-1.0,-0.5,-1.0,-0.5,-1.0,-0.5,-1.0,-0.5,-1.0,-0.5,-1.0,-0.5,-1.0,]);
+const CONSTRAINTS_XMAX :Option<&[f64]> = Some(&[0.5,1.0,0.5,1.0,0.5,1.0,0.5,1.0,0.5,1.0,0.5,1.0,0.5,1.0,0.5,1.0,0.5,1.0,0.5,1.0,]);
 
 
 
 
 
+// ---Parameters of ALM-type constraints (Set C)---------------------------------------------------------
 
+
+
+
+// ---Parameters of ALM-type constraints (Set Y)---------------------------------------------------------
+/// Constraints: Centre of Euclidean Ball
+const SET_Y_BALL_XC: Option<&[f64]> = None;
+
+/// Constraints: Radius of Euclidean Ball
+const SET_Y_BALL_RADIUS : f64 = 1000000000000.0;
 
 
 
@@ -84,8 +94,18 @@ fn make_constraints() -> impl Constraint {
     bounds
 }
 
+/// Make set C
+fn make_set_c() -> impl Constraint {
+    let set_c = Zero::new();
+    set_c
+}
 
 
+/// Make set Y
+fn make_set_y() -> impl Constraint {
+    let set_y = BallInf::new(SET_Y_BALL_XC, SET_Y_BALL_RADIUS);
+    set_y
+}
 
 
 // ---Main public API functions--------------------------------------------------------------------------
@@ -121,18 +141,24 @@ pub fn solve(
         Ok(())
     };
     
+    let f1 = |u: &[f64], res: &mut [f64]| -> Result<(), SolverError> {
+        icasadi::mapping_f1(&u, &p, res);
+        Ok(())
+    };
     let f2 = |u: &[f64], res: &mut [f64]| -> Result<(), SolverError> {
         icasadi::mapping_f2(&u, &p, res);
         Ok(())
     };let bounds = make_constraints();
 
+    let set_y = make_set_y();
+    let set_c = make_set_c();
     let alm_problem = AlmProblem::new(
         bounds,
-        NO_SET,
-        NO_SET,
+        Some(set_c),
+        Some(set_y),
         psi,
         grad_psi,
-        NO_MAPPING,
+        Some(f1),
         Some(f2),
         REF_TRAJ_N1,
         REF_TRAJ_N2,

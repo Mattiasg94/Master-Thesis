@@ -13,7 +13,7 @@
  *   + version: 0.0.0
  *   + licence: MIT
  *
- * Generated at: 2020-03-05 11:55:07.910544
+ * Generated at: 2020-03-05 16:01:03.273931
  *
  */
 
@@ -24,7 +24,7 @@
  */
 #define COST_SZ_ARG_REF_TRAJ 3
 #define COST_SZ_IW_REF_TRAJ 0
-#define COST_SZ_W_REF_TRAJ 11
+#define COST_SZ_W_REF_TRAJ 58
 #define COST_SZ_RES_REF_TRAJ 1
 
 /*
@@ -32,7 +32,7 @@
  */
 #define GRAD_SZ_ARG_REF_TRAJ 3
 #define GRAD_SZ_IW_REF_TRAJ 0
-#define GRAD_SZ_W_REF_TRAJ 12
+#define GRAD_SZ_W_REF_TRAJ 316
 #define GRAD_SZ_RES_REF_TRAJ 1
 
 /*
@@ -40,7 +40,7 @@
  */
 #define F1_SZ_ARG_REF_TRAJ 2
 #define F1_SZ_IW_REF_TRAJ 0
-#define F1_SZ_W_REF_TRAJ 1
+#define F1_SZ_W_REF_TRAJ 19
 #define F1_SZ_RES_REF_TRAJ 1
 
 /*
@@ -48,5 +48,5 @@
  */
 #define F2_SZ_ARG_REF_TRAJ 2
 #define F2_SZ_IW_REF_TRAJ 0
-#define F2_SZ_W_REF_TRAJ 7
+#define F2_SZ_W_REF_TRAJ 15
 #define F2_SZ_RES_REF_TRAJ 1

@@ -2,13 +2,13 @@ import time
 import casadi.casadi as cs
 #-------- Both
 ts = 1
-(nu, nx, nref, nu_init,N) = (2, 3, 3,2, 2)
+(nu, nx, nref, nu_init,N) = (2, 3, 3,2, 10)
 nObs = (6)
 (Qx, Qy, Qtheta) = (10, 10, 0)
 (Rv, Rw) = (0, 0)
-(vmin, vmax) = (0, 0.5)
+(vmin, vmax) = (-0.5, 0.5)
 (wmin, wmax) = (-1, 1)
-(dv,dw)=(0.1,0.05)
+(dv,dw)=(0.1,0.5)
 
 def model_dd(x, y, theta, v, w):
     x += ts*cs.cos(theta)*v
@@ -16,7 +16,7 @@ def model_dd(x, y, theta, v, w):
     theta += ts*w
     return x, y, theta
 #------- Point
-(Qtx, Qty, Qttheta) = (10, 10, 0)
+(Qtx, Qty, Qttheta) = (10, 10, 10)
 
 #-------- Traj
 len_traj=N
