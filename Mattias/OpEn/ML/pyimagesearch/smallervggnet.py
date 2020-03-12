@@ -25,7 +25,7 @@ class SmallerVGGNet:
 			chanDim = 1
 
 		# CONV => RELU => POOL
-		model.add(Conv2D(32, (3, 3), padding="same",
+		model.add(Conv2D(32, (21, 21), padding="same",
 			input_shape=inputShape))
 		model.add(Activation("relu"))
 		model.add(BatchNormalization(axis=chanDim))
@@ -33,7 +33,7 @@ class SmallerVGGNet:
 		model.add(Dropout(0.25))
 
 		# (CONV => RELU) * 2 => POOL
-		model.add(Conv2D(64, (3, 3), padding="same"))
+		model.add(Conv2D(64, (7, 7), padding="same"))
 		model.add(Activation("relu"))
 		model.add(BatchNormalization(axis=chanDim))
 		model.add(Conv2D(64, (3, 3), padding="same"))

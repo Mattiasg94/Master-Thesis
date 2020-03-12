@@ -19,16 +19,16 @@ import os
 import csv
 # initialize the number of epochs to train for, initial learning rate,
 # batch size, and image dimensions
-EPOCHS = 8
-INIT_LR = 1e-3
-BS = 100
-IMAGE_DIMS = (96, 96, 3)
-model_name='model'
-binarizer='labelbin'
-figure_name='plot'
+EPOCHS = 20
+INIT_LR = 1e-4
+BS = 150
+IMAGE_DIMS = (76, 76, 3)
+model_name='model_pos'
+binarizer='labelbin_pos'
+figure_name='plot_pos'
 # grab the image paths and randomly shuffle them
 DATASET_FOLDER = r"images\\"
-csv_file='train.csv'
+csv_file='pos_annots.csv'
 random.seed(42)
 rows=[]
 with open(csv_file, "r") as file:
@@ -77,9 +77,9 @@ for (i, label) in enumerate(mlb.classes_):
 	labels, test_size=0.2, random_state=42)
 
 # construct the image generator for data augmentation
-aug = ImageDataGenerator(rotation_range=25, width_shift_range=0.1,
-	height_shift_range=0.1, shear_range=0.2, zoom_range=0.2,
-	horizontal_flip=True, fill_mode="nearest")
+aug = ImageDataGenerator(rotation_range=False, width_shift_range=False,
+	height_shift_range=False, shear_range=0.2, zoom_range=False,
+	horizontal_flip=False, fill_mode="nearest")
 
 # initialize the model using a sigmoid activation as the final layer
 # in the network so we can perform multi-label classification
