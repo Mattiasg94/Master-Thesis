@@ -7,7 +7,7 @@ from keras.optimizers import Adam
 from keras.preprocessing.image import img_to_array
 from sklearn.preprocessing import MultiLabelBinarizer
 from sklearn.model_selection import train_test_split
-from pyimagesearch.smallervggnet import SmallerVGGNet
+from pyimagesearch.pos_net import pos_net
 import matplotlib.pyplot as plt
 from imutils import paths
 import numpy as np
@@ -19,8 +19,8 @@ import os
 import csv
 # initialize the number of epochs to train for, initial learning rate,
 # batch size, and image dimensions
-EPOCHS = 20
-INIT_LR = 1e-4
+EPOCHS = 7
+INIT_LR = 1e-3
 BS = 150
 IMAGE_DIMS = (76, 76, 3)
 model_name='model_pos'
@@ -84,7 +84,7 @@ aug = ImageDataGenerator(rotation_range=False, width_shift_range=False,
 # initialize the model using a sigmoid activation as the final layer
 # in the network so we can perform multi-label classification
 print("[INFO] compiling model...")
-model = SmallerVGGNet.build(
+model = pos_net.build(
 	width=IMAGE_DIMS[1], height=IMAGE_DIMS[0],
 	depth=IMAGE_DIMS[2], classes=len(mlb.classes_),
 	finalAct="sigmoid")

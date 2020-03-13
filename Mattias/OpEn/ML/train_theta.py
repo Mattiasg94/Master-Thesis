@@ -17,11 +17,14 @@ import pickle
 from cv2 import cv2
 import os
 import csv
+import keras
+import keras.backend as K
+import tensorflow as tf
 # initialize the number of epochs to train for, initial learning rate,
 # batch size, and image dimensions
 EPOCHS = 5
 INIT_LR = 1e-3
-BS = 100
+BS = 10
 img=cv2.imread(r'theta_images\00000.png')
 IMAGE_DIMS = (img.shape[0], img.shape[1], 3)
 model_name='model_theta'
@@ -77,7 +80,7 @@ for (i, label) in enumerate(mlb.classes_):
 	labels, test_size=0.2, random_state=42)
 
 # construct the image generator for data augmentation
-aug = ImageDataGenerator(width_shift_range=0.1,
+aug = ImageDataGenerator(width_shift_range=0.1,  #TODO
 	height_shift_range=0.1, shear_range=0.2, zoom_range=0.1,
 	fill_mode="nearest")
 
@@ -89,15 +92,27 @@ model = SmallerVGGNet.build(
 	depth=IMAGE_DIMS[2], classes=len(mlb.classes_),
 	finalAct="sigmoid")
 
+print(model.summary())
+
 # initialize the optimizer (SGD is sufficient)
 opt = Adam(lr=INIT_LR, decay=INIT_LR / EPOCHS)
+    
 
+def custom_loss(y_true, y_pred): #th_000_0
+	print('-----------')
+	print(y_true)
+	print(y_true.shape)
+	print(y_pred)
+	print(y_pred.shape)
+	print(keras.backend.ctc_decode(y_pred, 1, greedy=True, beam_width=100, top_paths=1))
+	print('-----------')
+	return K.abs(y_pred - y_true)
 # compile the model using binary cross-entropy rather than
 # categorical cross-entropy -- this may seem counterintuitive for
 # multi-label classification, but keep in mind that the goal here
 # is to treat each output label as an independent Bernoulli
 # distribution
-model.compile(loss="binary_crossentropy", optimizer=opt,
+model.compile(loss=custom_loss, optimizer=opt,  #TODO
 	metrics=["accuracy"])
 
 # train the network

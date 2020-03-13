@@ -115,10 +115,9 @@ test1=[]
 test2=[]
 i=-1
 idx_mode=0
-while i<60:
+while i<500:
     i+=1
     if close_to_target:
-        break
         last_mode=mode
         plot_x=[plot_x[-1]]
         plot_y=[plot_y[-1]] # curr pos
