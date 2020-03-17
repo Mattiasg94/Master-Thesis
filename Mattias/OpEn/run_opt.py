@@ -10,7 +10,7 @@ import math
 import time
 
 # -------Init ego
-(x_init, y_init, theta_init,r) = (0, 11, 0,0.5)
+(x_init, y_init, theta_init,r) = (0, 0, 0,0.5)
 (xref, yref, thetaref) = (10, 10, 0)
 (v_init, w_init) = (0, 0)
 Y_REF = [11, 10.99, 10.96, 10.91, 10.84, 10.76, 10.65, 10.53, 10.39, 10.24, 10.08, 9.91, 9.72, 9.53, 9.34, 9.14, 8.94, 8.74, 8.55, 8.35, 8.17, 7.99, 7.82, 7.67, 7.53, 7.4, 7.29, 7.19, 7.12, 7.06, 7.02, 7.0, 7.0, 7.03, 7.07, 7.13, 7.21, 7.3, 7.42, 7.55, 7.69, 7.85, 8.02, 8.2, 8.39, 8.58, 8.78, 8.98, 9.17, 9.37, 9.57, 9.76, 9.94, 10.11, 10.27, 10.42, 10.55, 10.67, 10.77, 10.85, 10.92, 10.97, 10.99]
@@ -21,7 +21,7 @@ Y_REF.extend([Y_REF[-1]]*len_traj*2)
 X_REF.extend([X_REF[-1]]*len_traj*2)
 # THETA_REF.insert(0,0)
 THETA_REF.extend([THETA_REF[-1]]*len_traj*2)
-modes=['traj','point','point']
+modes=['point','traj','point','point']
 mode=modes[0]
 run_with_tilde=False
 # -------Init Obstacles
@@ -211,7 +211,8 @@ while i<500:
         get_cone_const(X[t+1],Y[t+1],THETA[t+1],x_obs_future,y_obs_future,u_t[0])
         if np.sqrt(np.power(X[t+1]-x_obs_future,2)+np.power(Y[t+1]-y_obs_future,2)) <= (r_obs+r):
             collision = True
-        x, y, theta,x_tild, y_tild, theta_tild = model_dd_tilde(X[t+1], Y[t+1], THETA[t+1], u_t[0]-v_ref, u_t[1],xtraj[t],ytraj[t],thetatraj[t],u_t[0])
+        if run_with_tilde:
+            x, y, theta,x_tild, y_tild, theta_tild = model_dd_tilde(X[t+1], Y[t+1], THETA[t+1], u_t[0]-v_ref, u_t[1],xtraj[t],ytraj[t],thetatraj[t],u_t[0])
     curr_dist2ref = math.sqrt((X[0]-end_xref)**2+(Y[0]-end_yref)**2)
     avg_progress = math.sqrt((sum(X[1:])/len(X[1:])-end_xref)**2+(sum(Y[1:])/len(X[1:])-end_yref)**2) < (curr_dist2ref+just_changed_ref)
     progress = math.sqrt((X[-1]-end_xref)**2+ (Y[-1]-end_yref)**2) < (curr_dist2ref+just_changed_ref)

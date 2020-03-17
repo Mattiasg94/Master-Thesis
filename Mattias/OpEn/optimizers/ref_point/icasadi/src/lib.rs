@@ -11,7 +11,7 @@
 //! This file is part of OptimizationEngine
 //! (see https://alphaville.github.io/optimization-engine/)
 //!
-//! Generated at: 2020-03-05 11:00:02.883420
+//! Generated at: 2020-03-17 13:00:45.803280
 //!
 
 // #![no_std]
@@ -20,7 +20,7 @@
 const NUM_STATIC_PARAMETERS: usize = 14;
 
 /// Number of decision variables
-const NUM_DECISION_VARIABLES: usize = 10;
+const NUM_DECISION_VARIABLES: usize = 80;
 
 /// Number of ALM-type constraints (dimension of F1, i.e., n1)
 const NUM_CONSTRAINTS_TYPE_ALM: usize = 1;

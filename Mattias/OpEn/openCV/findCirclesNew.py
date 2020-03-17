@@ -62,7 +62,7 @@ def get_angle_and_pos(x1,x2,y1,y2):
     return xs,ys,angle
 
 while True:
-def get_measurements():
+# def get_measurements():
     l_h = cv2.getTrackbarPos("LH", "Tracking")
     dp=cv2.getTrackbarPos("dp", "Tracking")
     param1=cv2.getTrackbarPos("param1", "Tracking")
@@ -131,11 +131,11 @@ def get_measurements():
     color=(0,255,0)
     cv2.circle(output, (60,60), minRadius, color, thickness=1, lineType=8, shift=0)
     cv2.circle(output, (60,60), maxRadius, color, thickness=2, lineType=8, shift=0)
-    # cv2.imshow("output", output)
-    return xs,ys,angle,output
-    # key = cv2.waitKey(1)
-    # if key == 27:
-    #     break
+    cv2.imshow("output", output)
+    # return xs,ys,angle,output
+    key = cv2.waitKey(1)
+    if key == 27:
+        break
 
 cap.release()
 cv2.destroyAllWindows()

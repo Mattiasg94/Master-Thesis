@@ -1,14 +1,14 @@
 import time
 import casadi.casadi as cs
 #-------- Both
-ts = 1
-(nu, nx, nref, nu_init,N) = (2, 3, 3,2, 10)
+ts = 0.4
+(nu, nx, nref, nu_init,N) = (2, 3, 3,2, 40)
 nObs = (6)
 (Qx, Qy, Qtheta) = (10, 10, 0)
 (Rv, Rw) = (0, 0)
-(vmin, vmax) = (-0.5, 0.5)
-(wmin, wmax) = (-1, 1)
-(dv,dw)=(0.1,0.5)
+(vmin, vmax) = (0, 0.52)
+(wmin, wmax) = (-3, 3)
+(dv,dw)=(0.1,0.05)
 
 def model_dd(x, y, theta, v, w):
     x += ts*cs.cos(theta)*v
@@ -34,3 +34,5 @@ just_changed_ref = 0
 justChanged = False
 close_to_target= False
 last_time=time.time()
+# ------- Camera setup
+first_cam_measurment=True
