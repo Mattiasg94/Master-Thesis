@@ -2,6 +2,7 @@
 #include "SoftwareSerial.h"
 SoftwareSerial serial_connection(11, 10);//Create a serial connection with TX and RX on these pins
 
+// Set up for recieving floats
 const byte numChars = 64;
 char receivedChars[numChars];
 char tempChars[numChars];        // temporary array for use when parsing
@@ -9,16 +10,27 @@ char tempChars[numChars];        // temporary array for use when parsing
 // variables to hold the parsed data
 float uvrfloatFromPC;
 float uvlfloatFromPC;
-int RightWheelPin = 9;
-int Imax = 0.140;
-int Rmax = 64.287;
-float r = 0.07;
-float k = 0.0232;
+
+// Pin assignments
+int RightWheelPin = 6;
+int LeftWheelPin = 9;
+
+// Constants and variables to find
+//float Imax = 0.140;
+//float Rmax = 64.287;  
+float Vmax = 9;       // Max voltage
+float r = 0.07/2;     // radius of wheel
+float kw = 0.0232;    // Motor constant, found online 
+float k = 0.16294;    // Slope of y=kx+m of IR_loss vs w
+float m = 0.6613;     // m in y=kx+m
+float IR_loss_r, IR_loss_l;
+
+// Bools 
 boolean newData = false;
+
+// PWM floats
 float PWM_r;
 float PWM_l;
-int uvrintFromPC;
-
 //============
 
 void setup() {
@@ -96,19 +108,30 @@ void parseData() {      // splits the data into its parts, converts chars to flo
 //============
 
 void showParsedData() {
-   serial_connection.print("Float1:");
+   serial_connection.print("Float:");
    serial_connection.println(uvrfloatFromPC);
-   //serial_connection.print("Float2:");
-   //serial_connection.println(uvlfloatFromPC);
+   serial_connection.print("Float2:");
+   serial_connection.println(uvlfloatFromPC);
 }
 
 //===========
 
 void applyInput(){
-    uvrintFromPC = round(uvrfloatFromPC);
-    if(uvrintFromPC>=255){
-      uvrintFromPC = 255;
+    IR_loss_r = k*uvrfloatFromPC + m;
+    IR_loss_l = k*uvlfloatFromPC + m;
+    PWM_r = round((IR_loss_r+kw*uvrfloatFromPC/r)/Vmax);
+    PWM_l = round((IR_loss_l+kw*uvlfloatFromPC/r)/Vmax); 
+    
+//    uvrintFromPC = round(uvrfloatFromPC);
+//    uvlintFromPC = round(uvlfloatFromPC);
+    if(PWM_r>=255){
+      PWM_r = 255;
       }
-      
-    analogWrite(RightWheelPin, round(uvrfloatFromPC));
+    if(PWM_l>=255){
+      PWM_l = 255;
+      }  
+    
+    analogWrite(RightWheelPin, PWM_r);
+    analogWrite(LeftWheelPin, PWM_l);
+    
 }
