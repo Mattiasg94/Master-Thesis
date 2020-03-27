@@ -17,25 +17,21 @@ for j=1:length(obstacles)
     y_iter = 3*N+2;
     th_iter = 3*N+3;
     for i = 1:N            
-        if sqrt((Z(x_iter)-obstacles{j}(1))^2   +   (Z(y_iter)-obstacles{j}(2))^2)   <= 2
+        if  sqrt((Z(x_iter)-obstacles{j}(1))^2 + (Z(y_iter)-obstacles{j}(2))^2) <= 3
             obstacles{j} = A_obstacles*obstacles{j}+B_obstacles*obstacles_u{j};
             r = [Z(x_iter);Z(y_iter)]-obstacles{j}(1:2);
             vab = Z(8*N+1+(2*(i-1)))*[cos(Z(th_iter)); sin(Z(th_iter))] - [obstacles_u{j}(1);obstacles_u{j}(2)];
-            if norm([Z(x_iter) Z(y_iter)]-xr(1:2)) >= norm([obstacles{j}(1) obstacles{j}(2)]-xr(1:2))
-%                 dot(r,vab) >= 0  % <= collition course
-                  d_square=-norm(r)^2+dot(r,vab)^2/norm(vab)^2;
-                  cin(iter,1) = d_square+(r_obs)^2;
-                  cin(iter,1) = ((r_obs)^2)*norm(vab)^2-((norm(r)^2*norm(vab)^2)-dot(r,vab)^2);
+            
+            ego_dist = norm([Z(x_iter) Z(y_iter)]-[xr(1,k); xr(2,k)]); % xr(1:2), lägg till if statement
+            obst_dist = norm([obstacles{j}(1) obstacles{j}(2)]-[xr(1,k); xr(2,k)]);
+            if ego_dist >= obst_dist + 0.3 % <- Distance guard!
+                cin(iter,1) = ((r_obs)^2)*norm(vab)^2-((norm(r)^2*norm(vab)^2)-dot(r,vab)^2);
             end
         end
+        
         x_iter = x_iter + 3;
         y_iter = y_iter + 3;
         th_iter = th_iter + 3;
         iter = iter + 1;
     end
-    
 end
-
-
-
-

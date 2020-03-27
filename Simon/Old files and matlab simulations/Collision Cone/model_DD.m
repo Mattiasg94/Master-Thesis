@@ -41,7 +41,6 @@ feasible=1;
 close_obstacles=obstacles;
 close_obstacles_u=obstacles_u;
 for k = 1:Nsim+1
-%     Z0 = 0;
     if feasible
         [A,B] = Linearized_discrete_DD_model(x(k,:)',u(k,:)',dt);
         x(k+1,:) =A*x(k,:)' + B*u(k,:)';
