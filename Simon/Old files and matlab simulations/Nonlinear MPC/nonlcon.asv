@@ -1,4 +1,4 @@
-function [cin,ceq] = nonlcon(Z,N,xk,uk,dt,obstacles,obstacles_u,r_obs,xr,r_safety_margin,dist_cond,lines_st,lanewidth,lane_offset_x,lane_offset_y,lane_border_min,lane_border_max,road_radius,obstacles_lanes,plot_x_curv,plot_y_curv,obstacle_radiusa,center)
+function [cin,ceq] = nonlcon(Z,N,xk,uk,dt,obstacles,obstacles_u,r_obs,xr,r_safety_margin,dist_cond,lines_st,lanewidth,lane_offset_x,lane_offset_y,lane_border_min,road_radius,obstacles_lanes,plot_x_curv,plot_y_curv,obstacle_radiusa,center)
 ceq=zeros(N,1);
 
 %% Model constraint
@@ -55,16 +55,16 @@ for j=1:length(obstacles)
             vx_obs=0; % Hanteras då den projas fram.
             vy_obs=0;
             
-            v_obs_x = 0;
-            v_obs_y = 0;
-            r_vec = [x-x_impact;y-y_impact];
-            vab = [cos(th)*u-v_obs_x; sin(th)*u-v_obs_y];
-            rterm = (norm(r_vec))^2;
-            lterm = (norm(vab))^2; 
-            uterm = (dot(r_vec,vab))^2;
-            cone = (r_tot^2)*lterm-(rterm*lterm-uterm);
+            v_obs_x=0
+            v_obs_y=0
+            r_vec=cs.vertcat(x-x_obs,y-y_obs)
+            vab=cs.vertcat(cs.cos(theta)*uk[0]-v_obs_x,cs.sin(theta)*uk[0]-v_obs_y)
+            rterm = (cs.norm_2(r_vec))**2
+            lterm = (cs.norm_2(vab))**2
+            uterm = (cs.dot(r_vec,vab))**2
+            cone = (r_cone**2)*lterm-(rterm*lterm-uterm)
             
-%             rterm = sqrt((x-x_impact)^2+(y-y_impact)^2);
+            %    rterm = sqrt((x-x_impact)^2+(y-y_impact)^2);
 %             uterm = ((cos(th)*u-vx_obs)*(x-x_obs) + (sin(th)*u-vy_obs)*(y-y_impact))^2;
 %             lterm = sqrt((cos(th)*u-vx_obs)^2+(sin(th)*u-vy_obs)^2);
 %             cone = r_tot^2*lterm^2 - rterm^2*lterm^2 + uterm;
@@ -80,5 +80,4 @@ for j=1:length(obstacles)
         iter = iter + 1;
     end
 end
-% cin = [cin; r_circ_ego-lane_border_min; lane_border_max-r_circ_ego ];
 end

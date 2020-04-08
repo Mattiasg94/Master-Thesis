@@ -19,13 +19,12 @@ for i = 0:N-1
     %% Cost lane_cost
     lane1 = (lane_border_min+(lanewidth/2));
     lane2 = lane1+lanewidth;
-    dist_ymin = 12*(lane1-radius_ego);
-    dist_ymax = 12*(radius_ego-lane2);
-    lane_cost = lane_cost + (dist_ymin^3+10*dist_ymin)*(dist_ymin^3+10*dist_ymin>=0);
-    lane_cost = lane_cost + (dist_ymax^3+10*dist_ymax)*(dist_ymax^3+10*dist_ymax>=0);
+    dist_ymin = (lane1-radius_ego);
+    dist_ymax = (radius_ego-lane2);
+    lane_cost = lane_cost + subplus(dist_ymin^3+10*dist_ymin)*(dist_ymin^3+10*dist_ymin>=0);
+    lane_cost = lane_cost + dist_ymax^3+10*dist_ymax;
     
-    
-%     lane_keep_cost = lane_keep_cost + 500*(radius_ego - lines_st.reference_lane)^2;
+    lane_keep_cost = lane_keep_cost + 2000*(radius_ego - lines_st.reference_lane)^2;
     
 end
 obj_fun = Z(1:N*3)'*MQ*Z(1:N*3)+Z(N*6+1:N*8)'*MR*Z(N*6+1:N*8) + sum(MR_jerk(end-1:end-1)*Z(3*N+3:3:6*N-3)) + lane_cost+ lane_keep_cost;

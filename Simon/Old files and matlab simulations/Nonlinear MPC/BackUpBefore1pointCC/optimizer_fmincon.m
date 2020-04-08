@@ -2,7 +2,7 @@ function [Z,fval,exitflag,timerVal] = optimizer_fmincon(xk,uk,dt,dv,dw,Z0,...
                 MQ,MR,Mxr,Mur,Mu1_delta,Mu2_delta,N,lb,ub,obstacles,...
                 obstacles_u,r_obs,xr,lines_st,MR_jerk,r_safety_margin,...
                 x_offset,y_offset,lane_border_max,lane_border_min,lanewidth,...
-                dist_cond,road_radius,obstacles_lanes,plot_x_curv,plot_y_curv,obstacle_radius,warmstart,center)
+                dist_cond,road_radius,obstacles_lanes,plot_x_curv,plot_y_curv,obstacle_radius,warmstart)
 
 if (all(Z0==0) || (~warmstart))
     Z0=[zeros(N*3,1);zeros(N*3,1);zeros(N*2,1);zeros(N*2,1)]';
@@ -39,12 +39,10 @@ beq=[
     ];
 
 %% FMINCON - Interior, sqp, active-set
-
-
 obj_fun = @(Z) objective_func(dt,Z,MQ,MR,MR_jerk,N,obstacles,obstacles_u,lines_st,x_offset,y_offset,lane_border_max,lane_border_min,xr,lanewidth,dist_cond,obstacle_radius);
-nonl_con = @(Z) nonlcon(Z,N,xk,uk,dt,obstacles,obstacles_u,r_obs,xr,r_safety_margin,dist_cond,lines_st,lanewidth,x_offset,y_offset,lane_border_min,lane_border_max,road_radius,obstacles_lanes,plot_x_curv,plot_y_curv,obstacle_radius,center);
+nonl_con = @(Z) nonlcon(Z,N,xk,uk,dt,obstacles,obstacles_u,r_obs,xr,r_safety_margin,dist_cond,lines_st,lanewidth,x_offset,y_offset,lane_border_min,road_radius,obstacles_lanes,plot_x_curv,plot_y_curv,obstacle_radius);
 
-options = optimoptions('fmincon','Algorithm','sqp','MaxIterations',3000,'MaxFunctionEvaluations',3000,'Display','off'); %,'TolCon',1e-6
+options = optimoptions('fmincon','Algorithm','sqp','MaxIterations',7000,'MaxFunctionEvaluations',7000,'Display','off'); %,'TolCon',1e-6
 tic
 [Z,fval,exitflag] = fmincon(obj_fun,Z0,Ain,bin,Aeq,beq,lb,ub,nonl_con,options);
 %     disp('----COST----')
