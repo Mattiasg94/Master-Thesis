@@ -52,5 +52,5 @@ for i = 1:N
     end
 end
 MR_jerk = R_jerk*MR_jerk(:,1:end-1);
-
+MR_jerk = MR_jerk(1:end-1,:);
 

@@ -1,8 +1,8 @@
 function [Z,fval,exitflag,timerVal] = optimizer_fmincon(xk,uk,dt,dv,dw,Z0,...
                 MQ,MR,Mxr,Mur,Mu1_delta,Mu2_delta,N,lb,ub,obstacles,...
-                obstacles_u,r_obs,xr,lines_st,MR_jerk,r_safety_margin,...
-                x_offset,y_offset,lane_border_max,lane_border_min,lanewidth,...
-                dist_cond,road_radius,obstacles_lanes,plot_x_curv,plot_y_curv,obstacle_radius,warmstart,center)
+                obstacles_u,r_obs,xr,MR_jerk,r_safety_margin,...
+                lane_border_min,lanewidth,...
+                dist_cond,road_radius,obstacles_lanes,warmstart,center,barrier_weight)
 
 if (all(Z0==0) || (~warmstart))
     Z0=[zeros(N*3,1);zeros(N*3,1);zeros(N*2,1);zeros(N*2,1)]';
@@ -39,18 +39,16 @@ beq=[
     ];
 
 %% FMINCON - Interior, sqp, active-set
+obj_fun = @(Z) objective_func(Z,MQ,MR,MR_jerk,N,lane_border_min,lanewidth,barrier_weight,center);
+nonl_con = @(Z) nonlcon(Z,N,xk,uk,dt,obstacles,obstacles_u,r_obs,xr,r_safety_margin,dist_cond,lanewidth,road_radius,obstacles_lanes,center);
 
-
-obj_fun = @(Z) objective_func(dt,Z,MQ,MR,MR_jerk,N,obstacles,obstacles_u,lines_st,x_offset,y_offset,lane_border_max,lane_border_min,xr,lanewidth,dist_cond,obstacle_radius);
-nonl_con = @(Z) nonlcon(Z,N,xk,uk,dt,obstacles,obstacles_u,r_obs,xr,r_safety_margin,dist_cond,lines_st,lanewidth,x_offset,y_offset,lane_border_min,lane_border_max,road_radius,obstacles_lanes,plot_x_curv,plot_y_curv,obstacle_radius,center);
-
-options = optimoptions('fmincon','Algorithm','sqp','MaxIterations',3000,'MaxFunctionEvaluations',3000,'Display','off'); %,'TolCon',1e-6
+options = optimoptions('fmincon','Algorithm','sqp','Display','off','MaxIterations',7000,'MaxFunctionEvaluations',7000); %,'TolCon',1e-6
 tic
 [Z,fval,exitflag] = fmincon(obj_fun,Z0,Ain,bin,Aeq,beq,lb,ub,nonl_con,options);
-%     disp('----COST----')
-%     disp(fval)
-%     disp('------------')
 timerVal = toc;
+
+
+%% ALLA ANDRA OPTIMIZERS, EJ FUNGERANDE
 
 %% YALMIP - IPOPT
 % % SNOPT - An augmented Lagrangian merit function ensures convergence from an arbitrary point. Infeasible problems are treated methodically via elastic bounds on the nonlinear constraints. SNOPT allows the nonlinear constraints to be violated (if necessary) and minimizes the sum of such violations.
