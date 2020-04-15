@@ -85,14 +85,14 @@ for k = 1:Nsim
             obstacles{i}(2) = get_y_from_lane(obstacles_lanes{i}, obstacles{i}(1),plot_x_curv,plot_y_curv,lanewidth);
         end
         %% MATTIAS KOLLA HÄR:
-        v_init = u(1);
-        x_init = Z(3*N+1);
-        y_init = Z(3*N+2);
-        theta_init = Z(3*N+3);
+        v_init = u(1+2);
+        x_init = Z(3*N+1+3);
+        y_init = Z(3*N+2+3);
+        theta_init = Z(3*N+3+3);
         v_tang_ego=get_tang_v_ego(v_init,x_init,y_init,theta_init,center); %(v,x,y,th,center)
         r_circ_ego = sqrt( (x_init - center(1))^2 + (y_init-center(2))^2 );
         r_circ_obs = road_radius_frm_lane(obstacles_lanes{i},road_radius,lanewidth); % sqrt( (obstacles{i}(1) - center(1))^2 + (obstacles{i}(2)-center(2))^2 );
-        [~, t_impact]=get_intersection_time(x_init,y_init,v_tang_ego,obstacles{i}(1),obstacles{i}(2),obstacles_u{i}(1),r_circ_ego,r_circ_obs,center);
+        [t_impact, ~]=get_intersection_time(x_init,y_init,v_tang_ego,obstacles{i}(1),obstacles{i}(2),obstacles_u{i}(1),r_circ_ego,r_circ_obs,center);
         [x_imp,y_imp,~,~]=obs_move_line(t_impact,obstacles_lanes{i}, obstacles_u{i}(1), obstacles{i}(1), obstacles{i}(2),center, road_radius, lanewidth);
         hold on
         impactPlot = plot(x_imp,y_imp,'yo','MarkerSize',5, 'MarkerFaceColor','k'); % Plot collision obs
