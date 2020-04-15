@@ -2,7 +2,7 @@ function [Z,fval,exitflag,timerVal] = optimizer_fmincon(xk,uk,dt,dv,dw,Z0,...
                 MQ,MR,Mxr,Mur,Mu1_delta,Mu2_delta,N,lb,ub,obstacles,...
                 obstacles_u,r_obs,xr,MR_jerk,r_safety_margin,...
                 lane_border_min,lanewidth,...
-                dist_cond,road_radius,obstacles_lanes,warmstart,center,barrier_weight)
+                dist_cond,road_radius,obstacles_lanes,warmstart,center,barrier_weight,Qt)
 
 if (all(Z0==0) || (~warmstart))
     Z0=[zeros(N*3,1);zeros(N*3,1);zeros(N*2,1);zeros(N*2,1)]';
@@ -39,13 +39,13 @@ beq=[
     ];
 
 %% FMINCON - Interior, sqp, active-set
-obj_fun = @(Z) objective_func(Z,MQ,MR,MR_jerk,N,lane_border_min,lanewidth,barrier_weight,center);
+obj_fun = @(Z) objective_func(Z,MQ,MR,MR_jerk,N,lane_border_min,lanewidth,barrier_weight,center,Qt);
 nonl_con = @(Z) nonlcon(Z,N,xk,uk,dt,obstacles,obstacles_u,r_obs,xr,r_safety_margin,dist_cond,lanewidth,road_radius,obstacles_lanes,center);
 
 % MATTIAS här finns options:
 options = optimoptions('fmincon','Algorithm','sqp','Display','off','MaxFunctionEvaluations',40000,...
     'MaxIterations',40000,'FiniteDifferenceType','central','FunctionTolerance', 1.0000e-8,...
-    'OptimalityTolerance',1.0000e-04,'ConstraintTolerance', 1.0000e-02); %,'TolCon',1e-6
+    'OptimalityTolerance',1.0000e-04,'ConstraintTolerance', 1.0000e-02,'UseParallel', true,'ScaleProblem',true); %,'TolCon',1e-6
 tic
 % [Z,fval,exitflag] = fmincon(obj_fun,Z0,[],[],[],[],lb,ub,nonl_con,options);
 [Z,fval,exitflag] = fmincon(obj_fun,Z0,Ain,bin,Aeq,beq,lb,ub,nonl_con,options);

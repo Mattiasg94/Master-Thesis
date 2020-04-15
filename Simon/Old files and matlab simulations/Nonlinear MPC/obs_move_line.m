@@ -11,7 +11,7 @@ function [x, y,theta,w]=obs_move_line(dt, lane, v, x, y, center,road_radius,lane
     x = x_displaced + center(1);
     y = y_displaced + center(2);
     theta = th_new;
-    w = abs(th_new-curr_th)/dt; % TODO which is the right way?
+    w = (th_new-curr_th)/dt; % TODO which is the right way?
 end 
 
 

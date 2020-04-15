@@ -7,7 +7,6 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 % !!!! Run from initFile.m !!!!
-
 %% Simulate MPC
 for k = 1:Nsim
     % MXR is needed for traj.
@@ -24,12 +23,15 @@ for k = 1:Nsim
     
     % NOTE!!!!!!!!!!!
     warmstart = true;
+    if x(k,1) > 20
+        warmstart = false;
+    end
     
     [Z,fval,exitflag,timerVal] = optimizer_fmincon(x(k,:)',u(k,:)',dt,dv,...
         dw,Z0,MQ,MR,Mxr,Mur,Mu1_delta,Mu2_delta,N,lb,ub,obstacles,...
         obstacles_u,r_obs,xr,MR_jerk,r_safety_margin,...
         lane_border_min,lanewidth,dist_cont,road_radius,...
-        obstacles_lanes,warmstart,center,barrier_weight);
+        obstacles_lanes,warmstart,center,barrier_weight,Qt);
     Z0 = Z;
     Zx = Z(3*N+1:6*N);
     
@@ -82,19 +84,20 @@ for k = 1:Nsim
             [obstacles{i}(1), obstacles{i}(2)] = obs_move_line(dt, obstacles_lanes{i}, obstacles_u{i}(1), obstacles{i}(1), obstacles{i}(2), center,road_radius,lanewidth);
             obstacles{i}(2) = get_y_from_lane(obstacles_lanes{i}, obstacles{i}(1),plot_x_curv,plot_y_curv,lanewidth);
         end
-        
+        %% MATTIAS KOLLA HÄR:
         v_init = u(1);
         x_init = Z(3*N+1);
         y_init = Z(3*N+2);
         theta_init = Z(3*N+3);
         v_tang_ego=get_tang_v_ego(v_init,x_init,y_init,theta_init,center); %(v,x,y,th,center)
         r_circ_ego = sqrt( (x_init - center(1))^2 + (y_init-center(2))^2 );
-        r_circ_obs = sqrt( (obstacles{i}(1) - center(1))^2 + (obstacles{i}(2)-center(2))^2 );
-        [t_impact, arc]=get_intersection_time(x_init,y_init,v_tang_ego,obstacles{i}(1),obstacles{i}(2),obstacles_u{i}(1),r_circ_ego,r_circ_obs,center);
+        r_circ_obs = road_radius_frm_lane(obstacles_lanes{i},road_radius,lanewidth); % sqrt( (obstacles{i}(1) - center(1))^2 + (obstacles{i}(2)-center(2))^2 );
+        [~, t_impact]=get_intersection_time(x_init,y_init,v_tang_ego,obstacles{i}(1),obstacles{i}(2),obstacles_u{i}(1),r_circ_ego,r_circ_obs,center);
         [x_imp,y_imp,~,~]=obs_move_line(t_impact,obstacles_lanes{i}, obstacles_u{i}(1), obstacles{i}(1), obstacles{i}(2),center, road_radius, lanewidth);
-        
         hold on
-        plot(x_imp,y_imp,'yo','MarkerSize',5, 'MarkerFaceColor','k') % Plot collision obs
+        impactPlot = plot(x_imp,y_imp,'yo','MarkerSize',5, 'MarkerFaceColor','k'); % Plot collision obs
+%         pause(0.01)
+%         delete(impactPlot)
     end
     
     %% Save the previous input vector
