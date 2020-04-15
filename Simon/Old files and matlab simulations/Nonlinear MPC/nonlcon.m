@@ -39,14 +39,14 @@ for j=1:length(obstacles)
         r_circ_ego = sqrt(  (x-center(1))^2 + (y-center(2))^2  );
         r_circ_obs = sqrt(  (x_obs-center(1))^2 + (y_obs-center(2))^2  );
 
-        if (ego_dist>=obs_dist) && ( sqrt((x_obs-x)^2+(y_obs-y)^2) <= dist_cond )
+        if (ego_dist>=obs_dist) && ( sqrt((x_obs-x)^2+(y_obs-y)^2) <= dist_cond ) % 
             v_tan = get_tang_v_ego(v,x,y,th,center);  
             [t_impact,~] = get_intersection_time(x,y,v_tan,x_obs,y_obs,v_obs,r_circ_ego,r_circ_obs,center);
             [x_impact, y_impact, ~, ~] = obs_move_line(t_impact, obstacles_lanes{j}, v_obs, x_obs, y_obs,center,road_radius,lanewidth);
 
             %% Formulas:            
-            v_obs_x = 0;
-            v_obs_y = 0;
+            v_obs_x = 0; % cos(th_obs)*v_obs;
+            v_obs_y = 0; % sin(th_obs)*v_obs;
             r_vec = [x-x_impact; y-y_impact];
             vab = [cos(th)*v-v_obs_x; 
                    sin(th)*v-v_obs_y];
@@ -59,6 +59,8 @@ for j=1:length(obstacles)
             cin(iter,1) = 0;
         end
         
+%         cin(iter+1:iter+2,1) = [r_circ_ego-(1.0000e+003); (1.0030e+003)-r_circ_ego ]; % Försök med hårda constraint på border
+
         %% Update iters:
         x_iter = x_iter + 3;
         y_iter = y_iter + 3;
@@ -68,7 +70,5 @@ for j=1:length(obstacles)
     end
     
 end
-% cin = [cin; r_circ_ego-lane_border_min; lane_border_max-r_circ_ego ]; % Försök med hårda constraint på border
-
 
 end

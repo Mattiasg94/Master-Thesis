@@ -25,10 +25,8 @@ ub=[ub1,ub2,ub3,ub4];
 Z0=0;
 MQ=[];
 MR=[];
-for i=1:N-1
-   MQ=blkdiag(MQ,Q);  
-end
 for i=1:N
+   MQ=blkdiag(MQ,Q); 
    MR=blkdiag(MR,R);    
 end
 Mxr=[];

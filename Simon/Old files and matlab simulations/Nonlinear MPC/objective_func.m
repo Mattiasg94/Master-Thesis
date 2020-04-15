@@ -14,13 +14,18 @@ for i = 0:N-1
     %% Cost lane_cost
     lane1 = (lane_border_min+(lanewidth/2));
     lane2 = lane1+lanewidth;
+%     dist_ymin = 1*(lane1-radius_ego);
+%     dist_ymax = 1*(radius_ego-lane2);
     dist_ymin = 12*(lane1-radius_ego);
     dist_ymax = 12*(radius_ego-lane2);
 
-    lane_cost = lane_cost + barrier_weight*(dist_ymin^3+10*dist_ymin)*((barrier_weight*(dist_ymin^3+10*dist_ymin))>=0.1);
-    lane_cost = lane_cost + barrier_weight*(dist_ymax^3+10*dist_ymax)*((barrier_weight*(dist_ymax^3+10*dist_ymax))>=0.1);
+%     lane_cost = lane_cost + 1*dist_ymin*(dist_ymin>=0);
+%     lane_cost = lane_cost + 1*dist_ymax*(dist_ymax>=0);
+    lane_cost = lane_cost + barrier_weight*(dist_ymin^3+10*dist_ymin)*((barrier_weight*(dist_ymin^3+10*dist_ymin))>=0);
+    lane_cost = lane_cost + barrier_weight*(dist_ymax^3+10*dist_ymax)*((barrier_weight*(dist_ymax^3+10*dist_ymax))>=0);
 
 end
-obj_fun = Z(1:N*3)'*MQ*Z(1:N*3)+Z(N*6+1:N*8)'*MR*Z(N*6+1:N*8) + sum(abs(MR_jerk(end-1:end-1)*Z(3*N+3:3:6*N-3))) + lane_cost;
-
+Q = MQ(1:3,1:3);
+obj_fun = Z(1:(N-1)*3)'*MQ*Z(1:(N-1)*3) + Z(N*6+1:N*8)'*MR*Z(N*6+1:N*8);  % + sum(abs(MR_jerk(end-1:end-1)*Z(3*N+3:3:6*N-3))) + lane_cost;
+obj_fun = obj_fun +  50*Z(3*(N-1)+1:N*3)'*Q*Z(3*(N-1)+1:N*3);
 end
