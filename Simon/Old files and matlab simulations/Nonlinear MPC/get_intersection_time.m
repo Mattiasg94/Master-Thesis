@@ -1,18 +1,24 @@
 function [t_impact, arc] = get_intersection_time(x,y,v,x_obs,y_obs,v_obs,r_circ_ego,r_circ_obs,center)
 v_obs = -v_obs;
 
+% if r_circ_ego > r_circ_obs
+%     radius_avg = r_circ_obs+(r_circ_ego-r_circ_obs);
+% else
+%     radius_avg = r_circ_obs-(r_circ_ego-r_circ_obs);
+% end
 if r_circ_ego > r_circ_obs
-    radius_avg = r_circ_obs+(r_circ_ego-r_circ_obs);
+    radius_avg = r_circ_obs+(r_circ_ego-r_circ_obs)/2;
 else
-    radius_avg = r_circ_obs-(r_circ_ego-r_circ_obs);
+    radius_avg = r_circ_ego-(r_circ_obs-r_circ_ego)/2;
 end
+
 x = x-center(1);
 y = y-center(2);
 x_obs = x_obs-center(1);
 y_obs = y_obs-center(2);
 th_ego=atan2(y,x);
 th_obs=atan2(y_obs,x_obs);
-th=sqrt(th_obs-th_ego)^2;
+th=sqrt((th_obs-th_ego)^2);
 arc = radius_avg*th;
 t_impact=arc/(v+v_obs);
 end

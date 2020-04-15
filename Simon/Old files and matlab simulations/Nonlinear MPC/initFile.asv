@@ -11,8 +11,8 @@ close all;
 
 %% Scenarios
 test_scenario = false;
-scenario1 = true; 
-scenario2 = false; 
+scenario1 = false; 
+scenario2 = true; 
 scenario3 = false; 
 scenario4 = false; 
 
@@ -42,17 +42,20 @@ lb_u = [0 -3];                  % Lowerbound input, lb_u = [v w]
 ub_u = [3 3];                   % Upperbound input, lb_u = [v w]
 lb = [-inf -inf -inf lb_x -inf -inf lb_u];      % Lowerbound  vec, [x_tilde y_tilde theta_tilde lb_x v_tilde w_tilde lb_u]
 ub = [ inf  inf  inf ub_x  inf  inf ub_u];      % Upperbound  vec, [x_tilde y_tilde theta_tilde ub_x v_tilde w_tilde ub_u]
-dv = 1;              % Max acceleration during one timestep
-dw = 1;              % Max angular acceleration during one timestep
-Q=[25 0 0;          % x state weight
-    0 20 0;         % y state weight
+dv = 0.5;              % Max acceleration during one timestep
+dw = 0.5;              % Max angular acceleration during one timestep
+Q=[10 0 0;          % x state weight
+    0 10 0;         % y state weight
     0 0 1];          % theta state weight
+%Q=[10 0 0;          % Funkar för ett snabbt obs
+%     0 10 0;         
+%     0 0 1];         
 Qt=50*Q;           
 R=[1 0;              % v input weight
     0 1];            % w input weight
 R_jerk = 1;          % Term that penalizes the high amounts of jerk [accelerations]
 dist_cont = 5;       % Distance for when collision cone shall be activated 
-barrier_weight = 10;
+barrier_weight = 150;
 grade = 4;           % Grade of curve fitting polynomial, used for infeasibility check
 Error_is_small = true;  % Boolean to control if curvefitting error is small enough
 u_saved = u0;           % Initial u_saved vector, used to store values from previously feasible solutions
@@ -106,9 +109,9 @@ elseif scenario1
     
 elseif scenario2
     obstacles_lanes =  {1,2}; %,[1]};        % Lane numbers of obstacles
-    obstacles = {[13; get_y_from_lane(obstacles_lanes{1}, 13, plot_x_curv,plot_y_curv,lanewidth); 0],...
+    obstacles = {[13; get_y_from_lane(obstacles_lanes{1}, 13, plot_x_curv,plot_y_curv,lanewidth); 0],......
                  [30; get_y_from_lane(obstacles_lanes{2}, 30, plot_x_curv,plot_y_curv,lanewidth); 0]}; %, [20; get_y_from_lane(obstacles_lanes{2}, 20, plot_x_curv,plot_y_curv,lanewidth); 0]}; % (x, y ,theta) for obstacle
-    v_obs = [0.1; -0.2];
+    v_obs = [0.2; -0.2];
     for i = 1:length(obstacles)
         obstacle_radius(i) = [road_radius_frm_lane(obstacles_lanes{i},road_radius,lanewidth)  ]; % road_radius_frm_lane(obstacles_lanes{2},road_radius,lanewidth)];
         obstacles_u{i} = [v_obs(i); -v_obs(i)/obstacle_radius(i)]; %, [v_obs(2); -v_obs(2)/obstacle_radius(2)]};       % Input values for obstacles

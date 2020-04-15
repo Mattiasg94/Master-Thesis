@@ -21,6 +21,7 @@ for k = 1:Nsim
         Mxr = [Mxr;[xr(1);xr(2);xr(3)]];
     end
     
+
     % NOTE!!!!!!!!!!!
     warmstart = true;
     if x(k,1) > 20
@@ -31,7 +32,7 @@ for k = 1:Nsim
         dw,Z0,MQ,MR,Mxr,Mur,Mu1_delta,Mu2_delta,N,lb,ub,obstacles,...
         obstacles_u,r_obs,xr,MR_jerk,r_safety_margin,...
         lane_border_min,lanewidth,dist_cont,road_radius,...
-        obstacles_lanes,warmstart,center,barrier_weight,Qt);
+        obstacles_lanes,warmstart,center,barrier_weight,Qt,options);
     Z0 = Z;
     Zx = Z(3*N+1:6*N);
     
@@ -73,6 +74,11 @@ for k = 1:Nsim
     %     end
     
     %% Impact check
+    for i = 1:length(obstacles)
+        if ~isempty(impactPlot)
+            delete(impactPlot(i))
+        end
+    end
     for i=1:length(obstacles)
         plot_obstacles(i) = viscircles([obstacles{i}(1),obstacles{i}(2)],0.1,'Color','r','Linewidth',2);
         plot_obstacles_radius(i) = viscircles([obstacles{i}(1),obstacles{i}(2)],r_obs,'LineStyle','--','Color','r','Linewidth',0.8);
@@ -85,7 +91,7 @@ for k = 1:Nsim
             obstacles{i}(2) = get_y_from_lane(obstacles_lanes{i}, obstacles{i}(1),plot_x_curv,plot_y_curv,lanewidth);
         end
         %% MATTIAS KOLLA HÄR:
-        v_init = u(1+2);
+        v_init = Z(8*N+1+2); % u(k+1,1);
         x_init = Z(3*N+1+3);
         y_init = Z(3*N+2+3);
         theta_init = Z(3*N+3+3);
@@ -94,10 +100,10 @@ for k = 1:Nsim
         r_circ_obs = road_radius_frm_lane(obstacles_lanes{i},road_radius,lanewidth); % sqrt( (obstacles{i}(1) - center(1))^2 + (obstacles{i}(2)-center(2))^2 );
         [t_impact, ~]=get_intersection_time(x_init,y_init,v_tang_ego,obstacles{i}(1),obstacles{i}(2),obstacles_u{i}(1),r_circ_ego,r_circ_obs,center);
         [x_imp,y_imp,~,~]=obs_move_line(t_impact,obstacles_lanes{i}, obstacles_u{i}(1), obstacles{i}(1), obstacles{i}(2),center, road_radius, lanewidth);
+
         hold on
-        impactPlot = plot(x_imp,y_imp,'yo','MarkerSize',5, 'MarkerFaceColor','k'); % Plot collision obs
-%         pause(0.01)
-%         delete(impactPlot)
+        impactPlot(i) = plot(x_imp,y_imp,'yo','MarkerSize',5, 'MarkerFaceColor','k'); % Plot collision obs
+        
     end
     
     %% Save the previous input vector
