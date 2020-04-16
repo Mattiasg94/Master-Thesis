@@ -39,7 +39,7 @@ beq=[
     ];
 
 %% FMINCON - Interior, sqp, active-set
-obj_fun = @(Z) objective_func(Z,MQ,MR,MR_jerk,N,lane_border_min,lanewidth,barrier_weight,center,Qt);
+obj_fun = @(Z) objective_func(Z,MQ,MR,MR_jerk,N,lane_border_min,lanewidth,barrier_weight,center,Qt,obstacles,xr,dist_cond);
 nonl_con = @(Z) nonlcon(Z,N,xk,uk,dt,obstacles,obstacles_u,r_obs,xr,r_safety_margin,dist_cond,lanewidth,road_radius,obstacles_lanes,center);
 
 tic

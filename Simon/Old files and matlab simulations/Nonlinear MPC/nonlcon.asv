@@ -39,7 +39,7 @@ for j=1:length(obstacles)
         r_circ_ego = sqrt(  (x-center(1))^2 + (y-center(2))^2  );
         r_circ_obs = sqrt(  (x_obs-center(1))^2 + (y_obs-center(2))^2  );
 
-        if (x<=x_obs) && ( sqrt((x_obs-x)^2+(y_obs-y)^2) <= dist_cond ) % 
+        if (x>=x_obs) && ( sqrt((x_obs-x)^2+(y_obs-y)^2) <= dist_cond ) % 
             v_tan = get_tang_v_ego(v,x,y,th,center);  
             [t_impact,~] = get_intersection_time(x,y,v_tan,x_obs,y_obs,v_obs,r_circ_ego,r_circ_obs,center);
             [x_impact, y_impact, ~, ~] = obs_move_line(t_impact, obstacles_lanes{j}, v_obs, x_obs, y_obs,center,road_radius,lanewidth);

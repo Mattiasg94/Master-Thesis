@@ -29,7 +29,6 @@ if test_scenario
     end
     reference_lane_number = 1;
     xr = [Length; get_y_from_lane(reference_lane_number, Length, plot_x_curv,plot_y_curv,lanewidth) ; 0];       % Reference state
-    
     xref_final = xr(1);
     yref_final = xr(2);
     th_final = xr(3);
@@ -56,7 +55,7 @@ elseif scenario1
     
     u0 = [0;0];                   % Initial input
     lines_st.lanes = [1; 2; 3];     % Line numbers
-    road_radius = 1000;             % Radius of road
+    road_radius = 100;             % Radius of road
     num_lines = length(lines_st.lanes);        % Number of lanes
     lanewidth = 1;                              % Width of lane
     lane_border_max = road_radius+num_lines*lanewidth;  % Radius to max border of track

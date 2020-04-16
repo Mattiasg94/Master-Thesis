@@ -14,7 +14,7 @@ for k = 1:Nsim
     [xr(1), xr(2)] = move_ref_point( x(k,1), x(k,2), xref_final, yref_final, reference_lane_number, center, ub_u(1)*N*dt+round(0.33*N), road_radius, lanewidth);
 %     xr(1) = xref_final;
 %     xr(2) = yref_final;
-    plot(xr(1),xr(2),'.b');
+    %plot(xr(1),xr(2),'.b');
     
     for i = 1:N
         % Mxr = [Mxr;[X_REF(k+i);Y_REF(k+i);THETA_REF(k+i)]];
