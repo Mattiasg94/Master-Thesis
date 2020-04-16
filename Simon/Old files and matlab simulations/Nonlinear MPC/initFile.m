@@ -11,10 +11,10 @@ close all;
 
 %% Scenarios
 test_scenario = false;
-scenario1 = false;
+scenario1 = true;
 scenario2 = false;
 scenario3 = false; % No logic behind this
-scenario4 = true;
+scenario4 = false;
 
 %% OBSTACLES
 if test_scenario
@@ -37,8 +37,12 @@ elseif scenario1
     %% Hyperparameters
     options = optimoptions('fmincon','Algorithm','sqp','Display','off','MaxFunctionEvaluations',40000,...
         'MaxIterations',40000,'FiniteDifferenceType','central','FunctionTolerance', 1.0000e-8,...
-        'OptimalityTolerance',1.0000e-04,'ConstraintTolerance', 1.0000e-02,'UseParallel', true,'ScaleProblem',true); %,'TolCon',1e-6
-    
+        'OptimalityTolerance',1.0000e-04,'ConstraintTolerance', 1.0000e-02,'UseParallel', true,'ScaleProblem',true,...
+        'HessianApproximation','lbfgs','MaxSQPIter',10000000); 
+    % Interior-point kan fungerar med extra tuning. Bör skapa separata
+    % scenario filer för alla. 
+    % HessianApproximation Ser ingen större skillnad
+    % MaxSQPIter ingen skillnad
     
     N = 10;          % Prediction Horizon
     Nsim = 80;      % Simulation steps
@@ -76,8 +80,8 @@ elseif scenario1
         0 1];            % w input weight
     R_jerk = 1;          % Term that penalizes the high amounts of jerk [accelerations]
     dist_cont = 5;       % Distance for when collision cone shall be activated
-    barrier_weight = 150; % LINEAR BARRIER!
-    
+%     barrier_weight = 150; % LINEAR BARRIER!
+    barrier_weight = 10; % Noninear BARRIER!
     grade = 4;           % Grade of curve fitting polynomial, used for infeasibility check
     Error_is_small = true;  % Boolean to control if curvefitting error is small enough
     u_saved = u0;           % Initial u_saved vector, used to store values from previously feasible solutions
@@ -356,4 +360,5 @@ feasible = 1;                       % Variable to check if solution is feasible.
 xlim([0 40])
 ylim([-3 10])
 impactPlot = [];
+output_saved = [];
 model_DD;

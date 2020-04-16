@@ -24,11 +24,8 @@ for k = 1:Nsim
 
     % NOTE!!!!!!!!!!!
     warmstart = true;
-    if x(k,1) > 20
-        warmstart = false;
-    end
     
-    [Z,fval,exitflag,timerVal] = optimizer_fmincon(x(k,:)',u(k,:)',dt,dv,...
+    [Z,fval,exitflag,timerVal,output] = optimizer_fmincon(x(k,:)',u(k,:)',dt,dv,...
         dw,Z0,MQ,MR,Mxr,Mur,Mu1_delta,Mu2_delta,N,lb,ub,obstacles,...
         obstacles_u,r_obs,xr,MR_jerk,r_safety_margin,...
         lane_border_min,lanewidth,dist_cont,road_radius,...
@@ -123,7 +120,7 @@ for k = 1:Nsim
     if abs(x(k+1,1)-xr(1))<0.2 && abs(x(k+1,2)-xr(2))<0.2 && abs(x(k+1,3)-xr(3))<0.2
         break
     end
-    
+    output_saved{k} = output;
 end
 
 disp('Average optimizer time: ')
