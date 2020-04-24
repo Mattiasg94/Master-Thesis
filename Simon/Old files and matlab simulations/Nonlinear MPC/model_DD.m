@@ -7,8 +7,29 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 % !!!! Run from initFile.m !!!!
+output.Lambda.eqlin=0
+output.Lambda.eqnonlin=0
+output.Lambda.ineqlin=0
+output.Lambda.ineqnonlin=0
+output.Lambda.lower=0
+output.Lambda.upper=0
+active_const_lst =[]
 %% Simulate MPC
 for k = 1:Nsim
+    output.Lambda.ineqlin
+    a1=sum(output.Lambda.eqlin~=0);
+    a2=sum(output.Lambda.eqnonlin~=0);
+    a3=sum(output.Lambda.ineqlin~=0);
+    a4=sum(output.Lambda.ineqnonlin~=0);
+    a5=sum(output.Lambda.lower~=0);
+    a6=sum(output.Lambda.upper~=0);
+    if any([a1 a2 a3 a4 a5 a6])
+        1;
+    end
+    active_const_lst=[active_const_lst a1+a2+a3+a4+a5+a6];
+    
+    
+    
     % MXR is needed for traj.
     Mxr = [];
     [xr(1), xr(2)] = move_ref_point( x(k,1), x(k,2), xref_final, yref_final, reference_lane_number, center, ub_u(1)*N*dt+round(0.33*N), road_radius, lanewidth);
@@ -140,30 +161,30 @@ for k = 1:Nsim
     if abs(x(k+1,1)-xr(1))<0.2 && abs(x(k+1,2)-xr(2))<0.2 && abs(x(k+1,3)-xr(3))<0.2
         break
     end
-%     output_saved{k} = output;
+    output_saved{k} = output;
 end
 %%
 disp('Average optimizer time: ')
 disp(mean(timerSave))
 
-for i = 1:length(output_saved)
-    constraintviolation(i)= output_saved{i}.constrviolation;
-    firstOrdOpt(i)= output_saved{i}.firstorderopt;
-    mess{i}= output_saved{i}.message;
-end
+% for i = 1:length(output_saved)
+%     constraintviolation(i)= output_saved{i}.constrviolation;
+%     firstOrdOpt(i)= output_saved{i}.firstorderopt;
+%     mess{i}= output_saved{i}.message;
+% end
 % figure(2)
 % plot(linspace(0,40,length(constraintviolation)),constraintviolation)
 
 %% 
-figure(3);
-plot(x(1:length(output_saved)+1,1),timerSave,'b')
+% figure(3);
+% plot(x(1:length(output_saved)+1,1),timerSave,'b')
 % hold on
 % plot(x(1:length(output_saved)+1,1),ones(1,length(x(1:length(output_saved)+1,1)))*mean(timerSave),'r')
 % Scen 4
 % plot(x(1:length(output_saved),1),timerSave(1,1:length(output_saved)),'b')
 % plot(x(1:length(output_saved),1),ones(1,length(x(1:length(output_saved),1)))*mean(timerSave),'r')
-xlabel('x position')
-ylabel('Computation time')
+% xlabel('x position')
+% ylabel('Computation time')
 %% Scenario 1:
 % Max constraint violation: 9.5470e-003 Min: 2.7456e-009
 % Avg. opti Time:   2.1266e+000

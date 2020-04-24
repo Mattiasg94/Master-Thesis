@@ -68,8 +68,8 @@ elseif scenario1
         0 10 0;         % y state weight
         0 0 0];          % theta state weight
     Qt=50*Q;
-    R=[1 0;              % v input weight
-        0 1];            % w input weight
+    R=[0 0;              % v input weight
+        0 0];            % w input weight
     R_jerk = 1;          % Term that penalizes the high amounts of jerk [accelerations]
     dist_cont = 5;       % Distance for when collision cone shall be activated
     %     barrier_weight = 150; % LINEAR BARRIER!

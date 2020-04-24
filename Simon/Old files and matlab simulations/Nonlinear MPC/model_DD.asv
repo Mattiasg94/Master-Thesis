@@ -7,8 +7,25 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 % !!!! Run from initFile.m !!!!
+output.Lambda.eqlin=0
+output.eqnonlin=0
+output.ineqlin=0
+output.ineqnonlin=0
+output.lower=0
+output.upper=0
 %% Simulate MPC
 for k = 1:Nsim
+    
+    a1=sum(output.Lambda.eqlin~=0);
+    a2=sum(output.eqnonlin~=0);
+    a3=sum(output.ineqlin~=0);
+    a4=sum(output.ineqnonlin~=0);
+    a5=sum(output.lower~=0);
+    a6=sum(output.upper~=0);
+    active_const_lst=[active_const_lst,a1+a2+a3+a4+a5+a6];
+    
+    
+    
     % MXR is needed for traj.
     Mxr = [];
     [xr(1), xr(2)] = move_ref_point( x(k,1), x(k,2), xref_final, yref_final, reference_lane_number, center, ub_u(1)*N*dt+round(0.33*N), road_radius, lanewidth);
@@ -157,10 +174,11 @@ end
 %% 
 figure(3);
 plot(x(1:length(output_saved)+1,1),timerSave,'b')
-hold on
+% hold on
 % plot(x(1:length(output_saved)+1,1),ones(1,length(x(1:length(output_saved)+1,1)))*mean(timerSave),'r')
 % Scen 4
-plot(x(1:length(output_saved)-8,1),timerSave,'b')
+% plot(x(1:length(output_saved),1),timerSave(1,1:length(output_saved)),'b')
+% plot(x(1:length(output_saved),1),ones(1,length(x(1:length(output_saved),1)))*mean(timerSave),'r')
 xlabel('x position')
 ylabel('Computation time')
 %% Scenario 1:
