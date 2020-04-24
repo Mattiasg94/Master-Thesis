@@ -52,6 +52,6 @@ for i = 1:N
     y_iter = y_iter + 3;
 end
 Q = MQ(1:3,1:3);
-obj_fun = Z(1:(N-1)*3)'*MQ*Z(1:(N-1)*3) + Z(N*6+1:N*8)'*MR*Z(N*6+1:N*8) + sum(abs(MR_jerk(end-1:end-1)*Z(3*N+3:3:6*N-3))) + lane_cost+lane_keeping_cost;
+obj_fun = Z(1:(N-1)*3)'*MQ*Z(1:(N-1)*3) + Z(N*6+1:N*8)'*MR*Z(N*6+1:N*8) + Z(3*N+3:3:6*N-3)'*(MR_jerk(end-1:end-1)*Z(3*N+3:3:6*N-3)) + lane_cost + lane_keeping_cost;
 obj_fun = obj_fun +  Z(3*(N-1)+1:N*3)'*Qt*Z(3*(N-1)+1:N*3);
 end

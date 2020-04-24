@@ -30,17 +30,15 @@ for j=1:length(obstacles)
         v = Z(v_iter);
         x_obs = obstacles{j}(1);
         y_obs = obstacles{j}(2);
-        th_obs = obstacles{j}(3);
         v_obs = obstacles_u{j}(1); % Constant
-        w_obs = obstacles_u{j}(2); % Constant
-        
-        ego_dist = sqrt((x-xr(1))^2+(y-xr(2))^2);
-        obs_dist = sqrt((x_obs-xr(1))^2+(y_obs-xr(2))^2);   
-        r_circ_ego = sqrt(  (x-center(1))^2 + (y-center(2))^2  );
-        r_circ_obs = sqrt(  (x_obs-center(1))^2 + (y_obs-center(2))^2  );
 
         if (x<=x_obs) && ( sqrt((x_obs-x)^2+(y_obs-y)^2) <= dist_cond ) % 
-            v_tan = get_tang_v_ego(v,x,y,th,center);  
+            if j ==2
+                1;
+            end
+            v_tan = get_tang_v_ego(v,x,y,th,center);
+            r_circ_ego = sqrt(  (x-center(1))^2 + (y-center(2))^2  );
+            r_circ_obs = sqrt(  (x_obs-center(1))^2 + (y_obs-center(2))^2  );
             [t_impact,~] = get_intersection_time(x,y,v_tan,x_obs,y_obs,v_obs,r_circ_ego,r_circ_obs,center);
             [x_impact, y_impact, ~, ~] = obs_move_line(t_impact, obstacles_lanes{j}, v_obs, x_obs, y_obs,center,road_radius,lanewidth);
 

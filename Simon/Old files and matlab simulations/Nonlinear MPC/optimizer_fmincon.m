@@ -39,35 +39,30 @@ beq=[
     ];
 
 %% FMINCON - Interior, sqp, active-set
-obj_fun = @(Z) objective_func(Z,MQ,MR,MR_jerk,N,lane_border_min,lanewidth,barrier_weight,center,Qt,obstacles,xr,dist_cond);
-nonl_con = @(Z) nonlcon(Z,N,xk,uk,dt,obstacles,obstacles_u,r_obs,xr,r_safety_margin,dist_cond,lanewidth,road_radius,obstacles_lanes,center);
-
-tic
-% [Z,fval,exitflag] = fmincon(obj_fun,Z0,[],[],[],[],lb,ub,nonl_con,options);
-[Z,fval,exitflag,output] = fmincon(obj_fun,Z0,Ain,bin,Aeq,beq,lb,ub,nonl_con,options);
-timerVal = toc;
-
-
-%% ALLA ANDRA OPTIMIZERS, EJ FUNGERANDE
-
-%% YALMIP - IPOPT
-% % SNOPT - An augmented Lagrangian merit function ensures convergence from an arbitrary point. Infeasible problems are treated methodically via elastic bounds on the nonlinear constraints. SNOPT allows the nonlinear constraints to be violated (if necessary) and minimizes the sum of such violations.
-% % NOMAD - Kräven nonlinear ineq constraints och bounded problems.
-% % LBFGSB Funkar
-% obj_fun = @(Z) objective_func(Z,MQ,MR,MR_jerk,N,obstacles,lane_st,ylimit);
-% opts = optiset('solver','ipopt', 'maxiter',3000,'maxfeval',3000,'maxtime',0.5);
-% nonl_con = @(Z) nonl_con_ipopt(Z,N,xk,uk,dt,obstacles,obstacles_u,r_obs,xr,r_safety_margin); 
-% %       cin, 20x1          ceq, 30x1
-% cl = [ ones((length(obstacles))*N,1)*-inf; zeros(3*N,1) ]; %
-% cu = [ ones((length(obstacles))*N,1)*0; zeros(3*N,1) ];
+% obj_fun = @(Z) objective_func(Z,MQ,MR,MR_jerk,N,lane_border_min,lanewidth,barrier_weight,center,Qt,obstacles,xr,dist_cond);
+% nonl_con = @(Z) nonlcon(Z,N,xk,uk,dt,obstacles,obstacles_u,r_obs,xr,r_safety_margin,dist_cond,lanewidth,road_radius,obstacles_lanes,center);
 % 
-% %   Build OPTI Problem
-% Opt = opti('fun',obj_fun,'eq',Aeq,beq,'nl',nonl_con,cl,cu,'ineq',Ain,bin,'bounds',lb,ub,'x0',Z0,'options',opts);
-% 
-% %     Solve NLP
 % tic
-% [Z,fval,exitflag,info] = solve(Opt);
+% [Z,fval,exitflag,output] = fmincon(obj_fun,Z0,Ain,bin,Aeq,beq,lb,ub,nonl_con,options);
 % timerVal = toc;
+
+%% IPOPT
+% SNOPT - An augmented Lagrangian merit function ensures convergence from an arbitrary point. Infeasible problems are treated methodically via elastic bounds on the nonlinear constraints. SNOPT allows the nonlinear constraints to be violated (if necessary) and minimizes the sum of such violations.
+% NOMAD - Kräven nonlinear ineq constraints och bounded problems.
+% LBFGSB Funkar
+obj_fun = @(Z) objective_func(Z,MQ,MR,MR_jerk,N,lane_border_min,lanewidth,barrier_weight,center,Qt,obstacles,xr,dist_cond);
+opts = optiset('solver','ipopt', 'maxiter',3000,'maxfeval',3000,'maxtime',0.5);
+nonl_con = @(Z) nonl_con_ipopt(Z,N,xk,uk,dt,obstacles,obstacles_u,r_obs,xr,r_safety_margin,dist_cond,lanewidth,road_radius,obstacles_lanes,center); 
+% %       cin, 20x1          ceq, 30x1
+cl = [ ones((length(obstacles))*N,1)*-inf; zeros(3*N,1) ]; %
+cu = [ ones((length(obstacles))*N,1)*0; zeros(3*N,1) ];
+% %   Build OPTI Problem
+Opt = opti('fun',obj_fun,'eq',Aeq,beq,'nl',nonl_con,cl,cu,'ineq',Ain,bin,'bounds',lb,ub,'x0',Z0,'options',opts);
+
+%   Solve NLP
+tic
+[Z,fval,exitflag,output] = solve(Opt);
+timerVal = toc;
 
 %% YALMIP - SNOPT
 % Nonlincon = @(Z) nonlcon_snopt(Z,MQ,MR,MR_jerk,N,obstacles,lane_st,ylimit,xk,uk,dt,obstacles_u,r_obs,xr,r_safety_margin);

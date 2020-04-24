@@ -24,7 +24,12 @@ for i = 1:num_lines
     plot_y_curv{i} = Y_p;
     r_p =r_p + lanewidth;
     hold on
-    plot(plot_x_curv{i},plot_y_curv{i})
+    if i == 2
+        plot(plot_x_curv{i},plot_y_curv{i},'--b','linewidth',1.5)
+    else
+        plot(plot_x_curv{i},plot_y_curv{i},'-k','linewidth',1.5)
+    end
+    
 end
 xlim([0 40])
 ylim([0 4])
