@@ -11,10 +11,10 @@ close all;
 
 %% Scenarios
 test_scenario = false;
-scenario1 = true;
-scenario2 = false;
+scenario1 = false;   % En + konvergerar ej i två iter
+scenario2 = true;    % En + konvergerar ej i två iter
 scenario3 = false; % No logic!
-scenario4 = false;
+scenario4 = false;   % convergerar ej på två iter
 
 %% OBSTACLES
 if test_scenario
@@ -23,12 +23,13 @@ if test_scenario
 elseif scenario1
     
     %% Hyperparameters
-    options = optimoptions('fmincon','Algorithm','sqp','Display','off','MaxFunctionEvaluations',4000,...
+    disp('IP')
+    options = optimoptions('fmincon','Algorithm','interior-point','Display','off','MaxFunctionEvaluations',4000,...
         'MaxIterations',4000,'FiniteDifferenceType','central','FunctionTolerance', 1.0000e-8,...
         'OptimalityTolerance',1.0000e-4,'ConstraintTolerance', 1.0000e-02,'UseParallel', true,'ScaleProblem',true,...
         'HessianApproximation','lbfgs','StepTolerance',1.0000e-06 ); % ,'MaxSQPIter',2000
-    
-    
+   % ipopt
+% options=optiset('solver','LBFGSB', 'maxiter',100,'maxfeval',100,'maxtime',7,'tolrfun',1.0000e-08,'tolafun',1.0000e-08); % ,'display',final
     % Interior-point kan fungerar med extra tuning. Bör skapa separata
     % scenario filer för alla.
     % HessianApproximation Ser ingen större skillnad
@@ -61,15 +62,20 @@ elseif scenario1
     ub = [ inf  inf  inf ub_x  inf  inf ub_u];      % Upperbound  vec, [x_tilde y_tilde theta_tilde ub_x v_tilde w_tilde ub_u]
     dv = 0.5;              % Max acceleration during one timestep
     dw = 0.5;
+    % SQP
 %     Q=[45 0 0;          % x state weight
-%         0 15 0;         % y state weight
-%         0 0 0];          % theta state weight
-        Q=[10 0 0;          % x state weight
-        0 10 0;         % y state weight
-        0 0 0];          % theta state weight
+%         0 10 0;         % y state weight
+%         0 0 0];
+% IP
+    Q=[10 0 0;    % 35      % x state weight
+       0 10 0;         % y state weight
+       0 0 0];  
+
+
     Qt=50*Q;
-    R=[0 0;              % v input weight
-        0 0];            % w input weight
+%     Qt=70*Q;
+    R=[1 0;              % v input weight
+        0 1];            % w input weight
     R_jerk = 1;          % Term that penalizes the high amounts of jerk [accelerations]
     dist_cont = 5;       % Distance for when collision cone shall be activated
     %     barrier_weight = 150; % LINEAR BARRIER!
@@ -108,14 +114,16 @@ elseif scenario1
     th_final = xr(3);
     
 elseif scenario2
-    options = optimoptions('fmincon','Algorithm','sqp','Display','off','MaxFunctionEvaluations',4000,...
+%     disp('IP')
+disp('IP')
+    options = optimoptions('fmincon','Algorithm','interior-point','Display','off','MaxFunctionEvaluations',4000,...
         'MaxIterations',4000,'FiniteDifferenceType','central','FunctionTolerance', 1.0000e-8,...
         'OptimalityTolerance',1.0000e-04,'ConstraintTolerance', 1.0000e-04,'UseParallel',...
         true,'ScaleProblem',true,'HessianApproximation','lbfgs'); %,'TolCon',1e-6
     
     %% Hyperparameters
     N = 10;          % Prediction Horizon
-    Nsim = 250;      % Simulation steps
+    Nsim = 100;      % Simulation steps
     Length = 40;    % Length of track in x direction. (From 0-40)
     dt = 0.5;       % Sample rate
     ur = [0; 0];    % Reference velocity
@@ -141,9 +149,12 @@ elseif scenario2
     ub = [ inf  inf  inf ub_x  inf  inf ub_u];      % Upperbound  vec, [x_tilde y_tilde theta_tilde ub_x v_tilde w_tilde ub_u]
     dv = 0.5;              % Max acceleration during one timestep
     dw = 0.5;
-    Q=[45 0 0;          % x state weight
+%     Q=[45 0 0;          % x state weight
+%         0 10 0;         % y state weight
+%         0 0 0];          % theta state weight
+    Q=[10 0 0;          % x state weight
         0 10 0;         % y state weight
-        0 0 1];          % theta state weight
+        0 0 0];          % theta state weight
     Qt=50*Q;
     R=[1 0;              % v input weight
         0 1];            % w input weight
@@ -252,7 +263,8 @@ elseif scenario3
 %     th_final = xr(3);
     
 elseif scenario4
-    options = optimoptions('fmincon','Algorithm','sqp','Display','off','MaxFunctionEvaluations',4000,...
+    disp('IP')
+    options = optimoptions('fmincon','Algorithm','interior-point','Display','off','MaxFunctionEvaluations',4000,...
         'MaxIterations',4000,'FiniteDifferenceType','central','FunctionTolerance', 1.0000e-8,...
         'OptimalityTolerance',1.0000e-04,'ConstraintTolerance', 1.0000e-02,'UseParallel', true,...
         'ScaleProblem',true,'HessianApproximation','lbfgs'); %,'TolCon',1e-6
@@ -285,8 +297,11 @@ elseif scenario4
     ub = [ inf  inf  inf ub_x  inf  inf ub_u];      % Upperbound  vec, [x_tilde y_tilde theta_tilde ub_x v_tilde w_tilde ub_u]
     dv = 0.5;              % Max acceleration during one timestep
     dw = 0.5;              % Max angular acceleration during one timestep
-    Q=[50 0 0;          % x state weight
-        0 15 0;         % y state weight
+%     Q=[50 0 0;          % x state weight
+%         0 15 0;         % y state weight
+%         0 0 0];          % theta state weight
+    Q=[10 0 0;          % x state weight
+        0 10 0;         % y state weight
         0 0 0];          % theta state weight
     Qt=50*Q;
     R=[1 0;              % v input weight

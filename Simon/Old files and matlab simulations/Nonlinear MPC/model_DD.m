@@ -7,28 +7,17 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 % !!!! Run from initFile.m !!!!
-output.Lambda.eqlin=0
-output.Lambda.eqnonlin=0
-output.Lambda.ineqlin=0
-output.Lambda.ineqnonlin=0
-output.Lambda.lower=0
-output.Lambda.upper=0
-active_const_lst =[]
+output.Lambda.eqlin=0;
+output.Lambda.eqnonlin=0;
+output.Lambda.ineqlin=0;
+output.Lambda.ineqnonlin=0;
+output.Lambda.lower=0;
+output.Lambda.upper=0;
+active_const_lst =[];
+yref_final = 498.7883e-003;
+xref_final = 60;
 %% Simulate MPC
 for k = 1:Nsim
-    output.Lambda.ineqlin
-    a1=sum(output.Lambda.eqlin~=0);
-    a2=sum(output.Lambda.eqnonlin~=0);
-    a3=sum(output.Lambda.ineqlin~=0);
-    a4=sum(output.Lambda.ineqnonlin~=0);
-    a5=sum(output.Lambda.lower~=0);
-    a6=sum(output.Lambda.upper~=0);
-    if any([a1 a2 a3 a4 a5 a6])
-        1;
-    end
-    active_const_lst=[active_const_lst a1+a2+a3+a4+a5+a6];
-    
-    
     
     % MXR is needed for traj.
     Mxr = [];
@@ -61,6 +50,18 @@ for k = 1:Nsim
         obstacles_u,r_obs,xr,MR_jerk,r_safety_margin,...
         lane_border_min,lanewidth,dist_cont,road_radius,...
         obstacles_lanes,warmstart,center,barrier_weight,Qt,options);
+    
+%     a1=sum(output.Lambda.eqlin~=0);
+%     a2=sum(output.Lambda.eqnonlin~=0);
+%     a3=sum(output.Lambda.ineqlin~=0);
+%     a4=sum(output.Lambda.ineqnonlin~=0);
+%     a5=sum(output.Lambda.lower~=0);
+%     a6=sum(output.Lambda.upper~=0);
+%     if a1+a2+a3+a4+a5+a6 > 0
+%         a1+a2+a3+a4+a5+a6
+%     end
+%     active_const_lst=[active_const_lst,a1+a2+a3+a4+a5+a6];
+    
     Z0 = Z;
     Zx = Z(3*N+1:6*N);
     
@@ -77,12 +78,11 @@ for k = 1:Nsim
     if x(k,1) >= 10
         1;
     end
-    if x(k,1) >= 22
+    if x(k,1) >= 21
         1;
     end
-
-    u(k+1,:) = Z(N*8+1:N*8+2); % DISTURBANCE:  %+ [-0.1  + (0.1  +0.1 )*rand(1); 
-                                 %-1/1500 + (1/1500+1/1500)*rand(1)]';
+    u(k+1,:) = Z(N*8+1:N*8+2); %+ [-0.25 + ( 0.25 + 0.25 )*rand(1); 
+                               %   -1/1500 + (1/1500+1/1500)*rand(1)]';
     
     if u(k+1,1)<0.1 && Z(N*8+1+2:N*8+1+2)>0.2 && Z(N*8+1+2+2:N*8+1+2+2)>0.7 && Z(N*8+1+2+2+2:N*8+1+2+2+2)>1.2
 %         u(k+1,1)=2;
@@ -158,7 +158,7 @@ for k = 1:Nsim
     %     delete(track)
     
     %% Control if close to ref
-    if abs(x(k+1,1)-xr(1))<0.2 && abs(x(k+1,2)-xr(2))<0.2 && abs(x(k+1,3)-xr(3))<0.2
+    if abs(x(k+1,1)-40)<0.1 % abs(x(k+1,1)-xr(1))<0.2 && abs(x(k+1,2)-xr(2))<0.2
         break
     end
     output_saved{k} = output;
@@ -167,11 +167,15 @@ end
 disp('Average optimizer time: ')
 disp(mean(timerSave))
 
-% for i = 1:length(output_saved)
-%     constraintviolation(i)= output_saved{i}.constrviolation;
-%     firstOrdOpt(i)= output_saved{i}.firstorderopt;
-%     mess{i}= output_saved{i}.message;
-% end
+for i = 1:length(output_saved)
+     iter(i)= output_saved{i}.iterations;
+     output_saved{i}.iterations
+%      pause(0.25)
+end
+figure(3)
+ylim([0 20])
+plot(iter)
+median(iter)
 % figure(2)
 % plot(linspace(0,40,length(constraintviolation)),constraintviolation)
 
@@ -181,10 +185,10 @@ disp(mean(timerSave))
 % hold on
 % plot(x(1:length(output_saved)+1,1),ones(1,length(x(1:length(output_saved)+1,1)))*mean(timerSave),'r')
 % Scen 4
-% plot(x(1:length(output_saved),1),timerSave(1,1:length(output_saved)),'b')
-% plot(x(1:length(output_saved),1),ones(1,length(x(1:length(output_saved),1)))*mean(timerSave),'r')
-% xlabel('x position')
-% ylabel('Computation time')
+figure(3);
+plot(x(1:length(output_saved),1), timerSave(1,1:length(output_saved)),'b')
+xlabel('x position')
+ylabel('Computation time')
 %% Scenario 1:
 % Max constraint violation: 9.5470e-003 Min: 2.7456e-009
 % Avg. opti Time:   2.1266e+000
